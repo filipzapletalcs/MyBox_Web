@@ -1,0 +1,163 @@
+{
+  "metadata": {
+    "title": "MyBox.eco | Nabíjecí stanice pro elektromobily",
+    "description": "Český výrobce nabíjecích stanic pro elektromobily. AC a DC stanice pro domácnosti, firmy a veřejné prostory."
+  },
+  "navigation": {
+    "chargingStations": "Nabíjecí stanice",
+    "corporateCharging": "Nabíjení pro firmy",
+    "chargingSolutions": "Řešení nabíjení",
+    "solutionBenefits": "Výhody řešení",
+    "chargingManagement": "Řízení nabíjení",
+    "references": "Reference",
+    "blog": "Blog",
+    "aboutUs": "O nás",
+    "contact": "Kontakt",
+    "requestQuote": "Poptávka"
+  },
+  "chargingStations": {
+    "title": "Nabíjecí stanice",
+    "ac": {
+      "title": "AC nabíjecí stanice",
+      "description": "Nabíjecí stanice pro domácnosti a firmy"
+    },
+    "dc": {
+      "title": "DC rychlonabíjecí stanice",
+      "description": "Vysokovýkonné rychlonabíjecí stanice"
+    },
+    "products": {
+      "myboxHome": "MyBox Home",
+      "myboxPlus": "MyBox Plus",
+      "myboxProfi": "MyBox Profi",
+      "myboxPost": "MyBox Post",
+      "wallbox": "Wallbox",
+      "alpitronicHyc400": "Alpitronic HYC 400",
+      "alpitronicHyc200": "Alpitronic HYC 200",
+      "alpitronicHyc50": "Alpitronic HYC 50"
+    }
+  },
+  "corporateCharging": {
+    "title": "Nabíjení pro firmy",
+    "workplaceStations": "Stanice do firem",
+    "fleetManagement": "Správa fleetu",
+    "homeChargingEmployees": "Domácí nabíjení pro zaměstnance",
+    "costAccounting": "Účtování nákladů",
+    "taxBenefits": "Daňové výhody",
+    "esgElectromobility": "ESG a elektromobilita"
+  },
+  "chargingSolutions": {
+    "title": "Řešení nabíjení",
+    "developers": "Developeři",
+    "architects": "Architekti",
+    "logistics": "Logistika",
+    "energySector": "Energetika",
+    "residential": "Bytové domy",
+    "hospitality": "Hotely a restaurace"
+  },
+  "solutionBenefits": {
+    "title": "Výhody řešení",
+    "quality": "Kvalita",
+    "cloudBenefits": "Výhody cloudu",
+    "design": "Design",
+    "consulting": "Poradenství",
+    "completeSolution": "Komplexní řešení",
+    "stationUpgrade": "Upgrade stanic"
+  },
+  "chargingManagement": {
+    "title": "Řízení nabíjení",
+    "cloudPlatform": "Cloud platforma",
+    "mobileApp": "Mobilní aplikace",
+    "dynamicLoadManagement": "Dynamické řízení výkonu"
+  },
+  "aboutUs": {
+    "title": "O nás",
+    "ownDevelopment": "Vlastní vývoj",
+    "team": "Tým",
+    "ecoRally": "Eco Rally",
+    "media": "Média",
+    "history": "Historie",
+    "careers": "Kariéra"
+  },
+  "common": {
+    "learnMore": "Zjistit více",
+    "requestQuote": "Nezávazná poptávka",
+    "contactUs": "Kontaktujte nás",
+    "seeAll": "Zobrazit vše",
+    "readMore": "Číst více",
+    "backToHome": "Zpět na úvod",
+    "loading": "Načítání...",
+    "error": "Něco se pokazilo",
+    "retry": "Zkusit znovu"
+  },
+  "footer": {
+    "company": "MyBox.eco s.r.o.",
+    "tagline": "Český výrobce nabíjecích stanic",
+    "allRightsReserved": "Všechna práva vyhrazena",
+    "privacyPolicy": "Ochrana osobních údajů",
+    "terms": "Obchodní podmínky",
+    "cookies": "Cookies"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Nabíjejte budoucnost",
+      "subtitle": "Kompletní řešení nabíjecích stanic pro elektromobily od českého výrobce",
+      "cta": "Nezávazná poptávka"
+    },
+    "clients": {
+      "title": "Důvěřují nám"
+    },
+    "solutions": {
+      "title": "Řešení pro každou potřebu",
+      "subtitle": "Od domácího nabíjení po veřejnou infrastrukturu"
+    },
+    "products": {
+      "title": "Naše nabíjecí stanice",
+      "subtitle": "Kvalitní české stanice s cloudovým řízením"
+    },
+    "benefits": {
+      "title": "Proč MyBox?",
+      "subtitle": "6 důvodů, proč si vybrat právě nás"
+    },
+    "cta": {
+      "title": "Připraveni na elektromobilitu?",
+      "subtitle": "Kontaktujte nás pro nezávaznou konzultaci",
+      "button": "Nezávazná poptávka"
+    },
+    "newsletter": {
+      "title": "Buďte v obraze",
+      "subtitle": "Přihlaste se k odběru novinek z oblasti elektromobility",
+      "placeholder": "Váš e-mail",
+      "button": "Odebírat",
+      "success": "Děkujeme za přihlášení!",
+      "error": "Něco se pokazilo, zkuste to znovu"
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Rádi vám pomůžeme s výběrem správného řešení",
+    "form": {
+      "name": "Jméno a příjmení",
+      "email": "E-mail",
+      "phone": "Telefon",
+      "company": "Firma",
+      "message": "Zpráva",
+      "submit": "Odeslat zprávu",
+      "success": "Děkujeme za zprávu! Brzy se vám ozveme.",
+      "error": "Něco se pokazilo, zkuste to znovu"
+    },
+    "info": {
+      "address": "Adresa",
+      "phone": "Telefon",
+      "email": "E-mail"
+    }
+  },
+  "requestQuote": {
+    "title": "Poptávka",
+    "subtitle": "Vyplňte formulář a my vám připravíme nabídku na míru",
+    "steps": {
+      "type": "Typ řešení",
+      "details": "Detaily",
+      "contact": "Kontakt"
+    }
+  }
+}

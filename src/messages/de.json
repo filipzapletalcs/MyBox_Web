@@ -1,0 +1,163 @@
+{
+  "metadata": {
+    "title": "MyBox.eco | Ladestationen für Elektrofahrzeuge",
+    "description": "Tschechischer Hersteller von Ladestationen für Elektrofahrzeuge. AC- und DC-Stationen für Privathaushalte, Unternehmen und öffentliche Bereiche."
+  },
+  "navigation": {
+    "chargingStations": "Ladestationen",
+    "corporateCharging": "Unternehmensladung",
+    "chargingSolutions": "Ladelösungen",
+    "solutionBenefits": "Lösungsvorteile",
+    "chargingManagement": "Lademanagement",
+    "references": "Referenzen",
+    "blog": "Blog",
+    "aboutUs": "Über uns",
+    "contact": "Kontakt",
+    "requestQuote": "Anfrage"
+  },
+  "chargingStations": {
+    "title": "Ladestationen",
+    "ac": {
+      "title": "AC-Ladestationen",
+      "description": "Ladestationen für Privathaushalte und Unternehmen"
+    },
+    "dc": {
+      "title": "DC-Schnellladestationen",
+      "description": "Hochleistungs-Schnellladestationen"
+    },
+    "products": {
+      "myboxHome": "MyBox Home",
+      "myboxPlus": "MyBox Plus",
+      "myboxProfi": "MyBox Profi",
+      "myboxPost": "MyBox Post",
+      "wallbox": "Wallbox",
+      "alpitronicHyc400": "Alpitronic HYC 400",
+      "alpitronicHyc200": "Alpitronic HYC 200",
+      "alpitronicHyc50": "Alpitronic HYC 50"
+    }
+  },
+  "corporateCharging": {
+    "title": "Unternehmensladung",
+    "workplaceStations": "Firmenstationen",
+    "fleetManagement": "Flottenverwaltung",
+    "homeChargingEmployees": "Heimladung für Mitarbeiter",
+    "costAccounting": "Kostenabrechnung",
+    "taxBenefits": "Steuervorteile",
+    "esgElectromobility": "ESG & Elektromobilität"
+  },
+  "chargingSolutions": {
+    "title": "Ladelösungen",
+    "developers": "Entwickler",
+    "architects": "Architekten",
+    "logistics": "Logistik",
+    "energySector": "Energiewirtschaft",
+    "residential": "Wohngebäude",
+    "hospitality": "Hotellerie"
+  },
+  "solutionBenefits": {
+    "title": "Lösungsvorteile",
+    "quality": "Qualität",
+    "cloudBenefits": "Cloud-Vorteile",
+    "design": "Design",
+    "consulting": "Beratung",
+    "completeSolution": "Komplettlösung",
+    "stationUpgrade": "Stationen-Upgrade"
+  },
+  "chargingManagement": {
+    "title": "Lademanagement",
+    "cloudPlatform": "Cloud-Plattform",
+    "mobileApp": "Mobile App",
+    "dynamicLoadManagement": "Dynamisches Lastmanagement"
+  },
+  "aboutUs": {
+    "title": "Über uns",
+    "ownDevelopment": "Eigene Entwicklung",
+    "team": "Team",
+    "ecoRally": "Eco Rally",
+    "media": "Medien",
+    "history": "Geschichte",
+    "careers": "Karriere"
+  },
+  "common": {
+    "learnMore": "Mehr erfahren",
+    "requestQuote": "Anfrage senden",
+    "contactUs": "Kontaktieren Sie uns",
+    "seeAll": "Alle anzeigen",
+    "readMore": "Weiterlesen",
+    "backToHome": "Zurück zur Startseite",
+    "loading": "Wird geladen...",
+    "error": "Etwas ist schiefgelaufen",
+    "retry": "Erneut versuchen"
+  },
+  "footer": {
+    "company": "MyBox.eco s.r.o.",
+    "tagline": "Tschechischer Hersteller von Ladestationen",
+    "allRightsReserved": "Alle Rechte vorbehalten",
+    "privacyPolicy": "Datenschutz",
+    "terms": "AGB",
+    "cookies": "Cookies"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Laden Sie die Zukunft",
+      "subtitle": "Komplette E-Ladelösungen vom tschechischen Hersteller",
+      "cta": "Anfrage senden"
+    },
+    "clients": {
+      "title": "Vertrauen uns"
+    },
+    "solutions": {
+      "title": "Lösungen für jeden Bedarf",
+      "subtitle": "Vom Heimladen bis zur öffentlichen Infrastruktur"
+    },
+    "products": {
+      "title": "Unsere Ladestationen",
+      "subtitle": "Hochwertige tschechische Stationen mit Cloud-Management"
+    },
+    "benefits": {
+      "title": "Warum MyBox?",
+      "subtitle": "6 Gründe, uns zu wählen"
+    },
+    "cta": {
+      "title": "Bereit für Elektromobilität?",
+      "subtitle": "Kontaktieren Sie uns für eine kostenlose Beratung",
+      "button": "Anfrage senden"
+    },
+    "newsletter": {
+      "title": "Bleiben Sie informiert",
+      "subtitle": "Abonnieren Sie unseren Elektromobilitäts-Newsletter",
+      "placeholder": "Ihre E-Mail",
+      "button": "Abonnieren",
+      "success": "Vielen Dank für Ihr Abonnement!",
+      "error": "Etwas ist schiefgelaufen, bitte versuchen Sie es erneut"
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Wir helfen Ihnen gerne bei der Auswahl der richtigen Lösung",
+    "form": {
+      "name": "Vollständiger Name",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "company": "Unternehmen",
+      "message": "Nachricht",
+      "submit": "Nachricht senden",
+      "success": "Vielen Dank für Ihre Nachricht! Wir melden uns bald bei Ihnen.",
+      "error": "Etwas ist schiefgelaufen, bitte versuchen Sie es erneut"
+    },
+    "info": {
+      "address": "Adresse",
+      "phone": "Telefon",
+      "email": "E-Mail"
+    }
+  },
+  "requestQuote": {
+    "title": "Anfrage",
+    "subtitle": "Füllen Sie das Formular aus und wir erstellen Ihnen ein individuelles Angebot",
+    "steps": {
+      "type": "Lösungstyp",
+      "details": "Details",
+      "contact": "Kontakt"
+    }
+  }
+}

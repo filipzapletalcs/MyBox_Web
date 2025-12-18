@@ -1,0 +1,163 @@
+{
+  "metadata": {
+    "title": "MyBox.eco | Electric Vehicle Charging Stations",
+    "description": "Czech manufacturer of EV charging stations. AC and DC stations for homes, businesses and public spaces."
+  },
+  "navigation": {
+    "chargingStations": "Charging Stations",
+    "corporateCharging": "Corporate Charging",
+    "chargingSolutions": "Charging Solutions",
+    "solutionBenefits": "Solution Benefits",
+    "chargingManagement": "Charging Management",
+    "references": "References",
+    "blog": "Blog",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "requestQuote": "Request Quote"
+  },
+  "chargingStations": {
+    "title": "Charging Stations",
+    "ac": {
+      "title": "AC Charging Stations",
+      "description": "Charging stations for homes and businesses"
+    },
+    "dc": {
+      "title": "DC Fast Charging Stations",
+      "description": "High-power fast charging stations"
+    },
+    "products": {
+      "myboxHome": "MyBox Home",
+      "myboxPlus": "MyBox Plus",
+      "myboxProfi": "MyBox Profi",
+      "myboxPost": "MyBox Post",
+      "wallbox": "Wallbox",
+      "alpitronicHyc400": "Alpitronic HYC 400",
+      "alpitronicHyc200": "Alpitronic HYC 200",
+      "alpitronicHyc50": "Alpitronic HYC 50"
+    }
+  },
+  "corporateCharging": {
+    "title": "Corporate Charging",
+    "workplaceStations": "Workplace Stations",
+    "fleetManagement": "Fleet Management",
+    "homeChargingEmployees": "Home Charging for Employees",
+    "costAccounting": "Cost Accounting",
+    "taxBenefits": "Tax Benefits",
+    "esgElectromobility": "ESG & Electromobility"
+  },
+  "chargingSolutions": {
+    "title": "Charging Solutions",
+    "developers": "Developers",
+    "architects": "Architects",
+    "logistics": "Logistics",
+    "energySector": "Energy Sector",
+    "residential": "Residential",
+    "hospitality": "Hospitality"
+  },
+  "solutionBenefits": {
+    "title": "Solution Benefits",
+    "quality": "Quality",
+    "cloudBenefits": "Cloud Benefits",
+    "design": "Design",
+    "consulting": "Consulting",
+    "completeSolution": "Complete Solution",
+    "stationUpgrade": "Station Upgrade"
+  },
+  "chargingManagement": {
+    "title": "Charging Management",
+    "cloudPlatform": "Cloud Platform",
+    "mobileApp": "Mobile App",
+    "dynamicLoadManagement": "Dynamic Load Management"
+  },
+  "aboutUs": {
+    "title": "About Us",
+    "ownDevelopment": "Own Development",
+    "team": "Team",
+    "ecoRally": "Eco Rally",
+    "media": "Media",
+    "history": "History",
+    "careers": "Careers"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "requestQuote": "Request Quote",
+    "contactUs": "Contact Us",
+    "seeAll": "See All",
+    "readMore": "Read More",
+    "backToHome": "Back to Home",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try Again"
+  },
+  "footer": {
+    "company": "MyBox.eco s.r.o.",
+    "tagline": "Czech manufacturer of EV charging stations",
+    "allRightsReserved": "All rights reserved",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookies"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Charge the Future",
+      "subtitle": "Complete EV charging solutions from a Czech manufacturer",
+      "cta": "Request Quote"
+    },
+    "clients": {
+      "title": "Trusted By"
+    },
+    "solutions": {
+      "title": "Solutions for Every Need",
+      "subtitle": "From home charging to public infrastructure"
+    },
+    "products": {
+      "title": "Our Charging Stations",
+      "subtitle": "Quality Czech stations with cloud management"
+    },
+    "benefits": {
+      "title": "Why MyBox?",
+      "subtitle": "6 reasons to choose us"
+    },
+    "cta": {
+      "title": "Ready for Electromobility?",
+      "subtitle": "Contact us for a free consultation",
+      "button": "Request Quote"
+    },
+    "newsletter": {
+      "title": "Stay Updated",
+      "subtitle": "Subscribe to our electromobility newsletter",
+      "placeholder": "Your email",
+      "button": "Subscribe",
+      "success": "Thank you for subscribing!",
+      "error": "Something went wrong, please try again"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "We're happy to help you find the right solution",
+    "form": {
+      "name": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "company": "Company",
+      "message": "Message",
+      "submit": "Send Message",
+      "success": "Thank you for your message! We'll get back to you soon.",
+      "error": "Something went wrong, please try again"
+    },
+    "info": {
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email"
+    }
+  },
+  "requestQuote": {
+    "title": "Request Quote",
+    "subtitle": "Fill out the form and we'll prepare a custom quote for you",
+    "steps": {
+      "type": "Solution Type",
+      "details": "Details",
+      "contact": "Contact"
+    }
+  }
+}
