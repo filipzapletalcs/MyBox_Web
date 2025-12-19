@@ -76,3 +76,18 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
 } from './DropdownMenu'
+
+// Icons
+export {
+  ArrowRightIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  QuestionMarkIcon,
+} from './icons'
+
+// Carousel Navigation
+export {
+  NavButton,
+  PillIndicator,
+  CarouselNavigation,
+} from './CarouselNavigation'

@@ -61,7 +61,6 @@ export function HeroSection({
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end start'],
-    layoutEffect: false, // Suppress position check warning
   })
 
   // Parallax effects

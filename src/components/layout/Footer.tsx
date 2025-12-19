@@ -4,6 +4,8 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { cn } from '@/lib/utils'
 import { Logo } from './Logo'
+import { LanguageSwitcher } from './LanguageSwitcher'
+import { ThemeToggle } from './ThemeToggle'
 import { navigationConfig } from '@/data/navigation'
 
 // Social icons
@@ -88,24 +90,18 @@ export function Footer() {
               {t('footer.tagline')}
             </p>
 
-            {/* Social links */}
-            <div className="flex gap-4">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    'flex h-10 w-10 items-center justify-center rounded-lg',
-                    'bg-white/5 text-text-muted transition-all duration-200',
-                    'hover:bg-green-500/10 hover:text-green-400'
-                  )}
-                  aria-label={social.label}
-                >
-                  <social.icon className="h-5 w-5" />
-                </a>
-              ))}
+            {/* Company info */}
+            <div className="mt-6 text-sm">
+              <span className="block font-semibold text-text-primary">
+                ELEXIM, a.s. – Divize MyBox
+              </span>
+              <address className="mt-3 not-italic text-text-secondary">
+                <span className="block">Hulínská 1814/1b</span>
+                <span className="block">767 01 Kroměříž</span>
+                <span className="block">Česká republika</span>
+              </address>
+              <span className="mt-3 block text-text-secondary">IČ: 25565044</span>
+              <span className="block text-text-secondary">DIČ: CZ25565044</span>
             </div>
           </div>
 
@@ -113,10 +109,10 @@ export function Footer() {
           <div className="grid gap-8 sm:grid-cols-3 lg:col-span-8">
             {/* Products */}
             <div>
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-primary">
+              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-primary">
                 {t('chargingStations.title')}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {navigationConfig.footer.products.map((item) => (
                   <li key={item.href}>
                     <Link
@@ -135,10 +131,10 @@ export function Footer() {
 
             {/* Solutions */}
             <div>
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-primary">
+              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-primary">
                 {t('chargingSolutions.title')}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {navigationConfig.footer.solutions.map((item) => (
                   <li key={item.href}>
                     <Link
@@ -157,10 +153,10 @@ export function Footer() {
 
             {/* Company */}
             <div>
-              <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-text-primary">
+              <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-primary">
                 {t('footer.company')}
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2">
                 {navigationConfig.footer.company.map((item) => (
                   <li key={item.href}>
                     <Link
@@ -183,11 +179,29 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-border-subtle">
         <div className="container-custom flex flex-col items-center justify-between gap-4 py-6 sm:flex-row">
-          <p className="text-xs text-text-muted">
-            &copy; {currentYear} {t('footer.company')}. {t('footer.allRightsReserved')}.
-          </p>
+          <div className="flex items-center gap-6">
+            <span className="text-xs text-text-muted">
+              &copy; {currentYear} {t('footer.company')}. {t('footer.allRightsReserved')}.
+            </span>
 
-          <div className="flex gap-6">
+            {/* Social links */}
+            <div className="flex gap-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-text-muted transition-colors hover:text-green-400"
+                  aria-label={social.label}
+                >
+                  <social.icon className="h-4 w-4" />
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6">
             <Link
               href="/kontakt"
               className="text-xs text-text-muted transition-colors hover:text-text-secondary"
@@ -206,6 +220,15 @@ export function Footer() {
             >
               {t('footer.cookies')}
             </Link>
+
+            {/* Divider */}
+            <div className="h-4 w-px bg-border-subtle" />
+
+            {/* Theme & Language */}
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
       </div>

@@ -73,6 +73,12 @@ export const routing = defineRouting({
       en: '/charging-stations/dc/alpitronic-hyc50',
       de: '/ladestationen/dc/alpitronic-hyc50',
     },
+    // Příslušenství
+    '/nabijeci-stanice/prislusenstvi': {
+      cs: '/nabijeci-stanice/prislusenstvi',
+      en: '/charging-stations/accessories',
+      de: '/ladestationen/zubehoer',
+    },
 
     // === NABÍJENÍ PRO FIRMY ===
     '/nabijeni-pro-firmy': {
@@ -213,6 +219,21 @@ export const routing = defineRouting({
       en: '/references',
       de: '/referenzen',
     },
+    '/reference/firemni-nabijeni': {
+      cs: '/reference/firemni-nabijeni',
+      en: '/references/corporate-charging',
+      de: '/referenzen/unternehmensladung',
+    },
+    '/reference/verejne-stanice': {
+      cs: '/reference/verejne-stanice',
+      en: '/references/public-stations',
+      de: '/referenzen/oeffentliche-stationen',
+    },
+    '/reference/bytove-domy': {
+      cs: '/reference/bytove-domy',
+      en: '/references/residential',
+      de: '/referenzen/wohngebaeude',
+    },
 
     // === BLOG ===
     '/blog': {
@@ -268,6 +289,16 @@ export const routing = defineRouting({
       cs: '/kontakt',
       en: '/contact',
       de: '/kontakt',
+    },
+    '/kontakt/obchod': {
+      cs: '/kontakt/obchod',
+      en: '/contact/sales',
+      de: '/kontakt/vertrieb',
+    },
+    '/kontakt/servis': {
+      cs: '/kontakt/servis',
+      en: '/contact/service',
+      de: '/kontakt/service',
     },
 
     // === POPTÁVKA ===

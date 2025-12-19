@@ -26,33 +26,28 @@ export interface NavigationConfig {
 export const navigationConfig: NavigationConfig = {
   main: [
     {
-      label: 'navigation.chargingStations',
+      label: 'chargingStations.title',
       href: '/nabijeci-stanice',
       children: [
-        {
-          label: 'chargingStations.ac.title',
-          href: '/nabijeci-stanice/ac',
-          children: [
-            { label: 'chargingStations.products.myboxHome', href: '/nabijeci-stanice/ac/mybox-home' },
-            { label: 'chargingStations.products.myboxPlus', href: '/nabijeci-stanice/ac/mybox-plus' },
-            { label: 'chargingStations.products.myboxProfi', href: '/nabijeci-stanice/ac/mybox-profi' },
-            { label: 'chargingStations.products.myboxPost', href: '/nabijeci-stanice/ac/mybox-post' },
-            { label: 'chargingStations.products.wallbox', href: '/nabijeci-stanice/ac/wallbox' },
-          ],
-        },
-        {
-          label: 'chargingStations.dc.title',
-          href: '/nabijeci-stanice/dc',
-          children: [
-            { label: 'chargingStations.products.alpitronicHyc400', href: '/nabijeci-stanice/dc/alpitronic-hyc400' },
-            { label: 'chargingStations.products.alpitronicHyc200', href: '/nabijeci-stanice/dc/alpitronic-hyc200' },
-            { label: 'chargingStations.products.alpitronicHyc50', href: '/nabijeci-stanice/dc/alpitronic-hyc50' },
-          ],
-        },
+        // AC stations - Row 1: positions 1-4
+        { label: 'chargingStations.products.myboxHome', href: '/nabijeci-stanice/ac/mybox-home' },
+        { label: 'chargingStations.products.myboxPlus', href: '/nabijeci-stanice/ac/mybox-plus' },
+        { label: 'chargingStations.products.myboxProfi', href: '/nabijeci-stanice/ac/mybox-profi' },
+        { label: 'chargingStations.products.myboxPost', href: '/nabijeci-stanice/ac/mybox-post' },
+        // Row 1: position 5 is empty (spacer)
+        // Row 1: position 6 - Wallbox
+        { label: 'chargingStations.products.wallbox', href: '/nabijeci-stanice/ac/wallbox' },
+        // DC stations - Row 2: positions 1-3
+        { label: 'chargingStations.products.alpitronicHyc400', href: '/nabijeci-stanice/dc/alpitronic-hyc400' },
+        { label: 'chargingStations.products.alpitronicHyc200', href: '/nabijeci-stanice/dc/alpitronic-hyc200' },
+        { label: 'chargingStations.products.alpitronicHyc50', href: '/nabijeci-stanice/dc/alpitronic-hyc50' },
+        // Row 2: positions 4-5 are empty (spacer)
+        // Row 2: position 6 - Accessories
+        { label: 'chargingStations.accessories', href: '/nabijeci-stanice/prislusenstvi' },
       ],
     },
     {
-      label: 'navigation.corporateCharging',
+      label: 'corporateCharging.title',
       href: '/nabijeni-pro-firmy',
       children: [
         { label: 'corporateCharging.workplaceStations', href: '/nabijeni-pro-firmy/stanice-do-firem' },
@@ -64,7 +59,7 @@ export const navigationConfig: NavigationConfig = {
       ],
     },
     {
-      label: 'navigation.chargingSolutions',
+      label: 'chargingSolutions.title',
       href: '/reseni-nabijeni',
       children: [
         { label: 'chargingSolutions.developers', href: '/reseni-nabijeni/developeri' },
@@ -76,11 +71,19 @@ export const navigationConfig: NavigationConfig = {
       ],
     },
     {
-      label: 'navigation.solutionBenefits',
+      label: 'solutionBenefits.title',
       href: '/vyhody-reseni',
+      children: [
+        { label: 'solutionBenefits.quality', href: '/vyhody-reseni/kvalita' },
+        { label: 'solutionBenefits.cloudBenefits', href: '/vyhody-reseni/cloud-vyhody' },
+        { label: 'solutionBenefits.design', href: '/vyhody-reseni/design' },
+        { label: 'solutionBenefits.consulting', href: '/vyhody-reseni/poradenstvi' },
+        { label: 'solutionBenefits.completeSolution', href: '/vyhody-reseni/komplexni-reseni' },
+        { label: 'solutionBenefits.stationUpgrade', href: '/vyhody-reseni/upgrade-stanic' },
+      ],
     },
     {
-      label: 'navigation.chargingManagement',
+      label: 'chargingManagement.title',
       href: '/rizeni-nabijeni',
       children: [
         { label: 'chargingManagement.cloudPlatform', href: '/rizeni-nabijeni/cloud-platforma' },
@@ -89,8 +92,33 @@ export const navigationConfig: NavigationConfig = {
       ],
     },
     {
-      label: 'navigation.aboutUs',
+      label: 'aboutUs.title',
       href: '/o-nas',
+      children: [
+        { label: 'aboutUs.ownDevelopment', href: '/o-nas/vlastni-vyvoj' },
+        { label: 'aboutUs.team', href: '/o-nas/tym' },
+        { label: 'aboutUs.ecoRally', href: '/o-nas/eco-rally' },
+        { label: 'aboutUs.media', href: '/o-nas/media' },
+        { label: 'aboutUs.history', href: '/o-nas/historie' },
+        { label: 'aboutUs.careers', href: '/o-nas/kariera' },
+      ],
+    },
+    {
+      label: 'navigation.references',
+      href: '/reference',
+      children: [
+        { label: 'references.corporateCharging', href: '/reference/firemni-nabijeni' },
+        { label: 'references.publicStations', href: '/reference/verejne-stanice' },
+        { label: 'references.residential', href: '/reference/bytove-domy' },
+      ],
+    },
+    {
+      label: 'navigation.contact',
+      href: '/kontakt',
+      children: [
+        { label: 'contact.sales', href: '/kontakt/obchod' },
+        { label: 'contact.service', href: '/kontakt/servis' },
+      ],
     },
   ],
   footer: {
@@ -114,4 +142,26 @@ export const navigationConfig: NavigationConfig = {
       { label: 'footer.links.contact', href: '/kontakt' },
     ],
   },
+}
+
+// Product images mapping for mega menu
+export const productImages: Record<string, string> = {
+  // AC stations
+  '/nabijeci-stanice/ac/mybox-home': '/images/products/home_studio_web_cam_4-0000.png',
+  '/nabijeci-stanice/ac/mybox-plus': '/images/products/plus_studio_web_cam_4-0000.png',
+  '/nabijeci-stanice/ac/mybox-profi': '/images/products/profi_studio_web_cam_4-0000.png',
+  '/nabijeci-stanice/ac/mybox-post': '/images/products/post_studio_web_cam_4-0000.png',
+  // DC stations
+  '/nabijeci-stanice/dc/alpitronic-hyc400': '/images/products/hyc400_bok-png.webp',
+  '/nabijeci-stanice/dc/alpitronic-hyc200': '/images/products/hyc_200_bok-png.webp',
+  '/nabijeci-stanice/dc/alpitronic-hyc50': '/images/products/hyc50_bok-png.webp',
+}
+
+// Helper to determine menu type based on href
+export function getMenuType(href: string): 'products' | 'categories' | null {
+  if (href === '/nabijeci-stanice') return 'products'
+  // All other items with children get categories menu
+  const item = navigationConfig.main.find((i) => i.href === href)
+  if (item?.children) return 'categories'
+  return null
 }

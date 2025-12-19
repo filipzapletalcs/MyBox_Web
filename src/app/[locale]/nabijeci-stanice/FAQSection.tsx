@@ -3,13 +3,16 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 import { cn } from '@/lib/utils'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/Accordion'
+  ArrowRightIcon,
+  QuestionMarkIcon,
+} from '@/components/ui'
 
 // FAQ items keys
 const faqKeys = [
@@ -52,9 +55,7 @@ export function FAQSection() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="inline-flex items-center gap-2 rounded-full bg-green-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-green-500 mb-6"
             >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <QuestionMarkIcon />
               {t('badge')}
             </motion.span>
 
@@ -71,15 +72,13 @@ export function FAQSection() {
               <p className="text-sm text-text-secondary mb-4">
                 {t('notFound')}
               </p>
-              <a
+              <Link
                 href="/kontakt"
                 className="inline-flex items-center gap-2 text-green-500 font-semibold text-sm hover:text-green-400 transition-colors"
               >
                 {t('contactUs')}
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </a>
+                <ArrowRightIcon />
+              </Link>
             </div>
           </motion.div>
 

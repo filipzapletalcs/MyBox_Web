@@ -79,8 +79,10 @@
       "wallbox": "Wallbox",
       "alpitronicHyc400": "Alpitronic HYC 400",
       "alpitronicHyc200": "Alpitronic HYC 200",
-      "alpitronicHyc50": "Alpitronic HYC 50"
+      "alpitronicHyc50": "Alpitronic HYC 50",
+      "accessories": "Zubehör"
     },
+    "accessories": "Zubehör",
     "mybox": {
       "title": "AC-Ladestationen",
       "subtitle": "Premium-Qualität und europäische Komponenten",
@@ -276,6 +278,7 @@
     "requestQuote": "Anfrage senden",
     "contactUs": "Kontaktieren Sie uns",
     "seeAll": "Alle anzeigen",
+    "exploreAll": "Alle erkunden",
     "readMore": "Weiterlesen",
     "backToHome": "Zurück zur Startseite",
     "loading": "Wird geladen...",
@@ -283,7 +286,7 @@
     "retry": "Erneut versuchen"
   },
   "footer": {
-    "company": "MyBox.eco s.r.o.",
+    "company": "ELEXIM, a.s.",
     "tagline": "Tschechischer Hersteller von E-Ladestationen. Wir bieten Komplettlösungen vom Heimladen bis zur öffentlichen Infrastruktur.",
     "allRightsReserved": "Alle Rechte vorbehalten",
     "privacyPolicy": "Datenschutz",
@@ -338,9 +341,17 @@
       "error": "Etwas ist schiefgelaufen, bitte versuchen Sie es erneut"
     }
   },
+  "references": {
+    "title": "Referenzen",
+    "corporateCharging": "Unternehmensladung",
+    "publicStations": "Öffentliche Stationen",
+    "residential": "Wohngebäude"
+  },
   "contact": {
     "title": "Kontakt",
     "subtitle": "Wir helfen Ihnen gerne bei der Auswahl der richtigen Lösung",
+    "sales": "Vertrieb",
+    "service": "Service",
     "form": {
       "name": "Vollständiger Name",
       "email": "E-Mail",
@@ -364,6 +375,100 @@
       "type": "Lösungstyp",
       "details": "Details",
       "contact": "Kontakt"
+    }
+  },
+  "cta": {
+    "heading": "Brauchen Sie Hilfe?",
+    "description": "Schreiben Sie uns oder rufen Sie an. Unser Team steht Ihnen jederzeit zur Verfügung.",
+    "button": "Kontaktieren Sie uns"
+  },
+  "contactPage": {
+    "hero": {
+      "badge": "Kontaktieren Sie uns",
+      "title": "Wir sind für Sie da",
+      "subtitle": "Wir helfen Ihnen bei der Auswahl der richtigen E-Ladelösung"
+    },
+    "form": {
+      "title": "Unverbindliche Anfrage",
+      "subtitle": "Füllen Sie das Formular aus und unser Team wird sich so schnell wie möglich bei Ihnen melden.",
+      "company": "Firmenname / Endbenutzer",
+      "contactPerson": "Kontaktperson",
+      "stationType": "Stationstyp / Service*",
+      "location": "Standort*",
+      "email": "E-Mail*",
+      "emailPlaceholder": "max.mustermann@firma.de",
+      "phone": "Telefon (z.B. +49 123 456 789)",
+      "segment": "Segment*",
+      "message": "Schreiben Sie Ihre Anfrage...",
+      "consent": "Ich stimme der Verarbeitung personenbezogener Daten zu Kommunikationszwecken zu.",
+      "submit": "Nachricht senden",
+      "sending": "Wird gesendet...",
+      "success": "Vielen Dank! Wir melden uns bald bei Ihnen.",
+      "stationOptions": {
+        "acHome": "AC-Station – Privat",
+        "acCompany": "AC-Station – Gewerbe",
+        "dc": "DC-Schnellladestation",
+        "service": "Service für bestehende Station",
+        "other": "Sonstiges"
+      },
+      "segmentOptions": {
+        "home": "Privat",
+        "company": "Unternehmen / Firma",
+        "developer": "Bauträger / Bauunternehmen",
+        "municipality": "Gemeinde / Stadt",
+        "hospitality": "Hotel / Restaurant",
+        "retail": "Einzelhandel / Einkaufszentrum",
+        "fleet": "Fahrzeugflotte",
+        "other": "Sonstiges"
+      },
+      "locationOptions": {
+        "prague": "Prag",
+        "centralBohemia": "Mittelböhmische Region",
+        "southBohemia": "Südböhmische Region",
+        "plzen": "Pilsner Region",
+        "karlovyVary": "Karlsbader Region",
+        "usti": "Aussiger Region",
+        "liberec": "Reichenberger Region",
+        "hradec": "Königgrätzer Region",
+        "pardubice": "Pardubitzer Region",
+        "vysocina": "Region Vysočina",
+        "southMoravia": "Südmährische Region",
+        "olomouc": "Olmützer Region",
+        "zlin": "Zliner Region",
+        "moraviaSilesia": "Mährisch-Schlesische Region"
+      }
+    },
+    "info": {
+      "title": "Schnellkontakt",
+      "subtitle": "Brauchen Sie eine schnelle Antwort? Rufen Sie uns an.",
+      "salesSupport": "Vertriebsunterstützung",
+      "serviceSupport": "Serviceunterstützung",
+      "email": "E-Mail",
+      "openingHours": "Öffnungszeiten",
+      "open": "Derzeit geöffnet",
+      "closed": "Derzeit geschlossen"
+    },
+    "team": {
+      "badge": "Unser Team",
+      "title": "Wer ist für Sie da",
+      "subtitle": "Kontaktieren Sie unsere Spezialisten direkt – sie helfen Ihnen gerne bei allem"
+    },
+    "company": {
+      "badge": "Firmendaten",
+      "title": "ELEXIM, a.s.",
+      "address": "Adresse",
+      "showOnMap": "Auf Karte anzeigen",
+      "contactTitle": "Kontakt",
+      "salesSupport": "Vertrieb",
+      "serviceSupport": "Service",
+      "openingHours": "Öffnungszeiten"
+    },
+    "map": {
+      "title": "Wo Sie uns finden",
+      "subtitle": "Besuchen Sie uns in unserem Hauptsitz in Kroměříž",
+      "navigate": "Navigieren",
+      "ourAddress": "Unsere Adresse",
+      "getDirections": "Route planen"
     }
   }
 }

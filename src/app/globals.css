@@ -461,6 +461,23 @@ html.lenis body {
   }
 }
 
+/* Header container - wider for navigation */
+.container-header {
+  width: 100%;
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .container-header {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
 /* Section spacing */
 .section-padding {
   padding-top: var(--spacing-section-sm);
@@ -766,4 +783,54 @@ img.logo-white {
 
 [data-theme="light"] img.logo-white {
   opacity: 0 !important;
+}
+
+/* ===========================
+   SCROLLBAR UTILITIES
+   =========================== */
+
+/* Hide scrollbar but allow scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari, Opera */
+}
+
+/* Scroll snap utilities */
+.scroll-snap-align-start {
+  scroll-snap-align: start;
+}
+
+.scroll-snap-align-center {
+  scroll-snap-align: center;
+}
+
+/* Carousel safe zone - matches container-custom px-6 (px-6 overrides container padding) */
+.carousel-safe-zone {
+  /* px-6 = 1.5rem */
+  padding-left: 1.5rem;
+  padding-right: 2rem;
+}
+
+/* For screens wider than container max-width (1440px), center the start */
+@media (min-width: 1440px) {
+  .carousel-safe-zone {
+    padding-left: calc((100vw - 1440px) / 2 + 1.5rem);
+  }
+}
+
+/* Carousel spacer - aligns first item with container content */
+.carousel-spacer {
+  /* On small screens, no spacer needed - gap handles it */
+  width: 0;
+}
+
+@media (min-width: 1440px) {
+  .carousel-spacer {
+    /* Center offset: (viewport - container) / 2 */
+    width: calc((100vw - 1440px) / 2);
+  }
 }

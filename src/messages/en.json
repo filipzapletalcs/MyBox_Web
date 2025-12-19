@@ -79,8 +79,10 @@
       "wallbox": "Wallbox",
       "alpitronicHyc400": "Alpitronic HYC 400",
       "alpitronicHyc200": "Alpitronic HYC 200",
-      "alpitronicHyc50": "Alpitronic HYC 50"
+      "alpitronicHyc50": "Alpitronic HYC 50",
+      "accessories": "Accessories"
     },
+    "accessories": "Accessories",
     "mybox": {
       "title": "AC Charging Stations",
       "subtitle": "Premium Quality and European Components",
@@ -276,6 +278,7 @@
     "requestQuote": "Request Quote",
     "contactUs": "Contact Us",
     "seeAll": "See All",
+    "exploreAll": "Explore All",
     "readMore": "Read More",
     "backToHome": "Back to Home",
     "loading": "Loading...",
@@ -283,7 +286,7 @@
     "retry": "Try Again"
   },
   "footer": {
-    "company": "MyBox.eco s.r.o.",
+    "company": "ELEXIM, a.s.",
     "tagline": "Czech manufacturer of EV charging stations. We offer complete solutions from home charging to public infrastructure.",
     "allRightsReserved": "All rights reserved",
     "privacyPolicy": "Privacy Policy",
@@ -338,9 +341,17 @@
       "error": "Something went wrong, please try again"
     }
   },
+  "references": {
+    "title": "References",
+    "corporateCharging": "Corporate Charging",
+    "publicStations": "Public Stations",
+    "residential": "Residential"
+  },
   "contact": {
     "title": "Contact",
     "subtitle": "We're happy to help you find the right solution",
+    "sales": "Sales",
+    "service": "Service",
     "form": {
       "name": "Full Name",
       "email": "Email",
@@ -364,6 +375,100 @@
       "type": "Solution Type",
       "details": "Details",
       "contact": "Contact"
+    }
+  },
+  "cta": {
+    "heading": "Need help?",
+    "description": "Write to us or call. Our team is always available for you.",
+    "button": "Contact us"
+  },
+  "contactPage": {
+    "hero": {
+      "badge": "Contact Us",
+      "title": "We're Here for You",
+      "subtitle": "We'll help you choose the right EV charging solution for your needs"
+    },
+    "form": {
+      "title": "Non-binding Inquiry",
+      "subtitle": "Fill out the form and our team will contact you as soon as possible.",
+      "company": "Company name / end user",
+      "contactPerson": "Contact person",
+      "stationType": "Station type / service*",
+      "location": "Location*",
+      "email": "Email*",
+      "emailPlaceholder": "john.smith@company.com",
+      "phone": "Phone (e.g. +420 123 456 789)",
+      "segment": "Segment*",
+      "message": "Write your request...",
+      "consent": "I agree to the processing of personal data for communication purposes.",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "success": "Thank you! We'll get back to you soon.",
+      "stationOptions": {
+        "acHome": "AC station – residential",
+        "acCompany": "AC station – commercial",
+        "dc": "DC fast charging station",
+        "service": "Service for existing station",
+        "other": "Other"
+      },
+      "segmentOptions": {
+        "home": "Residential",
+        "company": "Company / Business",
+        "developer": "Developer / Construction company",
+        "municipality": "Municipality / City",
+        "hospitality": "Hotel / Restaurant",
+        "retail": "Retail / Shopping center",
+        "fleet": "Vehicle fleet",
+        "other": "Other"
+      },
+      "locationOptions": {
+        "prague": "Prague",
+        "centralBohemia": "Central Bohemian Region",
+        "southBohemia": "South Bohemian Region",
+        "plzen": "Plzeň Region",
+        "karlovyVary": "Karlovy Vary Region",
+        "usti": "Ústí Region",
+        "liberec": "Liberec Region",
+        "hradec": "Hradec Králové Region",
+        "pardubice": "Pardubice Region",
+        "vysocina": "Vysočina Region",
+        "southMoravia": "South Moravian Region",
+        "olomouc": "Olomouc Region",
+        "zlin": "Zlín Region",
+        "moraviaSilesia": "Moravian-Silesian Region"
+      }
+    },
+    "info": {
+      "title": "Quick Contact",
+      "subtitle": "Need a quick answer? Give us a call.",
+      "salesSupport": "Sales Support",
+      "serviceSupport": "Service Support",
+      "email": "Email",
+      "openingHours": "Opening Hours",
+      "open": "Currently Open",
+      "closed": "Currently Closed"
+    },
+    "team": {
+      "badge": "Our Team",
+      "title": "Who's Here for You",
+      "subtitle": "Contact our specialists directly – they'll be happy to help with anything"
+    },
+    "company": {
+      "badge": "Company Details",
+      "title": "ELEXIM, a.s.",
+      "address": "Address",
+      "showOnMap": "Show on Map",
+      "contactTitle": "Contact",
+      "salesSupport": "Sales",
+      "serviceSupport": "Service",
+      "openingHours": "Opening Hours"
+    },
+    "map": {
+      "title": "Where to Find Us",
+      "subtitle": "Visit us at our headquarters in Kroměříž",
+      "navigate": "Navigate",
+      "ourAddress": "Our Address",
+      "getDirections": "Get Directions"
     }
   }
 }

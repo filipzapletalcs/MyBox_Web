@@ -1,18 +1,15 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
-import { motion, AnimatePresence } from 'framer-motion'
 import { Link, usePathname } from '@/i18n/navigation'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 import { Logo } from './Logo'
-import { LanguageSwitcher } from './LanguageSwitcher'
-import { ThemeToggle } from './ThemeToggle'
 import { MegaMenu } from './MegaMenu'
 import { MobileMenu } from './MobileMenu'
 import { Button } from '@/components/ui'
-import { navigationConfig } from '@/data/navigation'
+import { navigationConfig, getMenuType } from '@/data/navigation'
 
 // Icons
 const MenuIcon = ({ className }: { className?: string }) => (
@@ -20,18 +17,6 @@ const MenuIcon = ({ className }: { className?: string }) => (
     <path d="M4 6H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     <path d="M4 12H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     <path d="M4 18H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-)
-
-const CloseIcon = ({ className }: { className?: string }) => (
-  <svg className={className} width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-)
-
-const ChevronIcon = ({ className }: { className?: string }) => (
-  <svg className={className} width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 )
 
@@ -44,8 +29,47 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
 
+  // Pages with light background (no dark hero) - need dark text in light mode
+  const isLightBgPage = pathname === '/kontakt'
+
+  // Refs for hover timeout management
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+  // Clear any pending close timeout
+  const clearCloseTimeout = useCallback(() => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current)
+      closeTimeoutRef.current = null
+    }
+  }, [])
+
+  // Handle entering a nav item or the menu
+  const handleMenuEnter = useCallback((href: string) => {
+    clearCloseTimeout()
+    const menuType = getMenuType(href)
+    if (menuType) {
+      setActiveMenu(href)
+    }
+  }, [clearCloseTimeout])
+
+  // Handle leaving - with delay to allow moving between items
+  const handleMenuLeave = useCallback(() => {
+    clearCloseTimeout()
+    closeTimeoutRef.current = setTimeout(() => {
+      setActiveMenu(null)
+    }, 100) // Small delay to allow moving between items
+  }, [clearCloseTimeout])
+
+  // Cleanup timeout on unmount
   useEffect(() => {
-    setMounted(true)
+    return () => clearCloseTimeout()
+  }, [clearCloseTimeout])
+
+  // Use layout effect for hydration - this is intentional for theme detection
+  useEffect(() => {
+    // Intentional: needed for hydration mismatch prevention
+    const timer = requestAnimationFrame(() => setMounted(true))
+    return () => cancelAnimationFrame(timer)
   }, [])
 
   // Handle scroll
@@ -58,9 +82,16 @@ export function Header() {
   }, [])
 
   // Close mobile menu on route change
+  const prevPathnameRef = useRef(pathname)
   useEffect(() => {
-    setIsMobileMenuOpen(false)
-    setActiveMenu(null)
+    if (prevPathnameRef.current !== pathname) {
+      prevPathnameRef.current = pathname
+      // Close menus when route changes
+      requestAnimationFrame(() => {
+        setIsMobileMenuOpen(false)
+        setActiveMenu(null)
+      })
+    }
   }, [pathname])
 
   // Lock body scroll when mobile menu is open
@@ -93,87 +124,67 @@ export function Header() {
 
   return (
     <>
-      <header
-        className={cn(
-          'fixed left-0 right-0 top-0 z-50',
-          'transition-all duration-300',
-          isScrolled
-            ? 'bg-bg-primary/80 backdrop-blur-xl border-b border-border-subtle'
-            : 'bg-transparent'
-        )}
+      {/* Header wrapper - keeps menu open when hovering anywhere in header */}
+      <div
+        onMouseEnter={clearCloseTimeout}
+        onMouseLeave={handleMenuLeave}
       >
-        <div className="container-custom">
-          <nav className="flex h-20 items-center justify-between">
-            {/* Logo */}
-            <Logo
-              size="sm"
-              variant={
-                !isScrolled
-                  ? 'white'
-                  : mounted && resolvedTheme === 'light'
+        <header
+          className={cn(
+            'fixed left-0 right-0 top-0 z-50',
+            'transition-all duration-300',
+            isScrolled || activeMenu
+              ? 'bg-bg-primary border-b border-border-subtle'
+              : 'bg-transparent'
+          )}
+        >
+          <div className="container-header">
+            <nav className="flex h-20 items-center justify-between">
+              {/* Logo */}
+              <Logo
+                size="sm"
+                variant={
+                  // On light bg pages or when scrolled in light mode, use dark logo
+                  (isLightBgPage && mounted && resolvedTheme === 'light') ||
+                  (isScrolled && mounted && resolvedTheme === 'light') ||
+                  (activeMenu && mounted && resolvedTheme === 'light')
                     ? 'dark'
-                    : 'white'
-              }
-            />
+                    : !isScrolled && !activeMenu && !isLightBgPage
+                      ? 'white'
+                      : mounted && resolvedTheme === 'light'
+                        ? 'dark'
+                        : 'white'
+                }
+              />
 
-            {/* Desktop Navigation */}
-            <div className="hidden items-center gap-6 lg:flex">
-              {navigationConfig.main.map((item) => (
-                <div
-                  key={item.href}
-                  className="relative"
-                  onMouseEnter={() => item.children && setActiveMenu(item.href)}
-                  onMouseLeave={() => setActiveMenu(null)}
-                >
-                  <Link
-                    href={item.href}
-                    className={cn(
-                      'flex items-center gap-1 px-4 py-2 text-xs font-medium uppercase tracking-wider',
-                      'transition-colors duration-200',
-                      pathname === item.href || pathname.startsWith(item.href + '/')
-                        ? 'text-green-400'
-                        : !isScrolled
-                          ? 'text-white/80 hover:text-white'
-                          : 'text-text-secondary hover:text-text-primary'
-                    )}
+              {/* Desktop Navigation */}
+              <div className="hidden items-center gap-2 lg:flex xl:gap-4 2xl:gap-6">
+                {navigationConfig.main.map((item) => (
+                  <div
+                    key={item.href}
+                    className="relative"
+                    onMouseEnter={() => handleMenuEnter(item.href)}
                   >
-                    {getTranslation(item.label)}
-                    {item.children && (
-                      <ChevronIcon
-                        className={cn(
-                          'h-4 w-4 transition-transform duration-200',
-                          activeMenu === item.href && 'rotate-180'
-                        )}
-                      />
-                    )}
-                  </Link>
-
-                  {/* Mega Menu */}
-                  {item.children && (
-                    <MegaMenu
-                      isOpen={activeMenu === item.href}
-                      items={item.children}
-                      getTranslation={getTranslation}
-                      parentHref={item.href}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        'flex items-center gap-1 px-2 py-2 text-xs font-medium uppercase tracking-wider whitespace-nowrap xl:px-3 2xl:px-4',
+                        'transition-colors duration-200',
+                        pathname === item.href || pathname.startsWith(item.href + '/')
+                          ? 'text-green-500'
+                          : !isScrolled && !activeMenu && !isLightBgPage
+                            ? 'text-white/80 hover:text-white'
+                            : 'text-text-secondary hover:text-text-primary'
+                      )}
+                    >
+                      {getTranslation(item.label)}
+                    </Link>
+                  </div>
+                ))}
+              </div>
 
             {/* Right side */}
             <div className="flex items-center gap-2">
-              {/* Theme Toggle */}
-              <ThemeToggle
-                className="hidden sm:flex"
-                variant={!isScrolled ? 'light' : 'default'}
-              />
-
-              {/* Language Switcher - Desktop */}
-              <div className="hidden lg:block">
-                <LanguageSwitcher colorVariant={!isScrolled ? 'light' : 'default'} />
-              </div>
-
               {/* CTA Button - Desktop */}
               <div className="hidden lg:block">
                 <Button asChild size="sm" className="uppercase tracking-wider text-xs">
@@ -187,21 +198,38 @@ export function Header() {
                 className={cn(
                   'flex h-10 w-10 items-center justify-center rounded-lg lg:hidden',
                   'transition-colors',
-                  !isScrolled ? 'text-white' : 'text-text-primary',
+                  !isScrolled && !isMobileMenuOpen && !isLightBgPage ? 'text-white' : 'text-text-primary',
                   'hover:bg-white/5'
                 )}
                 aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               >
-                {isMobileMenuOpen ? (
-                  <CloseIcon className="h-6 w-6" />
-                ) : (
-                  <MenuIcon className="h-6 w-6" />
-                )}
+                <MenuIcon className="h-6 w-6" />
               </button>
             </div>
           </nav>
         </div>
-      </header>
+        </header>
+
+        {/* Apple-style Mega Menu - inside wrapper so mouse can move freely */}
+        {(() => {
+          const activeItem = navigationConfig.main.find((item) => item.href === activeMenu)
+          const menuType = activeMenu ? getMenuType(activeMenu) : null
+
+          if (!activeItem || !menuType || !activeItem.children) return null
+
+          return (
+            <MegaMenu
+              isOpen={!!activeMenu}
+              menuType={menuType}
+              items={activeItem.children}
+              parentHref={activeItem.href}
+              parentLabel={activeItem.label}
+              getTranslation={getTranslation}
+              onClose={() => setActiveMenu(null)}
+            />
+          )
+        })()}
+      </div>
 
       {/* Mobile Menu */}
       <MobileMenu

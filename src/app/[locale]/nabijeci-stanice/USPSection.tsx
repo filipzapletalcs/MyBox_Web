@@ -4,7 +4,8 @@ import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
-import { Button } from '@/components/ui'
+import { Button, ArrowRightIcon } from '@/components/ui'
+import { COMPANY_FOUNDED_YEAR } from '@/data/products'
 
 // Feature icons
 const featureIcons = {
@@ -131,7 +132,7 @@ export function USPSection() {
             <div className="mt-8 flex items-center gap-3">
               <div className="h-px flex-1 bg-border-subtle" />
               <span className="text-xs font-medium text-text-muted uppercase tracking-wider">
-                {t('since')} 2017
+                {t('since')} {COMPANY_FOUNDED_YEAR}
               </span>
             </div>
 
@@ -143,19 +144,7 @@ export function USPSection() {
               >
                 <Link href="/o-nas">
                   {t('cta')}
-                  <svg
-                    className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
+                  <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
             </div>

@@ -1,6 +1,6 @@
 export { Logo } from './Logo'
 export { Header } from './Header'
 export { Footer } from './Footer'
-export { MegaMenu, SimpleDropdown } from './MegaMenu'
+export { MegaMenu } from './MegaMenu'
 export { MobileMenu } from './MobileMenu'
 export { LanguageSwitcher } from './LanguageSwitcher'

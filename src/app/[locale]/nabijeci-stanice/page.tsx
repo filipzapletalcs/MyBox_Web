@@ -4,6 +4,7 @@ import { ACDCSelector } from './ACDCSelector'
 import { ProductShowcase } from './ProductShowcase'
 import { USPSection } from './USPSection'
 import { FAQSection } from './FAQSection'
+import { CTASection } from '@/components/sections'
 
 interface ChargingStationsPageProps {
   params: Promise<{ locale: string }>
@@ -33,9 +34,8 @@ export default async function ChargingStationsPage({ params }: ChargingStationsP
       {/* FAQ section */}
       <FAQSection />
 
-      {/* Request quote section - TODO */}
-
-      {/* Newsletter section - TODO */}
+      {/* CTA section */}
+      <CTASection />
     </>
   )
 }

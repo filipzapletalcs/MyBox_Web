@@ -79,8 +79,10 @@
       "wallbox": "Wallbox",
       "alpitronicHyc400": "Alpitronic HYC 400",
       "alpitronicHyc200": "Alpitronic HYC 200",
-      "alpitronicHyc50": "Alpitronic HYC 50"
+      "alpitronicHyc50": "Alpitronic HYC 50",
+      "accessories": "Příslušenství"
     },
+    "accessories": "Příslušenství",
     "mybox": {
       "title": "AC nabíjecí stanice",
       "subtitle": "Prémiová kvalita a evropské komponenty",
@@ -276,6 +278,7 @@
     "requestQuote": "Nezávazná poptávka",
     "contactUs": "Kontaktujte nás",
     "seeAll": "Zobrazit vše",
+    "exploreAll": "Prozkoumat",
     "readMore": "Číst více",
     "backToHome": "Zpět na úvod",
     "loading": "Načítání...",
@@ -283,7 +286,7 @@
     "retry": "Zkusit znovu"
   },
   "footer": {
-    "company": "MyBox.eco s.r.o.",
+    "company": "ELEXIM, a.s.",
     "tagline": "Český výrobce nabíjecích stanic pro elektromobily. Nabízíme kompletní řešení od domácího nabíjení po veřejnou infrastrukturu.",
     "allRightsReserved": "Všechna práva vyhrazena",
     "privacyPolicy": "Ochrana osobních údajů",
@@ -338,9 +341,17 @@
       "error": "Něco se pokazilo, zkuste to znovu"
     }
   },
+  "references": {
+    "title": "Reference",
+    "corporateCharging": "Firemní nabíjení",
+    "publicStations": "Veřejné stanice",
+    "residential": "Bytové domy"
+  },
   "contact": {
     "title": "Kontakt",
     "subtitle": "Rádi vám pomůžeme s výběrem správného řešení",
+    "sales": "Obchod",
+    "service": "Servis",
     "form": {
       "name": "Jméno a příjmení",
       "email": "E-mail",
@@ -364,6 +375,100 @@
       "type": "Typ řešení",
       "details": "Detaily",
       "contact": "Kontakt"
+    }
+  },
+  "cta": {
+    "heading": "Potřebujete poradit?",
+    "description": "Napište nám nebo zavolejte. Náš tým je vám kdykoliv k dispozici.",
+    "button": "Kontaktujte nás"
+  },
+  "contactPage": {
+    "hero": {
+      "badge": "Kontaktujte nás",
+      "title": "Jsme tu pro vás",
+      "subtitle": "Rádi vám pomůžeme s výběrem správného řešení pro nabíjení elektromobilů"
+    },
+    "form": {
+      "title": "Nezávazná poptávka",
+      "subtitle": "Vyplňte formulář a náš tým vás bude kontaktovat co nejdříve.",
+      "company": "Název společnosti / koncový uživatel",
+      "contactPerson": "Kontaktní osoba",
+      "stationType": "Typ stanice / služby*",
+      "location": "Lokalita*",
+      "email": "E-mail*",
+      "emailPlaceholder": "jan.novak@firma.cz",
+      "phone": "Telefon (např. +420 123 456 789)",
+      "segment": "Segment*",
+      "message": "Napište váš požadavek ...",
+      "consent": "Souhlasím se zpracováním osobních údajů za účelem komunikace.",
+      "submit": "Odeslat zprávu",
+      "sending": "Odesílám...",
+      "success": "Děkujeme! Brzy se vám ozveme.",
+      "stationOptions": {
+        "acHome": "AC stanice – domácnost",
+        "acCompany": "AC stanice – firma",
+        "dc": "DC rychlonabíjecí stanice",
+        "service": "Servis stávající stanice",
+        "other": "Jiné"
+      },
+      "segmentOptions": {
+        "home": "Domácnost",
+        "company": "Firma / Společnost",
+        "developer": "Developer / Stavební společnost",
+        "municipality": "Obec / Město",
+        "hospitality": "Hotel / Restaurace",
+        "retail": "Obchod / Nákupní centrum",
+        "fleet": "Flotila vozidel",
+        "other": "Jiné"
+      },
+      "locationOptions": {
+        "prague": "Praha",
+        "centralBohemia": "Středočeský kraj",
+        "southBohemia": "Jihočeský kraj",
+        "plzen": "Plzeňský kraj",
+        "karlovyVary": "Karlovarský kraj",
+        "usti": "Ústecký kraj",
+        "liberec": "Liberecký kraj",
+        "hradec": "Královéhradecký kraj",
+        "pardubice": "Pardubický kraj",
+        "vysocina": "Kraj Vysočina",
+        "southMoravia": "Jihomoravský kraj",
+        "olomouc": "Olomoucký kraj",
+        "zlin": "Zlínský kraj",
+        "moraviaSilesia": "Moravskoslezský kraj"
+      }
+    },
+    "info": {
+      "title": "Rychlý kontakt",
+      "subtitle": "Potřebujete rychlou odpověď? Zavolejte nám.",
+      "salesSupport": "Obchodní podpora",
+      "serviceSupport": "Servisní podpora",
+      "email": "E-mail",
+      "openingHours": "Provozní doba",
+      "open": "Nyní otevřeno",
+      "closed": "Nyní zavřeno"
+    },
+    "team": {
+      "badge": "Náš tým",
+      "title": "Kdo je tu pro vás",
+      "subtitle": "Kontaktujte přímo naše specialisty – rádi vám pomohou s čímkoliv"
+    },
+    "company": {
+      "badge": "Firemní údaje",
+      "title": "ELEXIM, a.s.",
+      "address": "Adresa",
+      "showOnMap": "Zobrazit na mapě",
+      "contactTitle": "Kontakt",
+      "salesSupport": "Obchod",
+      "serviceSupport": "Servis",
+      "openingHours": "Provozní doba"
+    },
+    "map": {
+      "title": "Kde nás najdete",
+      "subtitle": "Navštivte nás v sídle společnosti v Kroměříži",
+      "navigate": "Navigovat",
+      "ourAddress": "Naše adresa",
+      "getDirections": "Navigovat"
     }
   }
 }

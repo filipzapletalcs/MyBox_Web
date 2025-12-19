@@ -1,78 +1,17 @@
 'use client'
 
-import { useState, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useCallback, useRef } from 'react'
+import { motion, AnimatePresence, useInView } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui'
-
-// Product type definition
-interface Product {
-  id: string
-  name: string
-  power: string
-  image: string
-  href: string
-  features: string[]
-}
-
-// MyBox products data
-const myboxProducts: Product[] = [
-  {
-    id: 'plus',
-    name: 'MyBox Plus',
-    power: '22 kW',
-    image: '/images/products/plus_studio_web_cam_4-0000.png',
-    href: '/nabijeci-stanice/ac/mybox-plus',
-    features: ['wallbox', 'smart', 'connectivity'],
-  },
-  {
-    id: 'profi',
-    name: 'MyBox Profi',
-    power: '22 kW',
-    image: '/images/products/profi_studio_web_cam_4-0000.png',
-    href: '/nabijeci-stanice/ac/mybox-profi',
-    features: ['robust', 'commercial', 'fleet'],
-  },
-  {
-    id: 'post',
-    name: 'MyBox Post',
-    power: '2×22 kW',
-    image: '/images/products/post_studio_web_cam_4-0000.png',
-    href: '/nabijeci-stanice/ac/mybox-post',
-    features: ['dual', 'pedestal', 'public'],
-  },
-]
-
-// Alpitronic products data
-const alpitronicProducts: Product[] = [
-  {
-    id: 'hyc50',
-    name: 'Hypercharger 50',
-    power: '50 kW',
-    image: '/images/products/hyc50_bok-png.webp',
-    href: '/nabijeci-stanice/dc/hypercharger-50',
-    features: ['compact', 'entry', 'flexible'],
-  },
-  {
-    id: 'hyc200',
-    name: 'Hypercharger 200',
-    power: '200 kW',
-    image: '/images/products/hyc_200_bok-png.webp',
-    href: '/nabijeci-stanice/dc/hypercharger-200',
-    features: ['versatile', 'scalable', 'highway'],
-  },
-  {
-    id: 'hyc400',
-    name: 'Hypercharger 400',
-    power: '400 kW',
-    image: '/images/products/hyc400_bok-png.webp',
-    href: '/nabijeci-stanice/dc/hypercharger-400',
-    features: ['ultrafast', 'premium', 'maxpower'],
-  },
-]
+import { Button, ArrowRightIcon, ChevronLeftIcon, ChevronRightIcon } from '@/components/ui'
+import {
+  myboxShowcaseProducts,
+  alpitronicShowcaseProducts,
+  type ShowcaseProduct,
+} from '@/data/products'
 
 // Highlight icons for MyBox
 const myboxHighlightIcons = {
@@ -143,21 +82,9 @@ function NavButton({
         'hover:bg-bg-tertiary hover:text-text-primary hover:shadow-lg',
         'disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-bg-secondary disabled:hover:shadow-md'
       )}
-      aria-label={direction === 'prev' ? 'Previous' : 'Next'}
+      aria-label={direction === 'prev' ? 'Předchozí produkt' : 'Další produkt'}
     >
-      <svg
-        className="h-5 w-5"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        strokeWidth={2}
-      >
-        {direction === 'prev' ? (
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-        ) : (
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-        )}
-      </svg>
+      {direction === 'prev' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
     </button>
   )
 }
@@ -192,16 +119,12 @@ function PillIndicator({
 // Product card component with detailed info
 function ProductCard({
   product,
-  type,
   translationKey,
 }: {
-  product: Product
-  type: 'mybox' | 'alpitronic'
+  product: ShowcaseProduct
   translationKey: string
 }) {
   const t = useTranslations(translationKey)
-  const accentClass = 'text-green-500'
-  const bgAccentClass = 'bg-green-500'
 
   return (
     <motion.div
@@ -225,12 +148,7 @@ function ProductCard({
         </div>
 
         {/* Power badge */}
-        <div
-          className={cn(
-            'absolute top-4 right-4 rounded-full px-4 py-1.5 text-sm font-bold text-white shadow-lg',
-            bgAccentClass
-          )}
-        >
+        <div className="absolute top-4 right-4 rounded-full px-4 py-1.5 text-sm font-bold text-white shadow-lg bg-green-500">
           {product.power}
         </div>
       </div>
@@ -255,7 +173,7 @@ function ProductCard({
                 'bg-bg-tertiary text-text-secondary border border-border-subtle'
               )}
             >
-              <span className={cn('h-1.5 w-1.5 rounded-full', bgAccentClass)} />
+              <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
               {t(`features.${feature}`)}
             </span>
           ))}
@@ -266,18 +184,39 @@ function ProductCard({
           href={product.href}
           className={cn(
             'inline-flex items-center gap-2 text-sm font-semibold transition-colors',
-            accentClass,
-            'hover:underline underline-offset-4'
+            'text-green-500 hover:underline underline-offset-4'
           )}
         >
           {t('moreInfo')}
-          <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
+          <ArrowRightIcon />
         </Link>
       </div>
     </motion.div>
   )
+}
+
+// Animation variants for highlights grid
+const highlightContainerVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+}
+
+const highlightItemVariants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: 'easeOut' as const,
+    },
+  },
 }
 
 // Highlights grid component
@@ -297,36 +236,36 @@ function HighlightsGrid({
   const accentBgClass = 'bg-green-500/10 text-green-600 dark:text-green-400'
   const borderAccentClass = 'border-green-500/20'
 
+  const containerRef = useRef(null)
+  const isInView = useInView(containerRef, { once: true, amount: 0.3 })
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: 0.3 }}
+      ref={containerRef}
+      variants={highlightContainerVariants}
+      initial="hidden"
+      animate={isInView ? 'visible' : 'hidden'}
       className="mt-10 grid grid-cols-2 gap-4"
     >
-      {highlightKeys.map((key, index) => (
+      {highlightKeys.map((key) => (
         <motion.div
           key={key}
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.1 * index }}
+          variants={highlightItemVariants}
           className={cn(
-            'rounded-2xl border bg-bg-secondary/50 p-4 transition-all duration-300',
-            'hover:bg-bg-secondary hover:shadow-sm',
+            'rounded-2xl border bg-bg-secondary/50 p-5 transition-shadow duration-300',
+            'hover:shadow-md',
             borderAccentClass
           )}
         >
-          <div className={cn('inline-flex rounded-xl p-3 mb-3', accentBgClass)}>
+          <div className={cn('inline-flex rounded-xl p-3', accentBgClass)}>
             {icons[key as keyof typeof icons]}
           </div>
-          <h4 className="font-bold text-text-primary">
+          <h4 className="mt-4 font-bold text-text-primary">
             {t(`highlights.${key}.title`)}
           </h4>
-          <p className="text-sm text-text-secondary mt-1">
+          <span className="mt-1 block text-sm text-text-secondary">
             {t(`highlights.${key}.description`)}
-          </p>
+          </span>
         </motion.div>
       ))}
     </motion.div>
@@ -343,7 +282,7 @@ interface ProductShowcaseProps {
 export function ProductShowcase({ type, reverse = false, className }: ProductShowcaseProps) {
   const translationKey = type === 'mybox' ? 'chargingStations.mybox' : 'chargingStations.alpitronic'
   const t = useTranslations(translationKey)
-  const products = type === 'mybox' ? myboxProducts : alpitronicProducts
+  const products = type === 'mybox' ? myboxShowcaseProducts : alpitronicShowcaseProducts
   const accentColor = 'rgb(34, 197, 94)'
 
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -406,19 +345,7 @@ export function ProductShowcase({ type, reverse = false, className }: ProductSho
               >
                 <Link href={type === 'mybox' ? '/nabijeci-stanice/ac' : '/nabijeci-stanice/dc'}>
                   {t('cta')}
-                  <svg
-                    className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
+                  <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
             </motion.div>
@@ -438,7 +365,6 @@ export function ProductShowcase({ type, reverse = false, className }: ProductSho
                 <ProductCard
                   key={currentProduct.id}
                   product={currentProduct}
-                  type={type}
                   translationKey={translationKey}
                 />
               </AnimatePresence>

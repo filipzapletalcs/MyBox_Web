@@ -1,78 +1,23 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui'
-
-// Product data
-const acProducts = [
-  {
-    id: 'home',
-    name: 'MyBox HOME',
-    power: '7,4 kW',
-    image: '/images/products/home_studio_web_cam_4-0000.png',
-    highlight: 'home',
-  },
-  {
-    id: 'plus',
-    name: 'MyBox PLUS',
-    power: '22 kW',
-    image: '/images/products/plus_studio_web_cam_4-0000.png',
-    highlight: 'smart',
-  },
-  {
-    id: 'post',
-    name: 'MyBox POST',
-    power: '2×22 kW',
-    image: '/images/products/post_studio_web_cam_4-0000.png',
-    highlight: 'dual',
-  },
-  {
-    id: 'profi',
-    name: 'MyBox PROFI',
-    power: '22 kW',
-    image: '/images/products/profi_studio_web_cam_4-0000.png',
-    highlight: 'business',
-  },
-]
-
-const dcProducts = [
-  {
-    id: 'hyc50',
-    name: 'Hypercharger 50',
-    power: '50 kW',
-    image: '/images/products/hyc50_bok-png.webp',
-    highlight: 'compact',
-  },
-  {
-    id: 'hyc200',
-    name: 'Hypercharger 200',
-    power: '200 kW',
-    image: '/images/products/hyc_200_bok-png.webp',
-    highlight: 'versatile',
-  },
-  {
-    id: 'hyc400',
-    name: 'Hypercharger 400',
-    power: '400 kW',
-    image: '/images/products/hyc400_bok-png.webp',
-    highlight: 'ultrafast',
-  },
-]
+import { Button, ArrowRightIcon } from '@/components/ui'
+import { acSelectorProducts, dcSelectorProducts, type SelectorProduct } from '@/data/products'
 
 // Slider dot component
 const SliderDot = ({
   active,
   onClick,
-  type,
+  index,
 }: {
   active: boolean
   onClick: () => void
-  type: 'ac' | 'dc'
+  index: number
 }) => (
   <button
     onClick={onClick}
@@ -82,7 +27,7 @@ const SliderDot = ({
         ? 'w-6 bg-green-500'
         : 'w-2 bg-gray-300 hover:bg-gray-400 dark:bg-zinc-600 dark:hover:bg-zinc-500'
     )}
-    aria-label="Select slide"
+    aria-label={`Přejít na slide ${index + 1}`}
   />
 )
 
@@ -90,7 +35,7 @@ const SliderDot = ({
 // Main category card
 interface CategoryCardProps {
   type: 'ac' | 'dc'
-  products: typeof acProducts
+  products: SelectorProduct[]
   className?: string
 }
 
@@ -98,6 +43,7 @@ function CategoryCard({ type, products, className }: CategoryCardProps) {
   const t = useTranslations('chargingStations.acdc')
   const [activeIndex, setActiveIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
+  const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Auto-rotate
   useEffect(() => {
@@ -110,11 +56,26 @@ function CategoryCard({ type, products, className }: CategoryCardProps) {
     return () => clearInterval(interval)
   }, [isPaused, products.length])
 
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (resumeTimeoutRef.current) {
+        clearTimeout(resumeTimeoutRef.current)
+      }
+    }
+  }, [])
+
   const handleIndexChange = useCallback((index: number) => {
     setActiveIndex(index)
     setIsPaused(true)
+
+    // Clear any existing timeout
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current)
+    }
+
     // Resume auto-rotation after 8 seconds
-    setTimeout(() => setIsPaused(false), 8000)
+    resumeTimeoutRef.current = setTimeout(() => setIsPaused(false), 8000)
   }, [])
 
   const isAC = type === 'ac'
@@ -155,7 +116,7 @@ function CategoryCard({ type, products, className }: CategoryCardProps) {
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-contain drop-shadow-2xl scale-[0.6]"
-                priority
+                priority={activeIndex === 0}
               />
             </div>
           </motion.div>
@@ -220,19 +181,7 @@ function CategoryCard({ type, products, className }: CategoryCardProps) {
           >
             <Link href={href}>
               {t(`${type}.cta`)}
-              <svg
-                className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
+              <ArrowRightIcon className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
 
@@ -243,7 +192,7 @@ function CategoryCard({ type, products, className }: CategoryCardProps) {
                 key={index}
                 active={index === activeIndex}
                 onClick={() => handleIndexChange(index)}
-                type={type}
+                index={index}
               />
             ))}
           </div>
@@ -283,8 +232,8 @@ export function ACDCSelector() {
 
         {/* Cards grid */}
         <div className="grid gap-6 md:grid-cols-2 md:gap-8">
-          <CategoryCard type="ac" products={acProducts} />
-          <CategoryCard type="dc" products={dcProducts} />
+          <CategoryCard type="ac" products={acSelectorProducts} />
+          <CategoryCard type="dc" products={dcSelectorProducts} />
         </div>
       </div>
     </section>
