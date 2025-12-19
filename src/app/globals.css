@@ -1,31 +1,176 @@
 @import "tailwindcss";
 
 /* ===========================
+   RADIX COLOR SCALES
+   Dark mode je výchozí (default)
+   =========================== */
+
+/* Default: Dark Theme */
+:root {
+  /* Green Scale - Dark */
+  --green-1: #0c130d;
+  --green-2: #131a14;
+  --green-3: #192a1c;
+  --green-4: #193b21;
+  --green-5: #204929;
+  --green-6: #265832;
+  --green-7: #2d693b;
+  --green-8: #327c44;
+  --green-9: #16a34a;
+  --green-10: #00963d;
+  --green-11: #5ed47b;
+  --green-12: #b8f3c1;
+
+  --green-a1: #00bb0003;
+  --green-a2: #45f75e0a;
+  --green-a3: #5dfe791b;
+  --green-a4: #3fff6c2d;
+  --green-a5: #51ff773c;
+  --green-a6: #57fd7f4d;
+  --green-a7: #5cfd825f;
+  --green-a8: #5bff8373;
+  --green-a9: #19fe6d9d;
+  --green-a10: #00ff608f;
+  --green-a11: #6fff93d1;
+  --green-a12: #c0fecaf3;
+
+  --green-contrast: #fff;
+  --green-surface: #15231780;
+  --green-indicator: #16a34a;
+  --green-track: #16a34a;
+
+  /* Gray Scale - Dark */
+  --gray-1: #111113;
+  --gray-2: #19191b;
+  --gray-3: #222325;
+  --gray-4: #292a2e;
+  --gray-5: #303136;
+  --gray-6: #393a40;
+  --gray-7: #46484f;
+  --gray-8: #5f606a;
+  --gray-9: #6c6e79;
+  --gray-10: #797b86;
+  --gray-11: #b2b3bd;
+  --gray-12: #eeeef0;
+
+  --gray-a1: #1111bb03;
+  --gray-a2: #cbcbf90b;
+  --gray-a3: #d6e2f916;
+  --gray-a4: #d1d9f920;
+  --gray-a5: #d7ddfd28;
+  --gray-a6: #d9defc33;
+  --gray-a7: #dae2fd43;
+  --gray-a8: #e0e3fd60;
+  --gray-a9: #e0e4fd70;
+  --gray-a10: #e3e7fd7e;
+  --gray-a11: #eff0feb9;
+  --gray-a12: #fdfdffef;
+
+  --gray-contrast: #ffffff;
+  --gray-surface: rgba(0, 0, 0, 0.05);
+  --gray-indicator: #6c6e79;
+  --gray-track: #6c6e79;
+
+  --color-background: #111113;
+}
+
+/* Light Theme Override */
+[data-theme="light"],
+.light,
+.light-theme {
+  /* Green Scale - Light */
+  --green-1: #fafefb;
+  --green-2: #f4fbf5;
+  --green-3: #e6f8e8;
+  --green-4: #d5f2d9;
+  --green-5: #c2ebc8;
+  --green-6: #a9e1b2;
+  --green-7: #87d295;
+  --green-8: #4fbe6b;
+  --green-9: #16a34a;
+  --green-10: #00963d;
+  --green-11: #008232;
+  --green-12: #193d22;
+
+  --green-a1: #00cc3305;
+  --green-a2: #00a3180b;
+  --green-a3: #00b81519;
+  --green-a4: #00b1192a;
+  --green-a5: #00ac1a3d;
+  --green-a6: #00a71b56;
+  --green-a7: #00a01e78;
+  --green-a8: #00a129b0;
+  --green-a9: #009a39e9;
+  --green-a10: #009a39;
+  --green-a11: #008232;
+  --green-a12: #00280ae6;
+
+  --green-contrast: #fff;
+  --green-surface: #f1faf3cc;
+  --green-indicator: #16a34a;
+  --green-track: #16a34a;
+
+  /* Gray Scale - Light */
+  --gray-1: #fcfcfd;
+  --gray-2: #f9f9fb;
+  --gray-3: #eff0f3;
+  --gray-4: #e7e8ec;
+  --gray-5: #e0e1e6;
+  --gray-6: #d8d9e0;
+  --gray-7: #cdced7;
+  --gray-8: #b9bbc6;
+  --gray-9: #8b8d98;
+  --gray-10: #80828d;
+  --gray-11: #62636c;
+  --gray-12: #1e1f24;
+
+  --gray-a1: #00005503;
+  --gray-a2: #00005506;
+  --gray-a3: #00104010;
+  --gray-a4: #000b3618;
+  --gray-a5: #0009321f;
+  --gray-a6: #00073527;
+  --gray-a7: #00063332;
+  --gray-a8: #00083046;
+  --gray-a9: #00051d74;
+  --gray-a10: #00051b7f;
+  --gray-a11: #0002119d;
+  --gray-a12: #000107e1;
+
+  --gray-contrast: #ffffff;
+  --gray-surface: #ffffffcc;
+  --gray-indicator: #8b8d98;
+  --gray-track: #8b8d98;
+
+  --color-background: #ffffff;
+}
+
+/* ===========================
    DESIGN TOKENS - MyBox.eco
-   Dark mode je výchozí
+   Mapování na Radix barvy
    =========================== */
 
 :root {
   /* Background */
-  --bg-primary: #000000;
-  --bg-secondary: #0a0a0a;
-  --bg-tertiary: #141414;
-  --bg-elevated: #1a1a1a;
+  --bg-primary: var(--gray-1);
+  --bg-secondary: var(--gray-2);
+  --bg-tertiary: var(--gray-3);
+  --bg-elevated: var(--gray-4);
 
   /* Text */
-  --text-primary: #ffffff;
-  --text-secondary: #a3a3a3;
-  --text-muted: #737373;
+  --text-primary: var(--gray-12);
+  --text-secondary: var(--gray-11);
+  --text-muted: var(--gray-9);
 
   /* Borders */
-  --border-default: #262626;
-  --border-subtle: #1f1f1f;
+  --border-default: var(--gray-6);
+  --border-subtle: var(--gray-4);
 
   /* MyBox Green - CTA & Akcenty */
-  --green-400: #86efac;
-  --green-500: #4ade80;
-  --green-600: #22c55e;
-  --green-700: #16a34a;
+  --green-400: var(--green-11);
+  --green-500: var(--green-9);
+  --green-600: var(--green-10);
+  --green-700: var(--green-10);
 
   /* Utility */
   --white: #ffffff;
@@ -34,31 +179,116 @@
   /* Legacy support */
   --background: var(--bg-primary);
   --foreground: var(--text-primary);
+
+  /* ===========================
+     TYPOGRAPHY SCALE - Major Third (1.25)
+     Base: 16px
+     =========================== */
+  --text-2xs:   0.625rem;   /* 10px */
+  --text-xs:    0.75rem;    /* 12px */
+  --text-sm:    0.875rem;   /* 14px */
+  --text-base:  1rem;       /* 16px */
+  --text-md:    1.125rem;   /* 18px */
+  --text-lg:    1.25rem;    /* 20px */
+  --text-xl:    1.5625rem;  /* 25px */
+  --text-2xl:   1.9375rem;  /* 31px */
+  --text-3xl:   2.4375rem;  /* 39px */
+  --text-4xl:   3.0625rem;  /* 49px */
+  --text-5xl:   3.8125rem;  /* 61px */
+  --text-6xl:   4.75rem;    /* 76px */
+  --text-7xl:   5.9375rem;  /* 95px */
+
+  /* Line Heights */
+  --leading-none:    1;
+  --leading-tight:   1.15;
+  --leading-snug:    1.25;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose:   1.75;
+
+  /* Letter Spacing */
+  --tracking-tighter: -0.04em;
+  --tracking-tight:   -0.02em;
+  --tracking-normal:  0;
+  --tracking-wide:    0.02em;
+  --tracking-wider:   0.04em;
+  --tracking-widest:  0.08em;
+
+  /* ===========================
+     SPACING SYSTEM - 4px Grid
+     =========================== */
+  --space-0:    0;
+  --space-px:   1px;
+  --space-0-5:  0.125rem;  /* 2px */
+  --space-1:    0.25rem;   /* 4px */
+  --space-1-5:  0.375rem;  /* 6px */
+  --space-2:    0.5rem;    /* 8px */
+  --space-2-5:  0.625rem;  /* 10px */
+  --space-3:    0.75rem;   /* 12px */
+  --space-3-5:  0.875rem;  /* 14px */
+  --space-4:    1rem;      /* 16px */
+  --space-5:    1.25rem;   /* 20px */
+  --space-6:    1.5rem;    /* 24px */
+  --space-7:    1.75rem;   /* 28px */
+  --space-8:    2rem;      /* 32px */
+  --space-9:    2.25rem;   /* 36px */
+  --space-10:   2.5rem;    /* 40px */
+  --space-11:   2.75rem;   /* 44px */
+  --space-12:   3rem;      /* 48px */
+  --space-14:   3.5rem;    /* 56px */
+  --space-16:   4rem;      /* 64px */
+  --space-20:   5rem;      /* 80px */
+  --space-24:   6rem;      /* 96px */
+  --space-28:   7rem;      /* 112px */
+  --space-32:   8rem;      /* 128px */
+
+  /* Semantic Gap Hierarchy */
+  --gap-xs:   var(--space-1);   /* 4px - ikony, badges */
+  --gap-sm:   var(--space-2);   /* 8px - related items */
+  --gap-md:   var(--space-4);   /* 16px - form fields */
+  --gap-lg:   var(--space-6);   /* 24px - card sections */
+  --gap-xl:   var(--space-8);   /* 32px - grid items */
+  --gap-2xl:  var(--space-12);  /* 48px - velké sekce */
+
+  /* Section Spacing */
+  --spacing-section-sm:  var(--space-16);  /* 64px */
+  --spacing-section:     var(--space-24);  /* 96px */
+  --spacing-section-lg:  var(--space-32);  /* 128px */
+
+  /* ===========================
+     FORM COMPONENT TOKENS
+     =========================== */
+  /* Input/Select Heights */
+  --input-height-sm:  2.25rem;   /* 36px */
+  --input-height-md:  2.75rem;   /* 44px */
+  --input-height-lg:  3.5rem;    /* 56px */
+
+  /* Input Horizontal Padding */
+  --input-px-sm:   var(--space-3);   /* 12px */
+  --input-px-md:   var(--space-4);   /* 16px */
+  --input-px-lg:   var(--space-5);   /* 20px */
+
+  /* Input Vertical Padding (for textarea) */
+  --input-py-sm:   var(--space-2);   /* 8px */
+  --input-py-md:   var(--space-3);   /* 12px */
+  --input-py-lg:   var(--space-4);   /* 16px */
+
+  /* Button Horizontal Padding */
+  --button-px-sm:  var(--space-4);   /* 16px */
+  --button-px-md:  var(--space-6);   /* 24px */
+  --button-px-lg:  var(--space-8);   /* 32px */
+  --button-px-xl:  var(--space-10);  /* 40px */
+
+  /* Card Padding */
+  --card-padding-sm:  var(--space-4);   /* 16px */
+  --card-padding-md:  var(--space-6);   /* 24px */
+  --card-padding-lg:  var(--space-8);   /* 32px */
+  --card-padding-xl:  var(--space-10);  /* 40px */
 }
 
-/* Light mode (alternativa) */
-[data-theme="light"] {
-  --bg-primary: #ffffff;
-  --bg-secondary: #fafafa;
-  --bg-tertiary: #f5f5f5;
-  --bg-elevated: #ffffff;
-
-  --text-primary: #0a0a0a;
-  --text-secondary: #525252;
-  --text-muted: #a3a3a3;
-
-  --border-default: #e5e5e5;
-  --border-subtle: #f0f0f0;
-
-  --background: var(--bg-primary);
-  --foreground: var(--text-primary);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
-  /* Custom colors */
+/* Tailwind v4 theme - using @theme for utility class generation */
+@theme {
+  /* Colors mapped to CSS variables */
   --color-bg-primary: var(--bg-primary);
   --color-bg-secondary: var(--bg-secondary);
   --color-bg-tertiary: var(--bg-tertiary);
@@ -76,21 +306,62 @@
   --color-green-600: var(--green-600);
   --color-green-700: var(--green-700);
 
-  /* Font */
+  /* Font family */
   --font-sans: var(--font-halis), system-ui, sans-serif;
 
-  /* Spacing */
-  --spacing-section: 120px;
-  --spacing-section-sm: 80px;
+  /* Typography Scale - Major Third */
+  --font-size-2xs: var(--text-2xs);
+  --font-size-xs: var(--text-xs);
+  --font-size-sm: var(--text-sm);
+  --font-size-base: var(--text-base);
+  --font-size-md: var(--text-md);
+  --font-size-lg: var(--text-lg);
+  --font-size-xl: var(--text-xl);
+  --font-size-2xl: var(--text-2xl);
+  --font-size-3xl: var(--text-3xl);
+  --font-size-4xl: var(--text-4xl);
+  --font-size-5xl: var(--text-5xl);
+  --font-size-6xl: var(--text-6xl);
+  --font-size-7xl: var(--text-7xl);
+
+  /* Line Heights */
+  --line-height-none: var(--leading-none);
+  --line-height-tight: var(--leading-tight);
+  --line-height-snug: var(--leading-snug);
+  --line-height-normal: var(--leading-normal);
+  --line-height-relaxed: var(--leading-relaxed);
+  --line-height-loose: var(--leading-loose);
+
+  /* Letter Spacing */
+  --letter-spacing-tighter: var(--tracking-tighter);
+  --letter-spacing-tight: var(--tracking-tight);
+  --letter-spacing-normal: var(--tracking-normal);
+  --letter-spacing-wide: var(--tracking-wide);
+  --letter-spacing-wider: var(--tracking-wider);
+  --letter-spacing-widest: var(--tracking-widest);
+
+  /* Spacing - Gap Hierarchy */
+  --spacing-gap-xs: var(--gap-xs);
+  --spacing-gap-sm: var(--gap-sm);
+  --spacing-gap-md: var(--gap-md);
+  --spacing-gap-lg: var(--gap-lg);
+  --spacing-gap-xl: var(--gap-xl);
+  --spacing-gap-2xl: var(--gap-2xl);
+
+  /* Section Spacing */
+  --spacing-section-sm: var(--spacing-section-sm);
+  --spacing-section: var(--spacing-section);
+  --spacing-section-lg: var(--spacing-section-lg);
 }
 
 /* ===========================
    BASE STYLES
    =========================== */
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  padding: 0;
   margin: 0;
 }
 
@@ -106,6 +377,37 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Typography Defaults - Vertical Rhythm */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h1 {
+  margin-top: 4rem;    /* 64px */
+  margin-bottom: 1.5rem; /* 24px */
+}
+
+h2 {
+  margin-top: 3rem;    /* 48px */
+  margin-bottom: 1rem;   /* 16px */
+}
+
+h3 {
+  margin-top: 2rem;    /* 32px */
+  margin-bottom: 0.75rem; /* 12px */
+}
+
+p {
+  margin-bottom: 1rem;   /* 16px */
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+p + h2 { margin-top: 3rem; }
+p + h3 { margin-top: 2.5rem; }
 
 /* ===========================
    SMOOTH SCROLL (Lenis)
@@ -171,6 +473,7 @@ html.lenis body {
     padding-bottom: var(--spacing-section);
   }
 }
+
 
 /* ===========================
    SELECTION
@@ -410,4 +713,57 @@ html.lenis body {
 
 .text-glow-green {
   text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+}
+
+/* ===========================
+   FORCE DARK MODE (pro hero sekce, overlay content)
+   Vždy použije dark mode barvy bez ohledu na téma
+   =========================== */
+
+.force-dark,
+[data-theme="light"] .force-dark,
+.light .force-dark,
+.light-theme .force-dark {
+  /* Text colors - always dark mode values */
+  --text-primary: #eeeef0 !important;
+  --text-secondary: #b2b3bd !important;
+  --text-muted: #6c6e79 !important;
+
+  /* Background colors - always dark mode values */
+  --bg-primary: #111113 !important;
+  --bg-secondary: #19191b !important;
+  --bg-tertiary: #222325 !important;
+  --bg-elevated: #292a2e !important;
+
+  /* Border colors - always dark mode values */
+  --border-default: #393a40 !important;
+  --border-subtle: #292a2e !important;
+
+  /* Green scale - always dark mode values */
+  --green-400: #5ed47b !important;
+  --green-500: #16a34a !important;
+  --green-11: #5ed47b !important;
+  --green-12: #b8f3c1 !important;
+}
+
+/* ===========================
+   LOGO THEME SWITCHING
+   Automatické přepínání loga podle tématu
+   =========================== */
+
+/* Dark mode (výchozí): bílé logo viditelné, černé skryté */
+img.logo-dark {
+  opacity: 0 !important;
+}
+img.logo-white {
+  opacity: 1 !important;
+}
+
+/* Light mode: černé logo viditelné, bílé skryté */
+[data-theme="light"] img.logo-dark {
+  opacity: 1 !important;
+}
+
+[data-theme="light"] img.logo-white {
+  opacity: 0 !important;
 }

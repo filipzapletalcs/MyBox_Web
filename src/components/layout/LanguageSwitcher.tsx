@@ -48,9 +48,10 @@ const languageNames: Record<Locale, { short: string; full: string }> = {
 interface LanguageSwitcherProps {
   className?: string
   variant?: 'default' | 'minimal'
+  colorVariant?: 'default' | 'light'
 }
 
-export function LanguageSwitcher({ className, variant = 'default' }: LanguageSwitcherProps) {
+export function LanguageSwitcher({ className, variant = 'default', colorVariant = 'default' }: LanguageSwitcherProps) {
   const locale = useLocale() as Locale
   const router = useRouter()
   const pathname = usePathname()
@@ -103,9 +104,11 @@ export function LanguageSwitcher({ className, variant = 'default' }: LanguageSwi
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           'flex items-center gap-2 rounded-lg px-3 py-2',
-          'text-sm text-text-secondary transition-all duration-200',
-          'hover:bg-white/5 hover:text-text-primary',
-          isOpen && 'bg-white/5 text-text-primary'
+          'text-sm transition-all duration-200',
+          colorVariant === 'light'
+            ? 'text-white/80 hover:text-white hover:bg-white/10'
+            : 'text-text-secondary hover:bg-white/5 hover:text-text-primary',
+          isOpen && (colorVariant === 'light' ? 'bg-white/10 text-white' : 'bg-white/5 text-text-primary')
         )}
       >
         <GlobeIcon className="h-5 w-5" />

@@ -64,21 +64,21 @@ export async function generateMetadata({
     },
     icons: {
       icon: [
-        { url: '/favicon/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
-        { url: '/favicon/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+        { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+        { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
       ],
       apple: [
-        { url: '/favicon/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+        { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
       ],
       other: [
         {
           rel: 'mask-icon',
-          url: '/favicon/safari-pinned-tab.svg',
+          url: '/safari-pinned-tab.svg',
           color: '#4ade80',
         },
       ],
     },
-    manifest: '/favicon/site.webmanifest',
+    manifest: '/site.webmanifest',
   }
 }
 
@@ -105,13 +105,13 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">
       <body className={`${halisR.variable} font-sans antialiased`}>
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <TooltipProvider>
               <Header />
-              <main className="min-h-screen">{children}</main>
+              <main className="min-h-screen bg-transparent">{children}</main>
               <Footer />
             </TooltipProvider>
           </Providers>

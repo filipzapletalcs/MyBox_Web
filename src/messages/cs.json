@@ -4,11 +4,11 @@
     "description": "Český výrobce nabíjecích stanic pro elektromobily. AC a DC stanice pro domácnosti, firmy a veřejné prostory."
   },
   "navigation": {
-    "chargingStations": "Nabíjecí stanice",
-    "corporateCharging": "Nabíjení pro firmy",
-    "chargingSolutions": "Řešení nabíjení",
-    "solutionBenefits": "Výhody řešení",
-    "chargingManagement": "Řízení nabíjení",
+    "chargingStations": "Stanice",
+    "corporateCharging": "Pro firmy",
+    "chargingSolutions": "Řešení",
+    "solutionBenefits": "Výhody",
+    "chargingManagement": "Management",
     "references": "Reference",
     "blog": "Blog",
     "aboutUs": "O nás",
@@ -17,6 +17,12 @@
   },
   "chargingStations": {
     "title": "Nabíjecí stanice",
+    "hero": {
+      "title": "Nabíjecí stanice",
+      "subtitle": "Kompletní portfolio AC a DC nabíjecích stanic pro domácnosti, firmy i veřejnou infrastrukturu",
+      "cta": "Nezávazná poptávka",
+      "ctaSecondary": "Prohlédnout AC stanice"
+    },
     "ac": {
       "title": "AC nabíjecí stanice",
       "description": "Nabíjecí stanice pro domácnosti a firmy"
@@ -24,6 +30,46 @@
     "dc": {
       "title": "DC rychlonabíjecí stanice",
       "description": "Vysokovýkonné rychlonabíjecí stanice"
+    },
+    "acdc": {
+      "label": "Portfolio nabíjení",
+      "title": "Vyberte si typ nabíjení",
+      "subtitle": "AC stanice pro pomalé nabíjení doma a ve firmě, nebo DC stanice pro rychlé nabíjení na cestách",
+      "ac": {
+        "badge": "AC nabíjení",
+        "cta": "Prohlédnout AC stanice"
+      },
+      "dc": {
+        "badge": "DC rychlonabíjení",
+        "cta": "Prohlédnout DC stanice"
+      },
+      "products": {
+        "ac": {
+          "home": {
+            "description": "Kompaktní wallbox pro domácí nabíjení. Ideální pro garáže a přístřešky."
+          },
+          "plus": {
+            "description": "Chytrá stanice s pokročilou konektivitou a vzdálenou správou."
+          },
+          "post": {
+            "description": "Sloupová stanice se dvěma výstupy pro parkoviště a veřejné prostory."
+          },
+          "profi": {
+            "description": "Robustní řešení pro firemní flotily a komerční použití."
+          }
+        },
+        "dc": {
+          "hyc50": {
+            "description": "Kompaktní rychlonabíječka pro menší prostory a nižší provoz."
+          },
+          "hyc200": {
+            "description": "Univerzální řešení pro veřejnou infrastrukturu a dálnice."
+          },
+          "hyc400": {
+            "description": "Ultra rychlé nabíjení pro maximální výkon a minimální prostoje."
+          }
+        }
+      }
     },
     "products": {
       "myboxHome": "MyBox Home",
@@ -34,6 +80,153 @@
       "alpitronicHyc400": "Alpitronic HYC 400",
       "alpitronicHyc200": "Alpitronic HYC 200",
       "alpitronicHyc50": "Alpitronic HYC 50"
+    },
+    "mybox": {
+      "title": "AC nabíjecí stanice",
+      "subtitle": "Prémiová kvalita a evropské komponenty",
+      "description": "Prémiové nabíjecí stanice MyBox jsme vyvinuli přímo pro firemní a komerční využití. Jsou předurčené pro vysokou frekvenci používání a vynikají robustní konstrukcí. Spolehlivost zaručují komponenty od renomovaných evropských výrobců. Portfolio stanic MyBox zahrnuje širokou škálu modelů, od wallboxů pro instalaci na zeď po samostatně stojící duální stanice.",
+      "moreInfo": "Více informací",
+      "features": {
+        "wallbox": "Wallbox",
+        "smart": "Chytrá správa",
+        "connectivity": "Konektivita",
+        "robust": "Robustní",
+        "commercial": "Komerční",
+        "fleet": "Pro flotily",
+        "dual": "Duální výstup",
+        "pedestal": "Sloupové",
+        "public": "Veřejné"
+      },
+      "products": {
+        "plus": {
+          "description": "Chytrá nabíjecí stanice s pokročilou konektivitou, vzdálenou správou a dynamickým řízením výkonu. Ideální pro firemní prostředí."
+        },
+        "profi": {
+          "description": "Robustní stanice navržená pro vysokou zátěž a náročné komerční prostředí. Odolná konstrukce pro venkovní instalace."
+        },
+        "post": {
+          "description": "Samostatně stojící sloupová stanice se dvěma nabíjecími výstupy. Perfektní pro parkoviště a veřejné prostory."
+        }
+      },
+      "highlights": {
+        "czech": {
+          "title": "Český vývoj",
+          "description": "Kompletně navrženo a vyrobeno v ČR"
+        },
+        "warranty": {
+          "title": "3 roky záruka",
+          "description": "Plná záruka na všechny komponenty"
+        },
+        "cloud": {
+          "title": "Cloud management",
+          "description": "Vzdálená správa a monitoring"
+        },
+        "support": {
+          "title": "Servisní podpora",
+          "description": "Technická podpora po celé ČR"
+        }
+      },
+      "cta": "Objevit stanice MyBox"
+    },
+    "alpitronic": {
+      "title": "DC rychlonabíječky",
+      "subtitle": "Prémiové rychlonabíjení od Alpitronic",
+      "description": "Jako autorizovaný partner společnosti Alpitronic nabízíme špičkové DC rychlonabíjecí stanice Hypercharger. Tyto stanice představují vrchol v oblasti rychlého nabíjení s výkonem až 400 kW. Modulární architektura zajišťuje maximální dostupnost a snadnou údržbu.",
+      "moreInfo": "Více informací",
+      "features": {
+        "compact": "Kompaktní",
+        "entry": "Vstupní řada",
+        "flexible": "Flexibilní",
+        "versatile": "Univerzální",
+        "scalable": "Škálovatelný",
+        "highway": "Pro dálnice",
+        "ultrafast": "Ultra rychlé",
+        "premium": "Prémiové",
+        "maxpower": "Max. výkon"
+      },
+      "products": {
+        "hyc50": {
+          "description": "Kompaktní rychlonabíječka ideální pro menší prostory. Nabízí flexibilní instalaci a spolehlivý výkon 50 kW pro každodenní použití."
+        },
+        "hyc200": {
+          "description": "Univerzální rychlonabíjecí stanice s výkonem až 200 kW. Škálovatelná architektura pro veřejnou infrastrukturu a dálniční sítě."
+        },
+        "hyc400": {
+          "description": "Vlajková loď portfolia s výkonem až 400 kW. Ultra rychlé nabíjení pro minimální prostoje a maximální spokojenost zákazníků."
+        }
+      },
+      "highlights": {
+        "power": {
+          "title": "Až 400 kW",
+          "description": "Ultra rychlé nabíjení"
+        },
+        "modular": {
+          "title": "Modulární",
+          "description": "Snadná údržba a rozšíření"
+        },
+        "certified": {
+          "title": "Certifikováno",
+          "description": "Splňuje všechny EU normy"
+        },
+        "partner": {
+          "title": "Autorizovaný partner",
+          "description": "Oficální distribuce Alpitronic"
+        }
+      },
+      "cta": "Objevit stanice Alpitronic"
+    },
+    "usp": {
+      "badge": "Proč zvolit MyBox",
+      "title": "Spolehlivý partner pro elektromobilitu",
+      "description": "Jsme český výrobce nabíjecích stanic s vlastním vývojem a výrobou. Nabízíme kompletní řešení od návrhu až po servis s důrazem na kvalitu a spolehlivost.",
+      "features": {
+        "czechManufacturer": "Český výrobce s vlastním vývojem a výrobou v ČR",
+        "europeanComponents": "Kvalitní evropské komponenty s certifikací",
+        "premiumMaterials": "Prémiové materiály – kalené sklo a nerezová ocel",
+        "cloudManagement": "Cloudová platforma pro vzdálenou správu stanic",
+        "ocppProtocol": "Podpora OCPP protokolu pro integraci s libovolným backend systémem",
+        "completeService": "Kompletní servis od návrhu přes instalaci až po údržbu"
+      },
+      "seoText1": "Nabíjecí stanice MyBox představují spolehlivé řešení pro nabíjení elektromobilů v České republice. Naše stanice jsou vyvinuty a vyráběny přímo v ČR s důrazem na kvalitu a dlouhou životnost.",
+      "seoText2": "Díky modulární konstrukci a využití komponent od renomovaných evropských výrobců garantujeme vysokou spolehlivost a snadnou údržbu. Všechny naše stanice podporují protokol OCPP pro bezproblémovou integraci.",
+      "seoText3": "Nabízíme kompletní portfolio od domácích wallboxů přes firemní řešení až po veřejnou infrastrukturu včetně DC rychlonabíječek Alpitronic s výkonem až 400 kW.",
+      "since": "Od roku",
+      "cta": "Zjistit více o nás"
+    },
+    "faq": {
+      "badge": "Časté dotazy",
+      "title": "Máte otázky?",
+      "subtitle": "Připravili jsme odpovědi na nejčastější dotazy ohledně nabíjecích stanic a elektromobility.",
+      "notFound": "Nenašli jste odpověď na svou otázku?",
+      "contactUs": "Kontaktujte nás",
+      "clickToExpand": "Klikněte pro zobrazení odpovědi",
+      "scrollHint": "Scrollujte pro další otázky",
+      "items": {
+        "acVsDc": {
+          "question": "Jaký je rozdíl mezi AC a DC nabíjením?",
+          "answer": "AC nabíjení využívá střídavý proud a probíhá přes palubní nabíječku vozidla. Je vhodné pro delší stání (doma, v práci) s výkonem 3,7–22 kW. DC nabíjení dodává stejnosměrný proud přímo do baterie, což umožňuje rychlé nabíjení s výkonem 50–400 kW – ideální pro cestování a krátké zastávky."
+        },
+        "installationTime": {
+          "question": "Jak dlouho trvá instalace nabíjecí stanice?",
+          "answer": "Instalace domácí wallbox stanice typicky trvá 2–4 hodiny. U firemních instalací s více stanicemi a potřebou úprav elektroinstalace počítejte s 1–3 dny. DC rychlonabíječky vyžadují náročnější přípravu a instalace může trvat několik dní včetně stavebních úprav."
+        },
+        "homeCharging": {
+          "question": "Mohu si nainstalovat nabíjecí stanici doma?",
+          "answer": "Ano, domácí nabíjení je nejpohodlnější způsob nabíjení elektromobilu. Pro instalaci potřebujete dostatečnou kapacitu elektrické přípojky (minimálně 3×25A pro 11 kW stanici). Doporučujeme konzultaci s naším technikem, který posoudí možnosti vaší elektroinstalace."
+        },
+        "chargingCost": {
+          "question": "Kolik stojí nabíjení elektromobilu?",
+          "answer": "Náklady na nabíjení závisí na ceně elektřiny a kapacitě baterie. Při domácím nabíjení s cenou 5 Kč/kWh stojí nabití 60 kWh baterie přibližně 300 Kč, což odpovídá dojezdu 300–400 km. S fotovoltaikou nebo nočním tarifem mohou být náklady ještě nižší."
+        },
+        "warranty": {
+          "question": "Jakou záruku poskytujete na nabíjecí stanice?",
+          "answer": "Na všechny stanice MyBox poskytujeme standardní záruku 3 roky. V rámci záruky zajišťujeme bezplatný servis a výměnu vadných dílů. Nabízíme také prodlouženou záruku a servisní smlouvy pro firemní zákazníky s garantovanou dobou reakce."
+        },
+        "cloudPlatform": {
+          "question": "Co umožňuje cloudová platforma MyBox?",
+          "answer": "Cloudová platforma poskytuje vzdálený monitoring a správu stanic, přehled o spotřebě a nákladech, možnost nastavení přístupových práv, automatickou fakturaci a integraci s účetními systémy. Podporujeme také dynamické řízení výkonu pro optimální využití dostupné kapacity přípojky."
+        }
+      }
     }
   },
   "corporateCharging": {
@@ -91,17 +284,30 @@
   },
   "footer": {
     "company": "MyBox.eco s.r.o.",
-    "tagline": "Český výrobce nabíjecích stanic",
+    "tagline": "Český výrobce nabíjecích stanic pro elektromobily. Nabízíme kompletní řešení od domácího nabíjení po veřejnou infrastrukturu.",
     "allRightsReserved": "Všechna práva vyhrazena",
     "privacyPolicy": "Ochrana osobních údajů",
     "terms": "Obchodní podmínky",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "stayUpdated": "Zůstaňte v obraze",
+    "newsletterText": "Máte zájem o naše řešení? Kontaktujte nás pro nezávaznou konzultaci.",
+    "links": {
+      "aboutUs": "O společnosti",
+      "references": "Reference a projekty",
+      "blog": "Blog o elektromobilitě",
+      "contact": "Kontaktujte nás"
+    }
   },
   "homepage": {
     "hero": {
       "title": "Nabíjejte budoucnost",
       "subtitle": "Kompletní řešení nabíjecích stanic pro elektromobily od českého výrobce",
-      "cta": "Nezávazná poptávka"
+      "cta": "Nezávazná poptávka",
+      "badge": "Český výrobce od 2017",
+      "ctaSecondary": "Prohlédnout stanice",
+      "statsExperience": "let zkušeností",
+      "statsInstallations": "instalací",
+      "statsCzech": "český vývoj"
     },
     "clients": {
       "title": "Důvěřují nám"

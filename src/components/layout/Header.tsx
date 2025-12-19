@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Link, usePathname } from '@/i18n/navigation'
+import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 import { Logo } from './Logo'
 import { LanguageSwitcher } from './LanguageSwitcher'
+import { ThemeToggle } from './ThemeToggle'
 import { MegaMenu } from './MegaMenu'
 import { MobileMenu } from './MobileMenu'
 import { Button } from '@/components/ui'
@@ -36,14 +38,20 @@ const ChevronIcon = ({ className }: { className?: string }) => (
 export function Header() {
   const t = useTranslations()
   const pathname = usePathname()
+  const { resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
 
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
   // Handle scroll
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
+      setIsScrolled(window.scrollY > 10)
     }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
@@ -97,10 +105,19 @@ export function Header() {
         <div className="container-custom">
           <nav className="flex h-20 items-center justify-between">
             {/* Logo */}
-            <Logo />
+            <Logo
+              size="sm"
+              variant={
+                !isScrolled
+                  ? 'white'
+                  : mounted && resolvedTheme === 'light'
+                    ? 'dark'
+                    : 'white'
+              }
+            />
 
             {/* Desktop Navigation */}
-            <div className="hidden items-center gap-1 lg:flex">
+            <div className="hidden items-center gap-6 lg:flex">
               {navigationConfig.main.map((item) => (
                 <div
                   key={item.href}
@@ -111,11 +128,13 @@ export function Header() {
                   <Link
                     href={item.href}
                     className={cn(
-                      'flex items-center gap-1 px-4 py-2 text-sm font-medium',
+                      'flex items-center gap-1 px-4 py-2 text-xs font-medium uppercase tracking-wider',
                       'transition-colors duration-200',
                       pathname === item.href || pathname.startsWith(item.href + '/')
                         ? 'text-green-400'
-                        : 'text-text-secondary hover:text-text-primary'
+                        : !isScrolled
+                          ? 'text-white/80 hover:text-white'
+                          : 'text-text-secondary hover:text-text-primary'
                     )}
                   >
                     {getTranslation(item.label)}
@@ -135,6 +154,7 @@ export function Header() {
                       isOpen={activeMenu === item.href}
                       items={item.children}
                       getTranslation={getTranslation}
+                      parentHref={item.href}
                     />
                   )}
                 </div>
@@ -142,15 +162,21 @@ export function Header() {
             </div>
 
             {/* Right side */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              {/* Theme Toggle */}
+              <ThemeToggle
+                className="hidden sm:flex"
+                variant={!isScrolled ? 'light' : 'default'}
+              />
+
               {/* Language Switcher - Desktop */}
               <div className="hidden lg:block">
-                <LanguageSwitcher />
+                <LanguageSwitcher colorVariant={!isScrolled ? 'light' : 'default'} />
               </div>
 
               {/* CTA Button - Desktop */}
               <div className="hidden lg:block">
-                <Button asChild size="md">
+                <Button asChild size="sm" className="uppercase tracking-wider text-xs">
                   <Link href="/poptavka">{t('common.requestQuote')}</Link>
                 </Button>
               </div>
@@ -160,7 +186,8 @@ export function Header() {
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className={cn(
                   'flex h-10 w-10 items-center justify-center rounded-lg lg:hidden',
-                  'text-text-primary transition-colors',
+                  'transition-colors',
+                  !isScrolled ? 'text-white' : 'text-text-primary',
                   'hover:bg-white/5'
                 )}
                 aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
@@ -183,9 +210,6 @@ export function Header() {
         items={navigationConfig.main}
         getTranslation={getTranslation}
       />
-
-      {/* Spacer for fixed header */}
-      <div className="h-20" />
     </>
   )
 }

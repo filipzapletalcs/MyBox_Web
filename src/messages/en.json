@@ -4,19 +4,25 @@
     "description": "Czech manufacturer of EV charging stations. AC and DC stations for homes, businesses and public spaces."
   },
   "navigation": {
-    "chargingStations": "Charging Stations",
-    "corporateCharging": "Corporate Charging",
-    "chargingSolutions": "Charging Solutions",
-    "solutionBenefits": "Solution Benefits",
-    "chargingManagement": "Charging Management",
+    "chargingStations": "Stations",
+    "corporateCharging": "Business",
+    "chargingSolutions": "Solutions",
+    "solutionBenefits": "Benefits",
+    "chargingManagement": "Management",
     "references": "References",
     "blog": "Blog",
-    "aboutUs": "About Us",
+    "aboutUs": "About",
     "contact": "Contact",
     "requestQuote": "Request Quote"
   },
   "chargingStations": {
     "title": "Charging Stations",
+    "hero": {
+      "title": "Charging Stations",
+      "subtitle": "Complete portfolio of AC and DC charging stations for homes, businesses and public infrastructure",
+      "cta": "Request Quote",
+      "ctaSecondary": "View AC Stations"
+    },
     "ac": {
       "title": "AC Charging Stations",
       "description": "Charging stations for homes and businesses"
@@ -24,6 +30,46 @@
     "dc": {
       "title": "DC Fast Charging Stations",
       "description": "High-power fast charging stations"
+    },
+    "acdc": {
+      "label": "Charging Portfolio",
+      "title": "Choose Your Charging Type",
+      "subtitle": "AC stations for slow charging at home and work, or DC stations for fast charging on the go",
+      "ac": {
+        "badge": "AC Charging",
+        "cta": "View AC Stations"
+      },
+      "dc": {
+        "badge": "DC Fast Charging",
+        "cta": "View DC Stations"
+      },
+      "products": {
+        "ac": {
+          "home": {
+            "description": "Compact wallbox for home charging. Ideal for garages and carports."
+          },
+          "plus": {
+            "description": "Smart station with advanced connectivity and remote management."
+          },
+          "post": {
+            "description": "Pedestal station with dual outputs for parking lots and public spaces."
+          },
+          "profi": {
+            "description": "Robust solution for corporate fleets and commercial use."
+          }
+        },
+        "dc": {
+          "hyc50": {
+            "description": "Compact fast charger for smaller spaces and lower traffic."
+          },
+          "hyc200": {
+            "description": "Versatile solution for public infrastructure and highways."
+          },
+          "hyc400": {
+            "description": "Ultra-fast charging for maximum power and minimum downtime."
+          }
+        }
+      }
     },
     "products": {
       "myboxHome": "MyBox Home",
@@ -34,6 +80,153 @@
       "alpitronicHyc400": "Alpitronic HYC 400",
       "alpitronicHyc200": "Alpitronic HYC 200",
       "alpitronicHyc50": "Alpitronic HYC 50"
+    },
+    "mybox": {
+      "title": "AC Charging Stations",
+      "subtitle": "Premium Quality and European Components",
+      "description": "We developed premium MyBox charging stations specifically for corporate and commercial use. They are designed for high-frequency usage and feature robust construction. Reliability is guaranteed by components from renowned European manufacturers. The MyBox portfolio includes a wide range of models, from wall-mounted wallboxes to freestanding dual stations.",
+      "moreInfo": "More Information",
+      "features": {
+        "wallbox": "Wallbox",
+        "smart": "Smart Management",
+        "connectivity": "Connectivity",
+        "robust": "Robust",
+        "commercial": "Commercial",
+        "fleet": "Fleet Ready",
+        "dual": "Dual Output",
+        "pedestal": "Pedestal",
+        "public": "Public"
+      },
+      "products": {
+        "plus": {
+          "description": "Smart charging station with advanced connectivity, remote management and dynamic power control. Ideal for corporate environments."
+        },
+        "profi": {
+          "description": "Robust station designed for heavy use and demanding commercial environments. Durable construction for outdoor installations."
+        },
+        "post": {
+          "description": "Freestanding pedestal station with two charging outputs. Perfect for parking lots and public spaces."
+        }
+      },
+      "highlights": {
+        "czech": {
+          "title": "Czech Development",
+          "description": "Fully designed and manufactured in CZ"
+        },
+        "warranty": {
+          "title": "3 Year Warranty",
+          "description": "Full warranty on all components"
+        },
+        "cloud": {
+          "title": "Cloud Management",
+          "description": "Remote management and monitoring"
+        },
+        "support": {
+          "title": "Service Support",
+          "description": "Technical support across Czech Republic"
+        }
+      },
+      "cta": "Discover MyBox Stations"
+    },
+    "alpitronic": {
+      "title": "DC Fast Chargers",
+      "subtitle": "Premium Fast Charging by Alpitronic",
+      "description": "As an authorized Alpitronic partner, we offer top-tier Hypercharger DC fast charging stations. These stations represent the pinnacle of fast charging with power up to 400 kW. Modular architecture ensures maximum availability and easy maintenance.",
+      "moreInfo": "More Information",
+      "features": {
+        "compact": "Compact",
+        "entry": "Entry Level",
+        "flexible": "Flexible",
+        "versatile": "Versatile",
+        "scalable": "Scalable",
+        "highway": "Highway Ready",
+        "ultrafast": "Ultra Fast",
+        "premium": "Premium",
+        "maxpower": "Max Power"
+      },
+      "products": {
+        "hyc50": {
+          "description": "Compact fast charger ideal for smaller spaces. Offers flexible installation and reliable 50 kW performance for everyday use."
+        },
+        "hyc200": {
+          "description": "Versatile fast charging station with up to 200 kW power. Scalable architecture for public infrastructure and highway networks."
+        },
+        "hyc400": {
+          "description": "Portfolio flagship with up to 400 kW power. Ultra-fast charging for minimum downtime and maximum customer satisfaction."
+        }
+      },
+      "highlights": {
+        "power": {
+          "title": "Up to 400 kW",
+          "description": "Ultra-fast charging"
+        },
+        "modular": {
+          "title": "Modular",
+          "description": "Easy maintenance and expansion"
+        },
+        "certified": {
+          "title": "Certified",
+          "description": "Meets all EU standards"
+        },
+        "partner": {
+          "title": "Authorized Partner",
+          "description": "Official Alpitronic distribution"
+        }
+      },
+      "cta": "Discover Alpitronic Stations"
+    },
+    "usp": {
+      "badge": "Why Choose MyBox",
+      "title": "Your Reliable Partner for Electromobility",
+      "description": "We are a Czech manufacturer of charging stations with our own development and production. We offer complete solutions from design to service with emphasis on quality and reliability.",
+      "features": {
+        "czechManufacturer": "Czech manufacturer with own development and production",
+        "europeanComponents": "Quality European components with certification",
+        "premiumMaterials": "Premium materials – tempered glass and stainless steel",
+        "cloudManagement": "Cloud platform for remote station management",
+        "ocppProtocol": "OCPP protocol support for integration with any backend system",
+        "completeService": "Complete service from design through installation to maintenance"
+      },
+      "seoText1": "MyBox charging stations represent a reliable solution for charging electric vehicles in the Czech Republic. Our stations are developed and manufactured directly in the Czech Republic with emphasis on quality and longevity.",
+      "seoText2": "Thanks to modular construction and use of components from renowned European manufacturers, we guarantee high reliability and easy maintenance. All our stations support the OCPP protocol for seamless integration.",
+      "seoText3": "We offer a complete portfolio from home wallboxes through corporate solutions to public infrastructure including Alpitronic DC fast chargers with power up to 400 kW.",
+      "since": "Since",
+      "cta": "Learn more about us"
+    },
+    "faq": {
+      "badge": "FAQ",
+      "title": "Have Questions?",
+      "subtitle": "We've prepared answers to the most frequently asked questions about charging stations and electromobility.",
+      "notFound": "Didn't find the answer to your question?",
+      "contactUs": "Contact Us",
+      "clickToExpand": "Click to expand answer",
+      "scrollHint": "Scroll for more questions",
+      "items": {
+        "acVsDc": {
+          "question": "What's the difference between AC and DC charging?",
+          "answer": "AC charging uses alternating current and goes through the vehicle's onboard charger. It's suitable for longer parking (at home, at work) with power of 3.7–22 kW. DC charging delivers direct current directly to the battery, enabling fast charging with power of 50–400 kW – ideal for traveling and short stops."
+        },
+        "installationTime": {
+          "question": "How long does charging station installation take?",
+          "answer": "Installation of a home wallbox station typically takes 2–4 hours. For corporate installations with multiple stations and electrical modifications needed, expect 1–3 days. DC fast chargers require more extensive preparation and installation can take several days including construction work."
+        },
+        "homeCharging": {
+          "question": "Can I install a charging station at home?",
+          "answer": "Yes, home charging is the most convenient way to charge an electric vehicle. For installation, you need sufficient electrical connection capacity (minimum 3×25A for an 11 kW station). We recommend consulting with our technician who will assess your electrical installation options."
+        },
+        "chargingCost": {
+          "question": "How much does charging an electric vehicle cost?",
+          "answer": "Charging costs depend on electricity price and battery capacity. With home charging at €0.20/kWh, charging a 60 kWh battery costs approximately €12, which corresponds to a range of 300–400 km. With solar panels or night tariffs, costs can be even lower."
+        },
+        "warranty": {
+          "question": "What warranty do you provide on charging stations?",
+          "answer": "We provide a standard 3-year warranty on all MyBox stations. Under warranty, we ensure free service and replacement of defective parts. We also offer extended warranties and service contracts for corporate customers with guaranteed response times."
+        },
+        "cloudPlatform": {
+          "question": "What does the MyBox cloud platform enable?",
+          "answer": "The cloud platform provides remote monitoring and station management, consumption and cost overview, access rights configuration, automatic billing and integration with accounting systems. We also support dynamic load management for optimal use of available connection capacity."
+        }
+      }
     }
   },
   "corporateCharging": {
@@ -91,17 +284,30 @@
   },
   "footer": {
     "company": "MyBox.eco s.r.o.",
-    "tagline": "Czech manufacturer of EV charging stations",
+    "tagline": "Czech manufacturer of EV charging stations. We offer complete solutions from home charging to public infrastructure.",
     "allRightsReserved": "All rights reserved",
     "privacyPolicy": "Privacy Policy",
     "terms": "Terms of Service",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "stayUpdated": "Stay Updated",
+    "newsletterText": "Interested in our solutions? Contact us for a free consultation.",
+    "links": {
+      "aboutUs": "About Us",
+      "references": "References & Projects",
+      "blog": "E-Mobility Blog",
+      "contact": "Contact Us"
+    }
   },
   "homepage": {
     "hero": {
       "title": "Charge the Future",
       "subtitle": "Complete EV charging solutions from a Czech manufacturer",
-      "cta": "Request Quote"
+      "cta": "Request Quote",
+      "badge": "Czech manufacturer since 2017",
+      "ctaSecondary": "View Stations",
+      "statsExperience": "years of experience",
+      "statsInstallations": "installations",
+      "statsCzech": "Czech development"
     },
     "clients": {
       "title": "Trusted By"

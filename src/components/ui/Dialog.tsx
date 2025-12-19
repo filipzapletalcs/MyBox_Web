@@ -65,7 +65,7 @@ const DialogContent = forwardRef<
         'fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2',
         'w-full max-w-lg',
         'bg-bg-elevated border border-border-subtle',
-        'rounded-2xl p-6 shadow-2xl shadow-black/50',
+        'rounded-2xl p-[var(--card-padding-md)] shadow-2xl shadow-black/50',
         // Animations
         'data-[state=open]:animate-in data-[state=closed]:animate-out',
         'data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
@@ -99,13 +99,13 @@ const DialogContent = forwardRef<
 DialogContent.displayName = DialogPrimitive.Content.displayName
 
 const DialogHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('mb-4 flex flex-col gap-1.5', className)} {...props} />
+  <div className={cn('mb-[var(--gap-md)] flex flex-col gap-[var(--space-1-5)]', className)} {...props} />
 )
 DialogHeader.displayName = 'DialogHeader'
 
 const DialogFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn('mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end', className)}
+    className={cn('mt-[var(--gap-lg)] flex flex-col-reverse gap-[var(--space-3)] sm:flex-row sm:justify-end', className)}
     {...props}
   />
 )

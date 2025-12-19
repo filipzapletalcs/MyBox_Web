@@ -55,9 +55,9 @@ const badgeVariants = cva(
         ],
       },
       size: {
-        sm: 'h-5 px-2 text-[10px] rounded-md gap-1',
-        md: 'h-6 px-2.5 text-xs rounded-lg gap-1.5',
-        lg: 'h-7 px-3 text-sm rounded-lg gap-2',
+        sm: 'h-5 px-[var(--space-2)] text-[length:var(--text-2xs)] rounded-md gap-[var(--gap-xs)]',
+        md: 'h-6 px-[var(--space-2-5)] text-[length:var(--text-xs)] rounded-lg gap-[var(--space-1-5)]',
+        lg: 'h-7 px-[var(--space-3)] text-[length:var(--text-sm)] rounded-lg gap-[var(--gap-sm)]',
       },
     },
     defaultVariants: {

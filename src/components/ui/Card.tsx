@@ -59,10 +59,10 @@ const cardVariants = cva(
       },
       padding: {
         none: 'p-0',
-        sm: 'p-4',
-        md: 'p-6',
-        lg: 'p-8',
-        xl: 'p-10',
+        sm: 'p-[var(--card-padding-sm)]',
+        md: 'p-[var(--card-padding-md)]',
+        lg: 'p-[var(--card-padding-lg)]',
+        xl: 'p-[var(--card-padding-xl)]',
       },
       radius: {
         none: 'rounded-none',

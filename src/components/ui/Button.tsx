@@ -21,7 +21,7 @@ const buttonVariants = cva(
       variant: {
         // Primary CTA - electric green with glow
         primary: [
-          'bg-green-500 text-black',
+          'bg-green-500 text-white',
           'shadow-[0_0_20px_rgba(74,222,128,0.3)]',
           'hover:bg-green-400 hover:shadow-[0_0_30px_rgba(74,222,128,0.5)]',
           'active:bg-green-600 active:shadow-[0_0_15px_rgba(74,222,128,0.4)]',
@@ -55,10 +55,10 @@ const buttonVariants = cva(
         ],
       },
       size: {
-        sm: 'h-9 px-4 text-sm rounded-lg',
-        md: 'h-11 px-6 text-sm rounded-xl',
-        lg: 'h-14 px-8 text-base rounded-xl',
-        xl: 'h-16 px-10 text-lg rounded-2xl',
+        sm: 'h-[var(--input-height-sm)] px-[var(--button-px-sm)] text-[length:var(--text-sm)] rounded-lg',
+        md: 'h-[var(--input-height-md)] px-[var(--button-px-md)] text-[length:var(--text-sm)] rounded-xl',
+        lg: 'h-[var(--input-height-lg)] px-[var(--button-px-lg)] text-[length:var(--text-base)] rounded-xl',
+        xl: 'h-16 px-[var(--button-px-xl)] text-[length:var(--text-lg)] rounded-2xl',
         icon: 'h-10 w-10 rounded-xl',
       },
       fullWidth: {

@@ -64,7 +64,9 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             disabled={disabled}
             maxLength={maxLength}
             className={cn(
-              'min-h-[120px] w-full resize-y bg-transparent px-4 py-3 text-sm text-text-primary',
+              'min-h-[120px] w-full resize-y bg-transparent',
+              'px-[var(--input-px-md)] py-[var(--input-py-md)]',
+              'text-[length:var(--text-sm)] text-text-primary',
               'placeholder:text-text-muted',
               'focus:outline-none',
               'disabled:cursor-not-allowed disabled:opacity-50',

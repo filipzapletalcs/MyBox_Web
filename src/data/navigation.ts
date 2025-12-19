@@ -89,10 +89,6 @@ export const navigationConfig: NavigationConfig = {
       ],
     },
     {
-      label: 'navigation.references',
-      href: '/reference',
-    },
-    {
       label: 'navigation.aboutUs',
       href: '/o-nas',
     },
@@ -112,10 +108,10 @@ export const navigationConfig: NavigationConfig = {
       { label: 'chargingManagement.title', href: '/rizeni-nabijeni' },
     ],
     company: [
-      { label: 'navigation.aboutUs', href: '/o-nas' },
-      { label: 'navigation.references', href: '/reference' },
-      { label: 'navigation.blog', href: '/blog' },
-      { label: 'navigation.contact', href: '/kontakt' },
+      { label: 'footer.links.aboutUs', href: '/o-nas' },
+      { label: 'footer.links.references', href: '/reference' },
+      { label: 'footer.links.blog', href: '/blog' },
+      { label: 'footer.links.contact', href: '/kontakt' },
     ],
   },
 }

@@ -83,13 +83,13 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
           {/* Brand column */}
           <div className="lg:col-span-4">
-            <Logo className="mb-6" />
-            <p className="mb-6 max-w-xs text-sm leading-relaxed text-text-secondary">
+            <Logo className="mb-10" />
+            <p className="mb-12 max-w-xs text-sm leading-loose text-text-secondary">
               {t('footer.tagline')}
             </p>
 
             {/* Social links */}
-            <div className="flex gap-3">
+            <div className="flex gap-4">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}

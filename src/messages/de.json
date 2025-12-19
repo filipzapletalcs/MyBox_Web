@@ -4,11 +4,11 @@
     "description": "Tschechischer Hersteller von Ladestationen für Elektrofahrzeuge. AC- und DC-Stationen für Privathaushalte, Unternehmen und öffentliche Bereiche."
   },
   "navigation": {
-    "chargingStations": "Ladestationen",
-    "corporateCharging": "Unternehmensladung",
-    "chargingSolutions": "Ladelösungen",
-    "solutionBenefits": "Lösungsvorteile",
-    "chargingManagement": "Lademanagement",
+    "chargingStations": "Stationen",
+    "corporateCharging": "Business",
+    "chargingSolutions": "Lösungen",
+    "solutionBenefits": "Vorteile",
+    "chargingManagement": "Management",
     "references": "Referenzen",
     "blog": "Blog",
     "aboutUs": "Über uns",
@@ -17,6 +17,12 @@
   },
   "chargingStations": {
     "title": "Ladestationen",
+    "hero": {
+      "title": "Ladestationen",
+      "subtitle": "Komplettes Portfolio an AC- und DC-Ladestationen für Privathaushalte, Unternehmen und öffentliche Infrastruktur",
+      "cta": "Anfrage senden",
+      "ctaSecondary": "AC-Stationen ansehen"
+    },
     "ac": {
       "title": "AC-Ladestationen",
       "description": "Ladestationen für Privathaushalte und Unternehmen"
@@ -24,6 +30,46 @@
     "dc": {
       "title": "DC-Schnellladestationen",
       "description": "Hochleistungs-Schnellladestationen"
+    },
+    "acdc": {
+      "label": "Ladeportfolio",
+      "title": "Wählen Sie Ihren Ladetyp",
+      "subtitle": "AC-Stationen für langsames Laden zu Hause und bei der Arbeit, oder DC-Stationen für schnelles Laden unterwegs",
+      "ac": {
+        "badge": "AC-Ladung",
+        "cta": "AC-Stationen ansehen"
+      },
+      "dc": {
+        "badge": "DC-Schnellladung",
+        "cta": "DC-Stationen ansehen"
+      },
+      "products": {
+        "ac": {
+          "home": {
+            "description": "Kompakte Wallbox für das Laden zu Hause. Ideal für Garagen und Carports."
+          },
+          "plus": {
+            "description": "Intelligente Station mit erweiterter Konnektivität und Fernverwaltung."
+          },
+          "post": {
+            "description": "Säulenstation mit zwei Ausgängen für Parkplätze und öffentliche Bereiche."
+          },
+          "profi": {
+            "description": "Robuste Lösung für Unternehmensflotten und gewerbliche Nutzung."
+          }
+        },
+        "dc": {
+          "hyc50": {
+            "description": "Kompakter Schnelllader für kleinere Räume und geringeren Verkehr."
+          },
+          "hyc200": {
+            "description": "Vielseitige Lösung für öffentliche Infrastruktur und Autobahnen."
+          },
+          "hyc400": {
+            "description": "Ultra-Schnellladung für maximale Leistung und minimale Ausfallzeiten."
+          }
+        }
+      }
     },
     "products": {
       "myboxHome": "MyBox Home",
@@ -34,6 +80,153 @@
       "alpitronicHyc400": "Alpitronic HYC 400",
       "alpitronicHyc200": "Alpitronic HYC 200",
       "alpitronicHyc50": "Alpitronic HYC 50"
+    },
+    "mybox": {
+      "title": "AC-Ladestationen",
+      "subtitle": "Premium-Qualität und europäische Komponenten",
+      "description": "Wir haben die Premium-Ladestationen MyBox speziell für den gewerblichen und kommerziellen Einsatz entwickelt. Sie sind für hohe Nutzungsfrequenz ausgelegt und zeichnen sich durch robuste Konstruktion aus. Zuverlässigkeit garantieren Komponenten von renommierten europäischen Herstellern. Das MyBox-Portfolio umfasst eine breite Palette von Modellen, von Wallboxen zur Wandmontage bis hin zu freistehenden Dualstationen.",
+      "moreInfo": "Mehr Informationen",
+      "features": {
+        "wallbox": "Wallbox",
+        "smart": "Intelligentes Management",
+        "connectivity": "Konnektivität",
+        "robust": "Robust",
+        "commercial": "Kommerziell",
+        "fleet": "Flottenbereit",
+        "dual": "Doppelausgang",
+        "pedestal": "Säule",
+        "public": "Öffentlich"
+      },
+      "products": {
+        "plus": {
+          "description": "Intelligente Ladestation mit fortschrittlicher Konnektivität, Fernverwaltung und dynamischer Leistungssteuerung. Ideal für Unternehmensumgebungen."
+        },
+        "profi": {
+          "description": "Robuste Station für hohe Belastung und anspruchsvolle kommerzielle Umgebungen. Langlebige Konstruktion für Außeninstallationen."
+        },
+        "post": {
+          "description": "Freistehende Säulenstation mit zwei Ladeanschlüssen. Perfekt für Parkplätze und öffentliche Bereiche."
+        }
+      },
+      "highlights": {
+        "czech": {
+          "title": "Tschechische Entwicklung",
+          "description": "Vollständig in CZ entworfen und hergestellt"
+        },
+        "warranty": {
+          "title": "3 Jahre Garantie",
+          "description": "Volle Garantie auf alle Komponenten"
+        },
+        "cloud": {
+          "title": "Cloud-Management",
+          "description": "Fernverwaltung und Überwachung"
+        },
+        "support": {
+          "title": "Service-Support",
+          "description": "Technischer Support in ganz Tschechien"
+        }
+      },
+      "cta": "MyBox Stationen entdecken"
+    },
+    "alpitronic": {
+      "title": "DC-Schnellladegeräte",
+      "subtitle": "Premium-Schnellladung von Alpitronic",
+      "description": "Als autorisierter Alpitronic-Partner bieten wir erstklassige Hypercharger DC-Schnellladestationen. Diese Stationen repräsentieren die Spitze des Schnellladens mit bis zu 400 kW Leistung. Die modulare Architektur gewährleistet maximale Verfügbarkeit und einfache Wartung.",
+      "moreInfo": "Mehr Informationen",
+      "features": {
+        "compact": "Kompakt",
+        "entry": "Einstiegsklasse",
+        "flexible": "Flexibel",
+        "versatile": "Vielseitig",
+        "scalable": "Skalierbar",
+        "highway": "Autobahnbereit",
+        "ultrafast": "Ultraschnell",
+        "premium": "Premium",
+        "maxpower": "Max. Leistung"
+      },
+      "products": {
+        "hyc50": {
+          "description": "Kompaktes Schnellladegerät ideal für kleinere Räume. Bietet flexible Installation und zuverlässige 50 kW Leistung für den täglichen Gebrauch."
+        },
+        "hyc200": {
+          "description": "Vielseitige Schnellladestation mit bis zu 200 kW Leistung. Skalierbare Architektur für öffentliche Infrastruktur und Autobahnnetze."
+        },
+        "hyc400": {
+          "description": "Flaggschiff des Portfolios mit bis zu 400 kW Leistung. Ultra-Schnellladung für minimale Ausfallzeiten und maximale Kundenzufriedenheit."
+        }
+      },
+      "highlights": {
+        "power": {
+          "title": "Bis zu 400 kW",
+          "description": "Ultra-Schnellladung"
+        },
+        "modular": {
+          "title": "Modular",
+          "description": "Einfache Wartung und Erweiterung"
+        },
+        "certified": {
+          "title": "Zertifiziert",
+          "description": "Erfüllt alle EU-Normen"
+        },
+        "partner": {
+          "title": "Autorisierter Partner",
+          "description": "Offizieller Alpitronic-Vertrieb"
+        }
+      },
+      "cta": "Alpitronic Stationen entdecken"
+    },
+    "usp": {
+      "badge": "Warum MyBox wählen",
+      "title": "Ihr zuverlässiger Partner für Elektromobilität",
+      "description": "Wir sind ein tschechischer Hersteller von Ladestationen mit eigener Entwicklung und Produktion. Wir bieten komplette Lösungen von der Planung bis zum Service mit Schwerpunkt auf Qualität und Zuverlässigkeit.",
+      "features": {
+        "czechManufacturer": "Tschechischer Hersteller mit eigener Entwicklung und Produktion",
+        "europeanComponents": "Hochwertige europäische Komponenten mit Zertifizierung",
+        "premiumMaterials": "Premium-Materialien – gehärtetes Glas und Edelstahl",
+        "cloudManagement": "Cloud-Plattform für Fernverwaltung der Stationen",
+        "ocppProtocol": "OCPP-Protokoll-Unterstützung für Integration mit jedem Backend-System",
+        "completeService": "Kompletter Service von der Planung über Installation bis zur Wartung"
+      },
+      "seoText1": "MyBox Ladestationen bieten eine zuverlässige Lösung zum Laden von Elektrofahrzeugen in Tschechien. Unsere Stationen werden direkt in der Tschechischen Republik mit Schwerpunkt auf Qualität und Langlebigkeit entwickelt und hergestellt.",
+      "seoText2": "Dank modularer Bauweise und Verwendung von Komponenten renommierter europäischer Hersteller garantieren wir hohe Zuverlässigkeit und einfache Wartung. Alle unsere Stationen unterstützen das OCPP-Protokoll für nahtlose Integration.",
+      "seoText3": "Wir bieten ein komplettes Portfolio von Heim-Wallboxen über Unternehmenslösungen bis hin zur öffentlichen Infrastruktur einschließlich Alpitronic DC-Schnellladern mit bis zu 400 kW Leistung.",
+      "since": "Seit",
+      "cta": "Mehr über uns erfahren"
+    },
+    "faq": {
+      "badge": "Häufige Fragen",
+      "title": "Haben Sie Fragen?",
+      "subtitle": "Wir haben Antworten auf die häufigsten Fragen zu Ladestationen und Elektromobilität vorbereitet.",
+      "notFound": "Keine Antwort auf Ihre Frage gefunden?",
+      "contactUs": "Kontaktieren Sie uns",
+      "clickToExpand": "Klicken Sie, um die Antwort anzuzeigen",
+      "scrollHint": "Scrollen Sie für weitere Fragen",
+      "items": {
+        "acVsDc": {
+          "question": "Was ist der Unterschied zwischen AC- und DC-Laden?",
+          "answer": "AC-Laden nutzt Wechselstrom und erfolgt über das Bordladegerät des Fahrzeugs. Es eignet sich für längeres Parken (zu Hause, bei der Arbeit) mit einer Leistung von 3,7–22 kW. DC-Laden liefert Gleichstrom direkt in die Batterie, was schnelles Laden mit 50–400 kW ermöglicht – ideal für Reisen und kurze Stopps."
+        },
+        "installationTime": {
+          "question": "Wie lange dauert die Installation einer Ladestation?",
+          "answer": "Die Installation einer Heim-Wallbox dauert typischerweise 2–4 Stunden. Bei Unternehmensinstallationen mit mehreren Stationen und erforderlichen Elektroanpassungen rechnen Sie mit 1–3 Tagen. DC-Schnelllader erfordern aufwendigere Vorbereitung und die Installation kann mehrere Tage einschließlich Bauarbeiten dauern."
+        },
+        "homeCharging": {
+          "question": "Kann ich eine Ladestation zu Hause installieren?",
+          "answer": "Ja, das Laden zu Hause ist die bequemste Art, ein Elektrofahrzeug zu laden. Für die Installation benötigen Sie eine ausreichende Anschlusskapazität (mindestens 3×25A für eine 11 kW Station). Wir empfehlen eine Beratung mit unserem Techniker, der Ihre Elektroinstallation beurteilt."
+        },
+        "chargingCost": {
+          "question": "Was kostet das Laden eines Elektrofahrzeugs?",
+          "answer": "Die Ladekosten hängen vom Strompreis und der Batteriekapazität ab. Beim Laden zu Hause mit 0,30 €/kWh kostet das Laden einer 60 kWh Batterie etwa 18 €, was einer Reichweite von 300–400 km entspricht. Mit Photovoltaik oder Nachttarifen können die Kosten noch niedriger sein."
+        },
+        "warranty": {
+          "question": "Welche Garantie bieten Sie auf Ladestationen?",
+          "answer": "Wir bieten eine Standard-Garantie von 3 Jahren auf alle MyBox Stationen. Im Rahmen der Garantie gewährleisten wir kostenlosen Service und Austausch defekter Teile. Wir bieten auch erweiterte Garantien und Serviceverträge für Geschäftskunden mit garantierten Reaktionszeiten."
+        },
+        "cloudPlatform": {
+          "question": "Was ermöglicht die MyBox Cloud-Plattform?",
+          "answer": "Die Cloud-Plattform bietet Fernüberwachung und Stationsverwaltung, Verbrauchs- und Kostenübersicht, Zugriffsrechtekonfiguration, automatische Abrechnung und Integration mit Buchhaltungssystemen. Wir unterstützen auch dynamisches Lastmanagement für optimale Nutzung der verfügbaren Anschlusskapazität."
+        }
+      }
     }
   },
   "corporateCharging": {
@@ -91,17 +284,30 @@
   },
   "footer": {
     "company": "MyBox.eco s.r.o.",
-    "tagline": "Tschechischer Hersteller von Ladestationen",
+    "tagline": "Tschechischer Hersteller von E-Ladestationen. Wir bieten Komplettlösungen vom Heimladen bis zur öffentlichen Infrastruktur.",
     "allRightsReserved": "Alle Rechte vorbehalten",
     "privacyPolicy": "Datenschutz",
     "terms": "AGB",
-    "cookies": "Cookies"
+    "cookies": "Cookies",
+    "stayUpdated": "Bleiben Sie informiert",
+    "newsletterText": "Interessiert an unseren Lösungen? Kontaktieren Sie uns für eine kostenlose Beratung.",
+    "links": {
+      "aboutUs": "Über das Unternehmen",
+      "references": "Referenzen & Projekte",
+      "blog": "E-Mobilität Blog",
+      "contact": "Kontaktieren Sie uns"
+    }
   },
   "homepage": {
     "hero": {
       "title": "Laden Sie die Zukunft",
       "subtitle": "Komplette E-Ladelösungen vom tschechischen Hersteller",
-      "cta": "Anfrage senden"
+      "cta": "Anfrage senden",
+      "badge": "Tschechischer Hersteller seit 2017",
+      "ctaSecondary": "Stationen ansehen",
+      "statsExperience": "Jahre Erfahrung",
+      "statsInstallations": "Installationen",
+      "statsCzech": "Tschechische Entwicklung"
     },
     "clients": {
       "title": "Vertrauen uns"

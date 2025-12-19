@@ -1,36 +1,353 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MyBox.eco
 
-## Getting Started
+Prezentační web pro českého výrobce nabíjecích stanic pro elektromobily.
 
-First, run the development server:
+## Technologie
+
+- **Framework:** Next.js 15 (App Router)
+- **Styling:** Tailwind CSS 4
+- **Animace:** Framer Motion
+- **i18n:** next-intl (CS, EN, DE)
+- **UI Primitiva:** Radix UI
+- **Font:** HalisR (vlastní)
+
+## Quick Start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Web běží na [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Architektura projektu
 
-## Learn More
+### Struktura složek
 
-To learn more about Next.js, take a look at the following resources:
+```
+/src
+├── app/                          # Next.js App Router
+│   ├── [locale]/                 # Lokalizované stránky
+│   │   ├── layout.tsx           # Root layout s providery
+│   │   ├── page.tsx             # Homepage
+│   │   ├── nabijeci-stanice/    # Nabíjecí stanice sekce
+│   │   │   ├── page.tsx         # Landing page
+│   │   │   ├── ChargingStationsHero.tsx
+│   │   │   ├── ACDCSelector.tsx
+│   │   │   ├── ProductShowcase.tsx
+│   │   │   ├── USPSection.tsx
+│   │   │   ├── FAQSection.tsx
+│   │   │   ├── ac/              # AC stanice
+│   │   │   └── dc/              # DC stanice
+│   │   ├── nabijeni-pro-firmy/  # B2B sekce
+│   │   ├── reseni-nabijeni/     # Segmenty
+│   │   ├── vyhody-reseni/       # Výhody
+│   │   ├── rizeni-nabijeni/     # Cloud, App, DLM
+│   │   ├── reference/           # Case studies
+│   │   ├── blog/                # Blog
+│   │   ├── o-nas/               # O nás
+│   │   ├── kontakt/             # Kontakt
+│   │   └── poptavka/            # Poptávkový formulář
+│   ├── api/                     # API routes
+│   └── globals.css              # Globální styly + design tokens
+├── components/
+│   ├── layout/                  # Layout komponenty
+│   │   ├── Header.tsx          # Navigace
+│   │   ├── Footer.tsx          # Patička
+│   │   ├── Logo.tsx            # Logo komponenta
+│   │   ├── MegaMenu.tsx        # Mega menu navigace
+│   │   ├── LanguageSwitcher.tsx # Přepínač jazyků
+│   │   └── ThemeToggle.tsx     # Dark/Light mode
+│   ├── sections/               # Sekční komponenty
+│   │   ├── Hero.tsx
+│   │   ├── HeroVideo.tsx
+│   │   ├── ProductGrid.tsx
+│   │   ├── FAQ.tsx
+│   │   ├── CTA.tsx
+│   │   └── Newsletter.tsx
+│   ├── ui/                     # UI primitiva (shadcn-style)
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── Input.tsx
+│   │   ├── Select.tsx
+│   │   ├── Textarea.tsx
+│   │   ├── Accordion.tsx
+│   │   ├── Dialog.tsx
+│   │   ├── Badge.tsx
+│   │   └── index.ts            # Barrel export
+│   └── providers/
+│       └── Providers.tsx       # Theme + další providery
+├── lib/
+│   ├── fonts.ts                # HalisR font konfigurace
+│   ├── utils.ts                # Utility funkce (cn, etc.)
+│   ├── design-tokens.ts        # TypeScript design tokens
+│   └── metadata.ts             # SEO helpers
+├── i18n/
+│   ├── request.ts              # next-intl konfigurace
+│   ├── navigation.ts           # Lokalizovaná navigace
+│   └── routing.ts              # Route mapping
+├── messages/                   # Překlady
+│   ├── cs.json                 # Čeština
+│   ├── en.json                 # Angličtina
+│   └── de.json                 # Němčina
+├── data/
+│   ├── navigation.ts           # Navigační struktura
+│   └── products.ts             # Produktová data
+└── types/
+    └── index.ts                # TypeScript typy
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## URL Struktura
 
-## Deploy on Vercel
+### Čeština (výchozí - bez prefixu)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Sekce | URL |
+|-------|-----|
+| Homepage | `/` |
+| Nabíjecí stanice | `/nabijeci-stanice/` |
+| AC stanice | `/nabijeci-stanice/ac/` |
+| DC stanice | `/nabijeci-stanice/dc/` |
+| Pro firmy | `/nabijeni-pro-firmy/` |
+| Řešení | `/reseni-nabijeni/` |
+| Výhody | `/vyhody-reseni/` |
+| Řízení nabíjení | `/rizeni-nabijeni/` |
+| Reference | `/reference/` |
+| Blog | `/blog/` |
+| O nás | `/o-nas/` |
+| Kontakt | `/kontakt/` |
+| Poptávka | `/poptavka/` |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Angličtina (`/en/`)
+
+| Sekce | URL |
+|-------|-----|
+| Homepage | `/en/` |
+| Charging Stations | `/en/charging-stations/` |
+| AC Stations | `/en/charging-stations/ac/` |
+| DC Stations | `/en/charging-stations/dc/` |
+| Corporate | `/en/corporate-charging/` |
+| Solutions | `/en/charging-solutions/` |
+| Benefits | `/en/solution-benefits/` |
+| Management | `/en/charging-management/` |
+| References | `/en/references/` |
+| Blog | `/en/blog/` |
+| About | `/en/about-us/` |
+| Contact | `/en/contact/` |
+| Request Quote | `/en/request-quote/` |
+
+### Němčina (`/de/`)
+
+| Sekce | URL |
+|-------|-----|
+| Homepage | `/de/` |
+| Ladestationen | `/de/ladestationen/` |
+| AC Stationen | `/de/ladestationen/ac/` |
+| DC Stationen | `/de/ladestationen/dc/` |
+| Unternehmen | `/de/unternehmensladung/` |
+| Lösungen | `/de/ladeloesungen/` |
+| Vorteile | `/de/loesungsvorteile/` |
+| Management | `/de/lademanagement/` |
+| Referenzen | `/de/referenzen/` |
+| Blog | `/de/blog/` |
+| Über uns | `/de/ueber-uns/` |
+| Kontakt | `/de/kontakt/` |
+| Anfrage | `/de/anfrage/` |
+
+---
+
+## Design System
+
+### Barevná paleta
+
+**Dark mode je výchozí.** Minimalistická paleta: černá, bílá, odstíny šedi + zelená pro CTA.
+
+```css
+/* Pozadí */
+--bg-primary: #000000      /* Hlavní pozadí */
+--bg-secondary: #0a0a0a    /* Sekundární */
+--bg-tertiary: #141414     /* Karty, sekce */
+
+/* Text */
+--text-primary: #ffffff    /* Hlavní text */
+--text-secondary: #a3a3a3  /* Sekundární */
+--text-muted: #737373      /* Tlumený */
+
+/* Akcentová zelená */
+--green-500: #4ade80       /* Hlavní CTA */
+--green-600: #22c55e       /* Hover */
+```
+
+### Typografie
+
+Font **HalisR** s váhami 100-900. Typografická škála Major Third (1.25).
+
+```css
+--text-xs:   0.75rem   /* 12px */
+--text-sm:   0.875rem  /* 14px */
+--text-base: 1rem      /* 16px */
+--text-lg:   1.25rem   /* 20px */
+--text-xl:   1.5625rem /* 25px */
+--text-2xl:  1.9375rem /* 31px */
+--text-3xl:  2.4375rem /* 39px */
+--text-4xl:  3.0625rem /* 49px */
+--text-5xl:  3.8125rem /* 61px */
+```
+
+### Spacing
+
+4px grid system s sémantickými gap tokeny.
+
+```css
+--space-1:  0.25rem   /* 4px */
+--space-2:  0.5rem    /* 8px */
+--space-4:  1rem      /* 16px */
+--space-6:  1.5rem    /* 24px */
+--space-8:  2rem      /* 32px */
+--space-12: 3rem      /* 48px */
+
+--gap-xs:  var(--space-1)   /* ikony, badges */
+--gap-sm:  var(--space-2)   /* related items */
+--gap-md:  var(--space-4)   /* form fields */
+--gap-lg:  var(--space-6)   /* card sections */
+--gap-xl:  var(--space-8)   /* grid items */
+```
+
+### Form komponenty
+
+Sjednocené velikosti pro Input, Select, Textarea, Button.
+
+```css
+--input-height-sm: 2.25rem  /* 36px */
+--input-height-md: 2.75rem  /* 44px */
+--input-height-lg: 3.5rem   /* 56px */
+```
+
+---
+
+## Produkty
+
+### AC Nabíjecí stanice (vlastní výroba)
+
+| Model | Výkon | Popis |
+|-------|-------|-------|
+| MyBox HOME | 7,4 kW | Domácí wallbox |
+| MyBox PLUS | 22 kW | Smart stanice s cloud připojením |
+| MyBox POST | 2×22 kW | Sloupová duální stanice |
+| MyBox PROFI | 22 kW | Robustní pro komerční použití |
+| Wallbox | 11 kW | Kompaktní nástěnná varianta |
+
+### DC Rychlonabíječky (partner Alpitronic)
+
+| Model | Výkon | Popis |
+|-------|-------|-------|
+| Hypercharger 50 | 50 kW | Kompaktní rychlonabíječka |
+| Hypercharger 200 | 200 kW | Veřejná infrastruktura |
+| Hypercharger 400 | 400 kW | Ultra-rychlé nabíjení |
+
+---
+
+## Klíčové komponenty
+
+### Layout
+
+- **Header** - Sticky navigace s mega menu, jazykový přepínač, CTA
+- **Footer** - Navigace, kontakt, newsletter, sociální sítě
+- **MegaMenu** - Rozbalovací menu s produkty a odkazy
+
+### Sekce
+
+- **HeroVideo** - Fullwidth video s headline a CTA
+- **ProductShowcase** - Carousel produktů s detaily
+- **ACDCSelector** - Výběr mezi AC a DC sekcí
+- **FAQ** - Accordion s častými dotazy
+- **CTA** - Call-to-action sekce
+
+### UI Primitiva
+
+Všechny komponenty používají CVA (class-variance-authority) pro varianty:
+
+```tsx
+import { Button } from '@/components/ui'
+
+<Button variant="primary" size="lg">
+  Poptávka
+</Button>
+```
+
+---
+
+## SEO & AI Optimalizace
+
+### Meta tagy
+
+Každá stránka má lokalizované:
+- Title a description
+- Open Graph tagy
+- hreflang alternates
+- Canonical URL
+
+### Schema.org
+
+JSON-LD strukturovaná data:
+- Organization (všude)
+- Product (produktové stránky)
+- FAQPage (FAQ sekce)
+- BreadcrumbList (podstránky)
+- LocalBusiness (kontakt)
+
+### llms.txt
+
+Soubor `/public/llms.txt` pro AI agenty s přehledem produktů a služeb.
+
+### robots.txt
+
+Explicitně povoluje AI crawlery (GPTBot, ClaudeBot, PerplexityBot).
+
+---
+
+## Scripty
+
+```bash
+npm run dev       # Development server
+npm run build     # Production build
+npm run start     # Production server
+npm run lint      # ESLint
+```
+
+---
+
+## Assety
+
+```
+/public
+├── images/
+│   ├── products/          # Produktové fotky
+│   ├── logos/             # Loga klientů
+│   └── logo-mybox*.svg    # Logo varianty
+├── videos/                # Hero videa
+├── favicon.ico
+├── site.webmanifest
+├── llms.txt              # Pro AI agenty
+└── robots.txt
+```
+
+---
+
+## Deployment
+
+Doporučený hosting: **Vercel**
+
+```bash
+npm run build
+# Deploy na Vercel přes Git integraci
+```
+
+---
+
+## Licence
+
+Proprietární - MyBox.eco

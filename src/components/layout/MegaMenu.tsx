@@ -22,9 +22,12 @@ interface MegaMenuProps {
   isOpen: boolean
   items: NavItem[]
   getTranslation: (key: string) => string
+  parentHref?: string
 }
 
-export function MegaMenu({ isOpen, items, getTranslation }: MegaMenuProps) {
+export function MegaMenu({ isOpen, items, getTranslation, parentHref }: MegaMenuProps) {
+  // Stanice mají normální text, ostatní uppercase
+  const isStations = parentHref?.startsWith('/nabijeci-stanice')
   const pathname = usePathname()
 
   return (
@@ -58,7 +61,8 @@ export function MegaMenu({ isOpen, items, getTranslation }: MegaMenuProps) {
                     href={section.href}
                     className={cn(
                       'group mb-2 flex items-center gap-2 rounded-lg px-3 py-2',
-                      'text-sm font-semibold',
+                      'text-xs font-semibold tracking-wider',
+                      !isStations && 'uppercase',
                       'transition-colors duration-150',
                       pathname === section.href
                         ? 'bg-green-500/10 text-green-400'
@@ -82,7 +86,8 @@ export function MegaMenu({ isOpen, items, getTranslation }: MegaMenuProps) {
                           key={item.href}
                           href={item.href}
                           className={cn(
-                            'block rounded-lg px-3 py-2 text-sm',
+                            'block rounded-lg px-3 py-2 text-xs tracking-wide',
+                            !isStations && 'uppercase',
                             'transition-colors duration-150',
                             pathname === item.href
                               ? 'bg-green-500/10 text-green-400'
