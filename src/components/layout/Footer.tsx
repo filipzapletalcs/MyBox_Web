@@ -41,15 +41,6 @@ const InstagramIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-const YouTubeIcon = ({ className }: { className?: string }) => (
-  <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none">
-    <path
-      d="M17.292 6.25a2.092 2.092 0 00-1.459-1.459C14.65 4.5 10 4.5 10 4.5s-4.65 0-5.833.291A2.092 2.092 0 002.708 6.25 21.875 21.875 0 002.5 10c-.01 1.256.059 2.51.208 3.75a2.092 2.092 0 001.459 1.459C5.35 15.5 10 15.5 10 15.5s4.65 0 5.833-.291a2.092 2.092 0 001.459-1.459c.15-1.24.218-2.494.208-3.75a21.875 21.875 0 00-.208-3.75zM8.333 12.5v-5L12.5 10l-4.167 2.5z"
-      fill="currentColor"
-    />
-  </svg>
-)
-
 export function Footer() {
   const t = useTranslations()
 
@@ -72,10 +63,9 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   const socialLinks = [
-    { icon: LinkedInIcon, href: 'https://linkedin.com/company/mybox', label: 'LinkedIn' },
-    { icon: FacebookIcon, href: 'https://facebook.com/mybox', label: 'Facebook' },
-    { icon: InstagramIcon, href: 'https://instagram.com/mybox', label: 'Instagram' },
-    { icon: YouTubeIcon, href: 'https://youtube.com/mybox', label: 'YouTube' },
+    { icon: LinkedInIcon, href: 'https://www.linkedin.com/company/mybox-charging-stations/', label: 'LinkedIn' },
+    { icon: FacebookIcon, href: 'https://www.facebook.com/myboxchargingstations', label: 'Facebook' },
+    { icon: InstagramIcon, href: 'https://instagram.com/myboxchargingstations', label: 'Instagram' },
   ]
 
   return (

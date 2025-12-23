@@ -53,15 +53,15 @@ export function CompanyInfoSection() {
 
       <div className="container-custom px-6 relative z-10">
         {/* Section header */}
-        <div className="text-center mb-16">
+        <div className="section-header mb-16">
           <FadeIn direction="up" delay={0.1}>
-            <Badge variant="primary" size="lg" className="mb-6">
+            <Badge variant="primary" size="lg">
               {t('company.badge')}
             </Badge>
           </FadeIn>
 
           <FadeIn direction="up" delay={0.2}>
-            <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-text-primary">
               {t('company.title')}
             </h2>
           </FadeIn>

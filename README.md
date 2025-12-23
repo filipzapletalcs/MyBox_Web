@@ -228,28 +228,6 @@ Sjednocené velikosti pro Input, Select, Textarea, Button.
 
 ---
 
-## Produkty
-
-### AC Nabíjecí stanice (vlastní výroba)
-
-| Model | Výkon | Popis |
-|-------|-------|-------|
-| MyBox HOME | 7,4 kW | Domácí wallbox |
-| MyBox PLUS | 22 kW | Smart stanice s cloud připojením |
-| MyBox POST | 2×22 kW | Sloupová duální stanice |
-| MyBox PROFI | 22 kW | Robustní pro komerční použití |
-| Wallbox | 11 kW | Kompaktní nástěnná varianta |
-
-### DC Rychlonabíječky (partner Alpitronic)
-
-| Model | Výkon | Popis |
-|-------|-------|-------|
-| Hypercharger 50 | 50 kW | Kompaktní rychlonabíječka |
-| Hypercharger 200 | 200 kW | Veřejná infrastruktura |
-| Hypercharger 400 | 400 kW | Ultra-rychlé nabíjení |
-
----
-
 ## Klíčové komponenty
 
 ### Layout
@@ -290,18 +268,112 @@ Každá stránka má lokalizované:
 - hreflang alternates
 - Canonical URL
 
-### Schema.org
+### Strukturovaná data (Schema.org JSON-LD)
 
-JSON-LD strukturovaná data:
-- Organization (všude)
-- Product (produktové stránky)
-- FAQPage (FAQ sekce)
-- BreadcrumbList (podstránky)
-- LocalBusiness (kontakt)
+Implementace strukturovaných dat pro lepší indexaci vyhledávači a AI crawlery.
+
+#### Dostupné komponenty
+
+```
+/src/components/seo/
+├── ProductJsonLd.tsx      # Product, Breadcrumb, Organization, FAQ
+└── index.ts               # Barrel export
+```
+
+#### ProductJsonLd
+
+Generuje kompletní Product schema z produktových dat:
+
+```tsx
+import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/seo'
+
+<ProductJsonLd product={productData} url={canonicalUrl} />
+<BreadcrumbJsonLd items={[
+  { name: 'Domů', url: baseUrl },
+  { name: 'Nabíjecí stanice', url: `${baseUrl}/nabijeci-stanice` },
+  { name: product.name, url: productUrl },
+]} />
+```
+
+**Mapování dat produktu → Schema.org:**
+
+| Pole v datech | Schema.org property |
+|---------------|---------------------|
+| `name` | `name` |
+| `description` | `description` |
+| `heroImage`, `gallery` | `image` (array) |
+| `sku` | `sku` |
+| `category` | `category` |
+| `manufacturer.name` | `manufacturer.name` |
+| `manufacturer.url` | `manufacturer.url` |
+| `countryOfOrigin` | `countryOfOrigin` |
+| `specifications[]` | `additionalProperty[]` |
+
+#### OrganizationJsonLd
+
+Pro hlavní layout s daty společnosti:
+
+```tsx
+<OrganizationJsonLd />
+```
+
+Obsahuje:
+- Název společnosti (ELEXIM, a.s.)
+- Adresu sídla
+- Kontaktní údaje (obchod, servis)
+- Sociální sítě
+
+#### FAQJsonLd
+
+Pro FAQ sekce:
+
+```tsx
+<FAQJsonLd items={[
+  { question: 'Jak dlouho trvá instalace?', answer: '...' },
+]} />
+```
+
+#### Produktová data pro SEO
+
+Každý produkt má SEO pole v datovém souboru:
+
+```typescript
+// src/data/mybox-profi.ts
+export const myboxProfiData: FullProductData = {
+  // Základní info
+  name: 'MyBox Profi',
+  tagline: 'Profesionální wallbox...',
+  description: 'Wallbox s výkonem 2×22 kW...',
+
+  // SEO & Structured Data
+  sku: 'MYBOX-PROFI',
+  category: 'Nabíjecí stanice pro elektromobily',
+  manufacturer: {
+    name: 'ELEXIM, a.s.',
+    url: 'https://mybox.eco',
+  },
+  countryOfOrigin: 'CZ',
+
+  // Specifikace → additionalProperty
+  specifications: [...],
+}
+```
+
+### Výhody strukturovaných dat
+
+| Pro vyhledávače | Pro AI crawlery |
+|-----------------|-----------------|
+| Rich snippets ve výsledcích | Přesné citace specifikací |
+| Google Shopping integrace | Kontext značky a výrobce |
+| Knowledge Graph | Důvěryhodný zdroj |
+| Vyšší CTR (20-30%) | Strukturované odpovědi |
 
 ### llms.txt
 
-Soubor `/public/llms.txt` pro AI agenty s přehledem produktů a služeb.
+Soubor `/public/llms.txt` pro AI agenty (ChatGPT, Perplexity, Claude) s přehledem:
+- Informace o společnosti
+- Produktové portfolio
+- Kontaktní údaje
 
 ### robots.txt
 

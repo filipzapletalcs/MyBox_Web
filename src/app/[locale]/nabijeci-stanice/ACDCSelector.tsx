@@ -220,12 +220,12 @@ export function ACDCSelector() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mb-12 text-center md:mb-16"
+          className="section-header mb-12 md:mb-16"
         >
           <h2 className="text-3xl font-bold text-text-primary md:text-4xl lg:text-5xl">
             {t('title')}
           </h2>
-          <p className="mt-4 text-lg text-text-secondary">
+          <p className="text-lg text-text-secondary">
             {t('subtitle')}
           </p>
         </motion.div>

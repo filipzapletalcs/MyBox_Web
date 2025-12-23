@@ -107,12 +107,12 @@ export function SolutionsGrid({ className }: SolutionsGridProps) {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-16 flex flex-col items-center text-center md:mb-20"
+          className="section-header mb-16 md:mb-20"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl">
             {t('title')}
           </h2>
-          <p className="mx-auto max-w-2xl text-lg">
+          <p className="text-lg">
             {t('subtitle')}
           </p>
         </motion.div>

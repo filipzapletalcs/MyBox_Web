@@ -187,17 +187,17 @@ export function ContactForm() {
       <div className="container-custom px-6 relative z-10">
         {/* Section header */}
         <FadeIn direction="up">
-          <div className="text-center mb-20 md:mb-28">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary" style={{ marginBottom: '0.5rem', marginTop: 0 }}>
+          <div className="section-header mb-20 md:mb-28">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-primary">
               {t('hero.title')}
             </h1>
-            <p className="text-lg text-text-secondary leading-relaxed" style={{ marginBottom: 0 }}>
+            <p className="text-lg text-text-secondary leading-relaxed">
               {t('hero.subtitle')}
             </p>
           </div>
         </FadeIn>
 
-        <div className="grid lg:grid-cols-2 gap-0" style={{ marginTop: '4rem' }}>
+        <div className="grid lg:grid-cols-2 gap-0 mt-16">
           {/* Left column - Contact Info */}
           <FadeIn direction="up" delay={0.1}>
             <div className="bg-bg-secondary p-8 md:p-12 lg:p-16 h-full">
