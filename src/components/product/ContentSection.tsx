@@ -5,6 +5,8 @@ import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import type { ContentSectionProps } from '@/types/product'
 
+const easeOut = [0.25, 0.1, 0.25, 1] as const
+
 const textVariants = {
   hidden: { opacity: 0, x: -30 },
   visible: {
@@ -12,7 +14,7 @@ const textVariants = {
     x: 0,
     transition: {
       duration: 0.6,
-      ease: [0.25, 0.1, 0.25, 1],
+      ease: easeOut,
     },
   },
 }
@@ -24,7 +26,7 @@ const imageVariants = {
     x: 0,
     transition: {
       duration: 0.6,
-      ease: [0.25, 0.1, 0.25, 1],
+      ease: easeOut,
     },
   },
 }
@@ -36,7 +38,7 @@ const reversedTextVariants = {
     x: 0,
     transition: {
       duration: 0.6,
-      ease: [0.25, 0.1, 0.25, 1],
+      ease: easeOut,
     },
   },
 }
@@ -48,7 +50,7 @@ const reversedImageVariants = {
     x: 0,
     transition: {
       duration: 0.6,
-      ease: [0.25, 0.1, 0.25, 1],
+      ease: easeOut,
     },
   },
 }
