@@ -498,10 +498,5 @@
     "unavailable": "Nedostupné",
     "noDocuments": "Zatím nejsou k dispozici žádné dokumenty",
     "fallbackNote": "Dokument v požadovaném jazyce není k dispozici. Zobrazena je verze v jazyce {locale}."
-  },
-  "cta": {
-    "heading": "Máte zájem o nabíjecí stanice?",
-    "description": "Kontaktujte nás pro nezávaznou konzultaci. Rádi vám pomůžeme s výběrem správného řešení.",
-    "buttonLabel": "Kontaktujte nás"
   }
 }

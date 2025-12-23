@@ -1,4 +1,5 @@
 import type { Pathnames } from '@/i18n/routing'
+import { getProductImageUrl } from '@/lib/supabase/storage'
 
 // Filtruje dynamické cesty (obsahující [param]) z Pathnames
 // Tímto způsobem routing.ts zůstává jediným zdrojem pravdy
@@ -148,14 +149,14 @@ export const navigationConfig: NavigationConfig = {
 // Product images mapping for mega menu
 export const productImages: Record<string, string> = {
   // AC stations
-  '/nabijeci-stanice/ac/mybox-home': '/images/products/home_studio_web_cam_4-0000.png',
-  '/nabijeci-stanice/ac/mybox-plus': '/images/products/plus_studio_web_cam_4-0000.png',
-  '/nabijeci-stanice/ac/mybox-profi': '/images/products/profi_studio_web_cam_4-0000.png',
-  '/nabijeci-stanice/ac/mybox-post': '/images/products/post_studio_web_cam_4-0000.png',
+  '/nabijeci-stanice/ac/mybox-home': getProductImageUrl('home_studio_web_cam_4-0000.png'),
+  '/nabijeci-stanice/ac/mybox-plus': getProductImageUrl('plus_studio_web_cam_4-0000.png'),
+  '/nabijeci-stanice/ac/mybox-profi': getProductImageUrl('profi_studio_web_cam_4-0000.png'),
+  '/nabijeci-stanice/ac/mybox-post': getProductImageUrl('post_studio_web_cam_4-0000.png'),
   // DC stations
-  '/nabijeci-stanice/dc/alpitronic-hyc400': '/images/products/hyc400_bok-png.webp',
-  '/nabijeci-stanice/dc/alpitronic-hyc200': '/images/products/hyc_200_bok-png.webp',
-  '/nabijeci-stanice/dc/alpitronic-hyc50': '/images/products/hyc50_bok-png.webp',
+  '/nabijeci-stanice/dc/alpitronic-hyc400': getProductImageUrl('hyc400_bok-png.webp'),
+  '/nabijeci-stanice/dc/alpitronic-hyc200': getProductImageUrl('hyc_200_bok-png.webp'),
+  '/nabijeci-stanice/dc/alpitronic-hyc50': getProductImageUrl('hyc50_bok-png.webp'),
 }
 
 // Helper to determine menu type based on href

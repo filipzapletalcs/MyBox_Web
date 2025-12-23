@@ -1,4 +1,5 @@
 import type { FullProductData } from '@/types/product'
+import { getProductImageUrl } from '@/lib/supabase/storage'
 
 export const myboxProfiData: FullProductData = {
   id: 'mybox-profi',
@@ -19,48 +20,48 @@ export const myboxProfiData: FullProductData = {
   },
   countryOfOrigin: 'CZ',
 
-  heroImage: '/images/products/profi/profi-black.png',
+  heroImage: getProductImageUrl('profi/profi-black.png'),
 
   // Gallery
   gallery: [
     {
       id: 'profi-gallery-1',
-      src: '/images/products/profi/gallery/mybox-profi_office-cam-2_3k_final.jpg',
+      src: getProductImageUrl('profi/gallery/mybox-profi_office-cam-2_3k_final.jpg'),
       alt: 'MyBox Profi v kancelářském prostředí',
     },
     {
       id: 'profi-gallery-2',
-      src: '/images/products/profi/gallery/mybox-profi_office-cam-4_3k_final.jpg',
+      src: getProductImageUrl('profi/gallery/mybox-profi_office-cam-4_3k_final.jpg'),
       alt: 'MyBox Profi detail',
     },
     {
       id: 'profi-gallery-3',
-      src: '/images/products/profi/gallery/mybox-profi_office-cam-6_3k_final.jpg',
+      src: getProductImageUrl('profi/gallery/mybox-profi_office-cam-6_3k_final.jpg'),
       alt: 'MyBox Profi boční pohled',
     },
     {
       id: 'profi-gallery-4',
-      src: '/images/products/profi/gallery/mybox-profi_office-cam-8_3k_final.jpg',
+      src: getProductImageUrl('profi/gallery/mybox-profi_office-cam-8_3k_final.jpg'),
       alt: 'MyBox Profi v provozu',
     },
     {
       id: 'profi-gallery-5',
-      src: '/images/products/profi/gallery/mybox_profi_podzemni_garaz_cam-1_3k_final.jpg',
+      src: getProductImageUrl('profi/gallery/mybox_profi_podzemni_garaz_cam-1_3k_final.jpg'),
       alt: 'MyBox Profi v podzemní garáži',
     },
     {
       id: 'profi-gallery-6',
-      src: '/images/products/profi/gallery/mybox_profi_podzemni_garaz_cam-3_3k_final.jpg',
+      src: getProductImageUrl('profi/gallery/mybox_profi_podzemni_garaz_cam-3_3k_final.jpg'),
       alt: 'MyBox Profi v garážovém komplexu',
     },
     {
       id: 'profi-gallery-7',
-      src: '/images/products/profi/gallery/mybox_profi_podzemni_garaz_cam-4_3k_final.jpg',
+      src: getProductImageUrl('profi/gallery/mybox_profi_podzemni_garaz_cam-4_3k_final.jpg'),
       alt: 'MyBox Profi instalace',
     },
     {
       id: 'profi-gallery-8',
-      src: '/images/products/profi/gallery/mybox_profi_individual.png',
+      src: getProductImageUrl('profi/gallery/mybox_profi_individual.png'),
       alt: 'MyBox Profi individuální design',
     },
   ],
@@ -70,17 +71,17 @@ export const myboxProfiData: FullProductData = {
     black: {
       id: 'black',
       label: 'Černé sklo',
-      image: '/images/products/profi/profi-black.png',
+      image: getProductImageUrl('profi/profi-black.png'),
     },
     white: {
       id: 'white',
       label: 'Bílé sklo',
-      image: '/images/products/profi/profi-white.webp',
+      image: getProductImageUrl('profi/profi-white.webp'),
     },
   },
 
   // Front view for feature showcase
-  frontImage: '/images/products/profi/profi-front.png',
+  frontImage: getProductImageUrl('profi/profi-front.png'),
 
   // Feature points for showcase
   featurePoints: [
@@ -189,7 +190,7 @@ export const myboxProfiData: FullProductData = {
       subtitle: 'Pro business',
       content: 'MyBox Profi je navržen pro náročné firemní prostředí. Díky dvěma nezávislým nabíjecím bodům s výkonem 22 kW umožňuje současné dobíjení dvou elektromobilů. Integrovaný elektroměr s MID certifikací zajišťuje přesné měření spotřeby pro účtování.',
       image: {
-        src: '/images/products/profi/gallery/mybox-profi_office-cam-2_3k_final.jpg',
+        src: getProductImageUrl('profi/gallery/mybox-profi_office-cam-2_3k_final.jpg'),
         alt: 'MyBox Profi v kancelářském prostředí',
       },
     },
@@ -198,7 +199,7 @@ export const myboxProfiData: FullProductData = {
       subtitle: 'Kvalita a odolnost',
       content: 'Kombinace kaleného skla a lakované nebo nerezové oceli zajišťuje maximální odolnost proti nepříznivým povětrnostním podmínkám i mechanickému poškození. Krytí IP54/IK10 garantuje spolehlivý provoz v náročných podmínkách od -30°C do +50°C.',
       image: {
-        src: '/images/products/profi/gallery/mybox_profi_podzemni_garaz_cam-3_3k_final.jpg',
+        src: getProductImageUrl('profi/gallery/mybox_profi_podzemni_garaz_cam-3_3k_final.jpg'),
         alt: 'MyBox Profi v garážovém komplexu',
       },
     },

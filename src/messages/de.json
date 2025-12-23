@@ -498,10 +498,5 @@
     "unavailable": "Nicht verfügbar",
     "noDocuments": "Noch keine Dokumente verfügbar",
     "fallbackNote": "Dokument in der angeforderten Sprache nicht verfügbar. Es wird die {locale} Version angezeigt."
-  },
-  "cta": {
-    "heading": "Interesse an Ladestationen?",
-    "description": "Kontaktieren Sie uns für eine kostenlose Beratung. Wir helfen Ihnen bei der Auswahl der richtigen Lösung.",
-    "buttonLabel": "Kontaktieren Sie uns"
   }
 }

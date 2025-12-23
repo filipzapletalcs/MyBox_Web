@@ -37,10 +37,18 @@ export function getArticleImageUrl(path: string): string {
 }
 
 /**
- * Get media URL (logos, icons, etc.)
+ * Get media URL (logos, icons, videos, etc.)
  * @param path - Path within media bucket (e.g., 'logos/volvo.svg')
  */
 export function getMediaUrl(path: string): string {
+  return getStorageUrl('media', path)
+}
+
+/**
+ * Get video URL from media bucket
+ * @param path - Path within media bucket (e.g., 'videos/hero-stations.mp4')
+ */
+export function getVideoUrl(path: string): string {
   return getStorageUrl('media', path)
 }
 

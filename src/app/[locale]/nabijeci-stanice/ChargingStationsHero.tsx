@@ -5,13 +5,14 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { Button, ArrowRightIcon } from '@/components/ui'
 import { HeroSection } from '@/components/sections'
+import { getVideoUrl } from '@/lib/supabase/storage'
 
 export function ChargingStationsHero() {
   const t = useTranslations('chargingStations.hero')
 
   return (
     <HeroSection
-      videoSrc="/videos/hero-stations.mp4"
+      videoSrc={getVideoUrl('videos/hero-stations.mp4')}
       height="full"
       align="left"
     >

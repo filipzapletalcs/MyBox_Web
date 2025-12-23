@@ -13,6 +13,7 @@ import {
   DownloadButton,
 } from '@/components/product'
 import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/seo'
+import { getVideoUrl } from '@/lib/supabase/storage'
 import type { FullProductData } from '@/types/product'
 
 interface ProductPageContentProps {
@@ -46,7 +47,7 @@ export function ProductPageContent({
 
       {/* Hero Section */}
       <HeroSection
-        videoSrc={product.heroVideo || '/videos/hero-stations.mp4'}
+        videoSrc={product.heroVideo || getVideoUrl('videos/hero-stations.mp4')}
         height="full"
         align="left"
       >

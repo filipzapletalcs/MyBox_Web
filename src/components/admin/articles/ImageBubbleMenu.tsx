@@ -111,11 +111,6 @@ export function ImageBubbleMenu({ editor }: ImageBubbleMenuProps) {
   return (
     <BubbleMenu
       editor={editor}
-      tippyOptions={{
-        duration: 150,
-        placement: 'top',
-        offset: [0, 8],
-      }}
       shouldShow={({ editor }) => editor.isActive('image')}
       className="flex items-center gap-0.5 rounded-lg border border-border-subtle bg-bg-secondary p-1 shadow-xl"
     >
