@@ -382,6 +382,22 @@
     "description": "Schreiben Sie uns oder rufen Sie an. Unser Team steht Ihnen jederzeit zur Verfügung.",
     "button": "Kontaktieren Sie uns"
   },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Neuigkeiten und Tipps aus der Welt der Elektromobilität",
+    "allCategories": "Alle",
+    "readMore": "Artikel lesen",
+    "readingTime": "Min. Lesezeit",
+    "publishedAt": "Veröffentlicht",
+    "author": "Autor",
+    "relatedArticles": "Ähnliche Artikel",
+    "noArticles": "Keine Artikel vorhanden",
+    "backToBlog": "Zurück zum Blog",
+    "share": "Teilen",
+    "tableOfContents": "Inhaltsverzeichnis",
+    "category": "Kategorie",
+    "tags": "Tags"
+  },
   "contactPage": {
     "hero": {
       "badge": "Kontaktieren Sie uns",

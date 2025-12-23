@@ -493,6 +493,37 @@ npm run dev
 npx supabase gen types typescript --local > src/types/database.ts
 ```
 
+### Auto-překlady (OpenAI GPT)
+
+CMS obsahuje funkci automatického překladu obsahu z češtiny do ostatních jazyků.
+
+**Architektura:**
+
+```
+src/
+├── config/locales.ts              # Centrální konfigurace jazyků
+├── lib/openai/
+│   ├── client.ts                  # OpenAI client
+│   └── translate.ts               # Překladové funkce
+├── app/api/translate/route.ts     # Translation API
+└── components/admin/ui/
+    └── TranslateButton.tsx        # Reusable tlačítko
+```
+
+**Použití v admin panelu:**
+
+Tlačítko "Přeložit do EN/DE" vedle LocaleTabs automaticky přeloží všechna textová pole.
+
+**Přidání nového jazyka:**
+
+1. Upravit `src/config/locales.ts`:
+   ```typescript
+   export const LOCALES = ['cs', 'en', 'de', 'pl'] as const
+   ```
+2. Přidat překlady do `LocaleTabs` a databáze
+
+📄 **Dokumentace:** [.docs/AUTO_TRANSLATE_IMPLEMENTATION.md](.docs/AUTO_TRANSLATE_IMPLEMENTATION.md)
+
 📄 **Plán:** [CMS_IMPLEMENTATION_PLAN.md](./CMS_IMPLEMENTATION_PLAN.md)
 
 ---
@@ -510,13 +541,35 @@ npm run lint      # ESLint
 
 ## Assety
 
+### Supabase Storage
+
+Média jsou uložena v Supabase Storage buckety:
+
+| Bucket | Obsah | Max velikost |
+|--------|-------|--------------|
+| `product-images` | Produktové fotky, galerie | 10 MB |
+| `article-images` | Obrázky článků | 5 MB |
+| `media` | Videa, loga, ostatní | 50 MB |
+
+**Helper funkce:**
+
+```typescript
+import { getProductImageUrl, getMediaUrl } from '@/lib/supabase/storage'
+
+// Produktový obrázek
+getProductImageUrl('profi/gallery/image.jpg')
+// → http://127.0.0.1:54321/storage/v1/object/public/product-images/profi/gallery/image.jpg
+
+// Video/logo
+getMediaUrl('videos/hero.mp4')
+```
+
+### Statické soubory
+
 ```
 /public
 ├── images/
-│   ├── products/          # Produktové fotky
-│   ├── logos/             # Loga klientů
 │   └── logo-mybox*.svg    # Logo varianty
-├── videos/                # Hero videa
 ├── favicon.ico
 ├── site.webmanifest
 ├── llms.txt              # Pro AI agenty

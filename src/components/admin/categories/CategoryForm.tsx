@@ -8,6 +8,8 @@ import { z } from 'zod'
 import { Save, ArrowLeft } from 'lucide-react'
 import { Button, Input, Textarea, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, Card } from '@/components/ui'
 import { LocaleTabs, type Locale, type LocaleStatus } from '@/components/admin/ui/LocaleTabs'
+import { TranslateButton } from '@/components/admin/ui/TranslateButton'
+import { type Locale as ConfigLocale } from '@/config/locales'
 
 // Form schema
 const categoryFormSchema = z.object({
@@ -116,8 +118,8 @@ export function CategoryForm({
 
   // Calculate locale status
   const getLocaleStatus = (locale: Locale): LocaleStatus => {
-    const t = translations[locale]
-    if (!t.name) return 'empty'
+    const t = translations?.[locale]
+    if (!t || !t.name) return 'empty'
     return 'complete'
   }
 
@@ -186,16 +188,31 @@ export function CategoryForm({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Main content - 2 columns */}
         <div className="space-y-6 lg:col-span-2">
-          {/* Locale tabs */}
-          <LocaleTabs
-            activeLocale={activeLocale}
-            onLocaleChange={setActiveLocale}
-            localeStatus={localeStatus}
-          />
+          {/* Locale tabs + Translate button */}
+          <div className="flex items-center justify-between gap-4">
+            <LocaleTabs
+              activeLocale={activeLocale}
+              onLocaleChange={setActiveLocale}
+              localeStatus={localeStatus}
+            />
+            <TranslateButton
+              sourceTexts={{
+                name: watch('translations.cs.name') || '',
+                description: watch('translations.cs.description') || '',
+              }}
+              onTranslated={(locale: ConfigLocale, field: string, value: string) => {
+                setValue(`translations.${locale}.${field}` as keyof CategoryFormData, value, { shouldDirty: true })
+              }}
+              disabled={!watch('translations.cs.name')}
+              context={`Category for blog articles about EV charging stations. Category name: "${watch('translations.cs.name') || ''}"`}
+              tipTapFields={[]}
+            />
+          </div>
 
           {/* Name */}
           <div>
             <Controller
+              key={`name-${activeLocale}`}
               name={`translations.${activeLocale}.name`}
               control={control}
               render={({ field }) => (
@@ -216,6 +233,7 @@ export function CategoryForm({
           {/* Description */}
           <div>
             <Controller
+              key={`description-${activeLocale}`}
               name={`translations.${activeLocale}.description`}
               control={control}
               render={({ field }) => (

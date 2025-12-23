@@ -18,7 +18,7 @@ const BUCKET_LIMITS: Record<BucketName, number> = {
   media: 50 * 1024 * 1024, // 50MB
 }
 
-// GET /api/media - Seznam souborů
+// GET /api/media - Seznam souborů (z media tabulky)
 export async function GET(request: NextRequest) {
   const supabase = await createClient()
 
@@ -31,38 +31,56 @@ export async function GET(request: NextRequest) {
   }
 
   const { searchParams } = new URL(request.url)
-  const bucket = (searchParams.get('bucket') || 'media') as BucketName
-  const path = searchParams.get('path') || ''
+  const bucket = searchParams.get('bucket') as BucketName | 'all' | null
 
-  if (!Object.keys(BUCKET_LIMITS).includes(bucket)) {
-    return NextResponse.json({ error: 'Invalid bucket' }, { status: 400 })
+  // Read from media table
+  let query = supabase
+    .from('media')
+    .select('*')
+    .order('created_at', { ascending: false })
+    .limit(200)
+
+  // Filter by bucket (if specified and not 'all' or 'media')
+  // 'media' = show all files (for backwards compatibility with "Všechna média")
+  if (bucket && bucket !== 'media' && bucket !== 'all') {
+    if (!Object.keys(BUCKET_LIMITS).includes(bucket)) {
+      return NextResponse.json({ error: 'Invalid bucket' }, { status: 400 })
+    }
+    query = query.like('file_path', `${bucket}/%`)
   }
+  // When bucket is 'media' or 'all' or not specified, show ALL files
 
-  const { data, error } = await supabase.storage.from(bucket).list(path, {
-    limit: 100,
-    sortBy: { column: 'created_at', order: 'desc' },
-  })
+  const { data, error } = await query
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  // Add public URLs to files
-  const filesWithUrls = data
-    .filter((item) => item.id) // Filter out folders
-    .map((file) => {
-      const filePath = path ? `${path}/${file.name}` : file.name
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from(bucket).getPublicUrl(filePath)
+  // Transform to expected format with public URLs
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:54321'
 
-      return {
-        ...file,
-        url: publicUrl,
-        bucket,
-        path: filePath,
-      }
-    })
+  const filesWithUrls = (data || []).map((file) => {
+    // file_path is like "product-images/profi/gallery/image.jpg"
+    // Extract bucket and path
+    const parts = file.file_path.split('/')
+    const fileBucket = parts[0]
+    const filePath = parts.slice(1).join('/')
+
+    const publicUrl = `${supabaseUrl}/storage/v1/object/public/${file.file_path}`
+
+    return {
+      id: file.id,
+      name: file.filename,
+      url: publicUrl,
+      bucket: fileBucket,
+      path: filePath,
+      created_at: file.created_at,
+      metadata: {
+        size: file.file_size,
+        mimetype: file.mime_type,
+      },
+    }
+  })
 
   return NextResponse.json({ data: filesWithUrls })
 }

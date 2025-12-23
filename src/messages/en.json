@@ -382,6 +382,22 @@
     "description": "Write to us or call. Our team is always available for you.",
     "button": "Contact us"
   },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "News and tips from the world of electromobility",
+    "allCategories": "All",
+    "readMore": "Read article",
+    "readingTime": "min read",
+    "publishedAt": "Published",
+    "author": "Author",
+    "relatedArticles": "Related articles",
+    "noArticles": "No articles to display",
+    "backToBlog": "Back to blog",
+    "share": "Share",
+    "tableOfContents": "Table of contents",
+    "category": "Category",
+    "tags": "Tags"
+  },
   "contactPage": {
     "hero": {
       "badge": "Contact Us",

@@ -8,6 +8,8 @@ import { z } from 'zod'
 import { Save, ArrowLeft, Plus, Trash2, GripVertical } from 'lucide-react'
 import { Button, Input, Textarea, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, Card } from '@/components/ui'
 import { LocaleTabs, type Locale, type LocaleStatus } from '@/components/admin/ui/LocaleTabs'
+import { TranslateButton } from '@/components/admin/ui/TranslateButton'
+import { type Locale as ConfigLocale } from '@/config/locales'
 
 // Form schema
 const productFormSchema = z.object({
@@ -175,8 +177,8 @@ export function ProductForm({
 
   // Calculate locale status
   const getLocaleStatus = (locale: Locale): LocaleStatus => {
-    const t = translations[locale]
-    if (!t.name) return 'empty'
+    const t = translations?.[locale]
+    if (!t || !t.name) return 'empty'
     return 'complete'
   }
 
@@ -247,16 +249,34 @@ export function ProductForm({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Main content - 2 columns */}
         <div className="space-y-6 lg:col-span-2">
-          {/* Locale tabs */}
-          <LocaleTabs
-            activeLocale={activeLocale}
-            onLocaleChange={setActiveLocale}
-            localeStatus={localeStatus}
-          />
+          {/* Locale tabs + Translate button */}
+          <div className="flex items-center justify-between gap-4">
+            <LocaleTabs
+              activeLocale={activeLocale}
+              onLocaleChange={setActiveLocale}
+              localeStatus={localeStatus}
+            />
+            <TranslateButton
+              sourceTexts={{
+                name: watch('translations.cs.name') || '',
+                tagline: watch('translations.cs.tagline') || '',
+                description: watch('translations.cs.description') || '',
+                seo_title: watch('translations.cs.seo_title') || '',
+                seo_description: watch('translations.cs.seo_description') || '',
+              }}
+              onTranslated={(locale: ConfigLocale, field: string, value: string) => {
+                setValue(`translations.${locale}.${field}` as keyof ProductFormData, value, { shouldDirty: true })
+              }}
+              disabled={!watch('translations.cs.name')}
+              context={`EV charging station product. Product name: "${watch('translations.cs.name') || ''}" Tagline: "${watch('translations.cs.tagline') || ''}"`}
+              tipTapFields={[]}
+            />
+          </div>
 
           {/* Name */}
           <Card className="p-6">
             <Controller
+              key={`name-${activeLocale}`}
               name={`translations.${activeLocale}.name`}
               control={control}
               render={({ field }) => (
@@ -278,6 +298,7 @@ export function ProductForm({
           {/* Tagline */}
           <Card className="p-6">
             <Controller
+              key={`tagline-${activeLocale}`}
               name={`translations.${activeLocale}.tagline`}
               control={control}
               render={({ field }) => (
@@ -295,6 +316,7 @@ export function ProductForm({
           {/* Description */}
           <Card className="p-6">
             <Controller
+              key={`description-${activeLocale}`}
               name={`translations.${activeLocale}.description`}
               control={control}
               render={({ field }) => (
@@ -314,6 +336,7 @@ export function ProductForm({
             <h3 className="mb-4 text-lg font-medium text-text-primary">SEO</h3>
             <div className="space-y-4">
               <Controller
+                key={`seo_title-${activeLocale}`}
                 name={`translations.${activeLocale}.seo_title`}
                 control={control}
                 render={({ field }) => (
@@ -327,6 +350,7 @@ export function ProductForm({
                 )}
               />
               <Controller
+                key={`seo_description-${activeLocale}`}
                 name={`translations.${activeLocale}.seo_description`}
                 control={control}
                 render={({ field }) => (

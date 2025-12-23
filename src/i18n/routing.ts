@@ -246,6 +246,11 @@ export const routing = defineRouting({
       en: '/blog/[slug]',
       de: '/blog/[slug]',
     },
+    '/blog/kategorie/[slug]': {
+      cs: '/blog/kategorie/[slug]',
+      en: '/blog/category/[slug]',
+      de: '/blog/kategorie/[slug]',
+    },
 
     // === O NÁS ===
     '/o-nas': {

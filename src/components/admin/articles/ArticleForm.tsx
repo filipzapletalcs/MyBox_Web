@@ -8,7 +8,9 @@ import { z } from 'zod'
 import { Save, Send, ArrowLeft } from 'lucide-react'
 import { Button, Input, Textarea, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, Card } from '@/components/ui'
 import { LocaleTabs, type Locale, type LocaleStatus } from '@/components/admin/ui/LocaleTabs'
+import { TranslateButton } from '@/components/admin/ui/TranslateButton'
 import { ArticleEditor } from './ArticleEditor'
+import { type Locale as ConfigLocale } from '@/config/locales'
 
 // Form schema
 const articleFormSchema = z.object({
@@ -156,8 +158,8 @@ export function ArticleForm({
 
   // Calculate locale status
   const getLocaleStatus = (locale: Locale): LocaleStatus => {
-    const t = translations[locale]
-    if (!t.title && !t.content) return 'empty'
+    const t = translations?.[locale]
+    if (!t || (!t.title && !t.content)) return 'empty'
     if (t.title && t.content) return 'complete'
     return 'partial'
   }
@@ -236,16 +238,34 @@ export function ArticleForm({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Main content - 2 columns */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Locale tabs */}
-          <LocaleTabs
-            activeLocale={activeLocale}
-            onLocaleChange={setActiveLocale}
-            localeStatus={localeStatus}
-          />
+          {/* Locale tabs + Translate button */}
+          <div className="flex items-center justify-between gap-4">
+            <LocaleTabs
+              activeLocale={activeLocale}
+              onLocaleChange={setActiveLocale}
+              localeStatus={localeStatus}
+            />
+            <TranslateButton
+              sourceTexts={{
+                title: watch('translations.cs.title') || '',
+                excerpt: watch('translations.cs.excerpt') || '',
+                content: watch('translations.cs.content') || '',
+                seo_title: watch('translations.cs.seo_title') || '',
+                seo_description: watch('translations.cs.seo_description') || '',
+              }}
+              onTranslated={(locale: ConfigLocale, field: string, value: string) => {
+                setValue(`translations.${locale}.${field}` as keyof ArticleFormData, value, { shouldDirty: true })
+              }}
+              disabled={!watch('translations.cs.title')}
+              context={`Blog article about EV charging stations. Title: "${watch('translations.cs.title') || ''}" Excerpt: "${watch('translations.cs.excerpt') || ''}"`}
+              tipTapFields={['content']}
+            />
+          </div>
 
           {/* Title */}
           <div>
             <Controller
+              key={`title-${activeLocale}`}
               name={`translations.${activeLocale}.title`}
               control={control}
               render={({ field }) => (
@@ -266,6 +286,7 @@ export function ArticleForm({
           {/* Excerpt */}
           <div>
             <Controller
+              key={`excerpt-${activeLocale}`}
               name={`translations.${activeLocale}.excerpt`}
               control={control}
               render={({ field }) => (
@@ -286,6 +307,7 @@ export function ArticleForm({
               Obsah
             </label>
             <Controller
+              key={`content-${activeLocale}`}
               name={`translations.${activeLocale}.content`}
               control={control}
               render={({ field }) => (
@@ -305,6 +327,7 @@ export function ArticleForm({
             </h3>
             <div className="space-y-4">
               <Controller
+                key={`seo_title-${activeLocale}`}
                 name={`translations.${activeLocale}.seo_title`}
                 control={control}
                 render={({ field }) => (
@@ -318,6 +341,7 @@ export function ArticleForm({
                 )}
               />
               <Controller
+                key={`seo_description-${activeLocale}`}
                 name={`translations.${activeLocale}.seo_description`}
                 control={control}
                 render={({ field }) => (

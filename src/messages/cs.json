@@ -470,5 +470,21 @@
       "ourAddress": "Naše adresa",
       "getDirections": "Navigovat"
     }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Novinky a tipy ze světa elektromobility",
+    "allCategories": "Vše",
+    "readMore": "Číst článek",
+    "readingTime": "min čtení",
+    "publishedAt": "Publikováno",
+    "author": "Autor",
+    "relatedArticles": "Související články",
+    "noArticles": "Žádné články k zobrazení",
+    "backToBlog": "Zpět na blog",
+    "share": "Sdílet",
+    "tableOfContents": "Obsah článku",
+    "category": "Kategorie",
+    "tags": "Štítky"
   }
 }

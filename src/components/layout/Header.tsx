@@ -30,7 +30,9 @@ export function Header() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null)
 
   // Pages with light background (no dark hero) - need dark text in light mode
-  const isLightBgPage = pathname === '/kontakt'
+  const isLightBgPage = pathname === '/kontakt' ||
+    pathname === '/blog' ||
+    pathname.startsWith('/blog/kategorie')
 
   // Refs for hover timeout management
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
