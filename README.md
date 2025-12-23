@@ -381,6 +381,77 @@ Explicitně povoluje AI crawlery (GPTBot, ClaudeBot, PerplexityBot).
 
 ---
 
+## CMS (Content Management System)
+
+Pro správu obsahu webu (blog, produkty, media) používáme **self-hosted Supabase** běžící na firemním serveru v Docker kontejnerech.
+
+### Technologie
+
+| Komponenta | Technologie |
+|------------|-------------|
+| **Databáze** | PostgreSQL 15 + pgvector |
+| **Auth** | Supabase Auth (JWT) |
+| **Storage** | Supabase Storage (S3-compatible) |
+| **Rich Text** | TipTap |
+| **AI Chatbot** | OpenAI embeddings + pgvector |
+| **Deployment** | Docker Compose |
+
+### Funkce
+
+- **Blog management** - Články s kategoriemi, tagy a rich text editorem
+- **Product management** - Technické specifikace, vlastnosti, obrázky
+- **Media library** - Upload a správa obrázků
+- **User authentication** - Role-based access (admin, editor)
+- **AI Chatbot knowledge base** - Sémantické vyhledávání v obsahu
+- **Multi-language** - Podpora CS, EN, DE
+
+### Výhody self-hosted
+
+| Aspekt | Benefit |
+|--------|---------|
+| **Náklady** | Nulové měsíční poplatky |
+| **Data** | Zůstávají v ČR (GDPR) |
+| **Kontrola** | 100% vlastnictví infrastruktury |
+| **AI Ready** | pgvector pro chatbot |
+
+### Implementace
+
+Kompletní implementační plán včetně:
+- Docker Compose konfigurace
+- SQL schéma s RLS policies
+- Next.js integrace
+- AI chatbot API
+- Backup skripty
+
+📄 **Viz:** [CMS_IMPLEMENTATION_PLAN.md](./CMS_IMPLEMENTATION_PLAN.md)
+
+### Struktura (plánovaná)
+
+```
+/src
+├── app/
+│   ├── [locale]/
+│   │   └── admin/              # CMS administrace
+│   │       ├── layout.tsx      # Admin layout s auth
+│   │       ├── page.tsx        # Dashboard
+│   │       ├── posts/          # Správa článků
+│   │       ├── products/       # Správa produktů
+│   │       ├── media/          # Media library
+│   │       └── knowledge/      # AI knowledge base
+│   └── api/
+│       ├── chat/               # AI chatbot endpoint
+│       └── webhooks/           # Supabase webhooks
+├── lib/
+│   └── supabase/
+│       ├── client.ts           # Browser client
+│       ├── server.ts           # Server client
+│       └── admin.ts            # Admin client (service role)
+└── types/
+    └── database.ts             # Generated TypeScript types
+```
+
+---
+
 ## Scripty
 
 ```bash
