@@ -35,6 +35,22 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     openGraph: {
       title: `${title} | Blog | MyBox.eco`,
       description,
+      type: 'website',
+      locale: locale === 'cs' ? 'cs_CZ' : locale === 'de' ? 'de_DE' : 'en_US',
+      siteName: 'MyBox.eco',
+    },
+    twitter: {
+      card: 'summary',
+      title: `${title} | Blog`,
+      description,
+    },
+    alternates: {
+      canonical: `https://mybox.eco/blog/kategorie/${slug}`,
+      languages: {
+        cs: `https://mybox.eco/blog/kategorie/${slug}`,
+        en: `https://mybox.eco/en/blog/category/${slug}`,
+        de: `https://mybox.eco/de/blog/kategorie/${slug}`,
+      },
     },
   }
 }

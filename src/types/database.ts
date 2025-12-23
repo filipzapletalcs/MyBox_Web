@@ -229,6 +229,54 @@ export type Database = {
           },
         ]
       }
+      contact_submissions: {
+        Row: {
+          company: string
+          contact_person: string
+          created_at: string | null
+          email: string
+          id: string
+          is_read: boolean | null
+          location: string
+          message: string
+          notes: string | null
+          phone: string | null
+          segment: string
+          station_type: string
+          updated_at: string | null
+        }
+        Insert: {
+          company: string
+          contact_person: string
+          created_at?: string | null
+          email: string
+          id?: string
+          is_read?: boolean | null
+          location: string
+          message: string
+          notes?: string | null
+          phone?: string | null
+          segment: string
+          station_type: string
+          updated_at?: string | null
+        }
+        Update: {
+          company?: string
+          contact_person?: string
+          created_at?: string | null
+          email?: string
+          id?: string
+          is_read?: boolean | null
+          location?: string
+          message?: string
+          notes?: string | null
+          phone?: string | null
+          segment?: string
+          station_type?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       document_categories: {
         Row: {
           created_at: string | null
@@ -1075,6 +1123,77 @@ export type Database = {
           id?: string
           name?: string
           slug?: string
+        }
+        Relationships: []
+      }
+      team_member_translations: {
+        Row: {
+          description: string | null
+          id: string
+          locale: string
+          name: string
+          position: string
+          team_member_id: string
+        }
+        Insert: {
+          description?: string | null
+          id?: string
+          locale: string
+          name: string
+          position: string
+          team_member_id: string
+        }
+        Update: {
+          description?: string | null
+          id?: string
+          locale?: string
+          name?: string
+          position?: string
+          team_member_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "team_member_translations_team_member_id_fkey"
+            columns: ["team_member_id"]
+            isOneToOne: false
+            referencedRelation: "team_members"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      team_members: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          linkedin_url: string | null
+          phone: string | null
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          linkedin_url?: string | null
+          phone?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          linkedin_url?: string | null
+          phone?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }

@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next'
+import { createClient } from '@/lib/supabase/server'
 import { routing, locales, defaultLocale, type Locale } from '@/i18n/routing'
 
 const baseUrl = 'https://mybox.eco'
@@ -38,13 +39,31 @@ function generateAlternates(path: string): Record<string, string> {
   return alternates
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  // Get all static paths from routing config (exclude dynamic routes like [slug])
+// Generate alternates for dynamic paths (not in routing config)
+function generateDynamicAlternates(basePath: string, slug: string): Record<string, string> {
+  const alternates: Record<string, string> = {}
+
+  for (const locale of locales) {
+    if (locale === defaultLocale) {
+      alternates[locale] = `${baseUrl}${basePath}/${slug}`
+    } else {
+      alternates[locale] = `${baseUrl}/${locale}${basePath}/${slug}`
+    }
+  }
+
+  return alternates
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const supabase = await createClient()
+  const entries: MetadataRoute.Sitemap = []
+
+  // ============================================
+  // 1. STATIC PAGES from routing config
+  // ============================================
   const staticPaths = Object.keys(routing.pathnames).filter(
     path => !path.includes('[')
   )
-
-  const entries: MetadataRoute.Sitemap = []
 
   for (const path of staticPaths) {
     // Generate entry for each locale
@@ -58,6 +77,147 @@ export default function sitemap(): MetadataRoute.Sitemap {
           languages: generateAlternates(path),
         },
       })
+    }
+  }
+
+  // ============================================
+  // 2. PRODUCTS from database
+  // ============================================
+  const { data: products } = await supabase
+    .from('products')
+    .select('slug, type, updated_at')
+    .eq('is_active', true)
+
+  if (products) {
+    for (const product of products) {
+      const category = product.type === 'ac_mybox' ? 'ac' : 'dc'
+      const basePath = `/nabijeci-stanice/${category}`
+
+      for (const locale of locales) {
+        const localizedBasePath = locale === 'cs'
+          ? basePath
+          : locale === 'en'
+            ? `/charging-stations/${category}`
+            : `/ladestationen/${category}`
+
+        const url = locale === defaultLocale
+          ? `${baseUrl}${localizedBasePath}/${product.slug}`
+          : `${baseUrl}/${locale}${localizedBasePath}/${product.slug}`
+
+        entries.push({
+          url,
+          lastModified: product.updated_at ? new Date(product.updated_at) : new Date(),
+          changeFrequency: 'monthly',
+          priority: 0.8,
+          alternates: {
+            languages: generateDynamicAlternates(localizedBasePath, product.slug),
+          },
+        })
+      }
+    }
+  }
+
+  // ============================================
+  // 3. BLOG ARTICLES from database
+  // ============================================
+  const { data: articles } = await supabase
+    .from('articles')
+    .select('slug, updated_at, published_at')
+    .eq('status', 'published')
+
+  if (articles) {
+    for (const article of articles) {
+      for (const locale of locales) {
+        const localizedBasePath = locale === 'cs'
+          ? '/blog'
+          : locale === 'en'
+            ? '/blog'
+            : '/blog'
+
+        const url = locale === defaultLocale
+          ? `${baseUrl}${localizedBasePath}/${article.slug}`
+          : `${baseUrl}/${locale}${localizedBasePath}/${article.slug}`
+
+        entries.push({
+          url,
+          lastModified: article.updated_at
+            ? new Date(article.updated_at)
+            : article.published_at
+              ? new Date(article.published_at)
+              : new Date(),
+          changeFrequency: 'weekly',
+          priority: 0.7,
+          alternates: {
+            languages: generateDynamicAlternates(localizedBasePath, article.slug),
+          },
+        })
+      }
+    }
+  }
+
+  // ============================================
+  // 4. BLOG CATEGORIES from database
+  // ============================================
+  const { data: categories } = await supabase
+    .from('categories')
+    .select('slug')
+
+  if (categories) {
+    for (const category of categories) {
+      for (const locale of locales) {
+        const localizedBasePath = locale === 'cs'
+          ? '/blog/kategorie'
+          : locale === 'en'
+            ? '/blog/category'
+            : '/blog/kategorie'
+
+        const url = locale === defaultLocale
+          ? `${baseUrl}${localizedBasePath}/${category.slug}`
+          : `${baseUrl}/${locale}${localizedBasePath}/${category.slug}`
+
+        entries.push({
+          url,
+          lastModified: new Date(),
+          changeFrequency: 'weekly',
+          priority: 0.6,
+          alternates: {
+            languages: generateDynamicAlternates(localizedBasePath, category.slug),
+          },
+        })
+      }
+    }
+  }
+
+  // ============================================
+  // 5. DOCUMENTS from database
+  // ============================================
+  const { data: documents } = await supabase
+    .from('documents')
+    .select('slug, updated_at')
+
+  if (documents) {
+    for (const doc of documents) {
+      for (const locale of locales) {
+        const localizedBasePath = locale === 'cs'
+          ? '/dokumenty'
+          : locale === 'en'
+            ? '/documents'
+            : '/dokumente'
+
+        const url = locale === defaultLocale
+          ? `${baseUrl}${localizedBasePath}/${doc.slug}`
+          : `${baseUrl}/${locale}${localizedBasePath}/${doc.slug}`
+
+        entries.push({
+          url,
+          lastModified: doc.updated_at ? new Date(doc.updated_at) : new Date(),
+          changeFrequency: 'monthly',
+          priority: 0.5,
+          alternates: {
+            languages: generateDynamicAlternates(localizedBasePath, doc.slug),
+          },
+        })
+      }
     }
   }
 
