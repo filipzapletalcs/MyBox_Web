@@ -139,6 +139,7 @@ export const navigationConfig: NavigationConfig = {
       { label: 'footer.links.aboutUs', href: '/o-nas' },
       { label: 'footer.links.references', href: '/reference' },
       { label: 'footer.links.blog', href: '/blog' },
+      { label: 'footer.links.documents', href: '/dokumenty' },
       { label: 'footer.links.contact', href: '/kontakt' },
     ],
   },

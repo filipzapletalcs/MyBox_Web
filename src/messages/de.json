@@ -298,6 +298,7 @@
       "aboutUs": "Über das Unternehmen",
       "references": "Referenzen & Projekte",
       "blog": "E-Mobilität Blog",
+      "documents": "Downloads",
       "contact": "Kontaktieren Sie uns"
     }
   },
@@ -486,5 +487,21 @@
       "ourAddress": "Unsere Adresse",
       "getDirections": "Route planen"
     }
+  },
+  "documents": {
+    "title": "Dokumente zum Download",
+    "subtitle": "Datenblätter, Installationsanleitungen und weitere Materialien",
+    "file": "Datei",
+    "size": "Größe",
+    "download": "Herunterladen",
+    "preview": "Vorschau",
+    "unavailable": "Nicht verfügbar",
+    "noDocuments": "Noch keine Dokumente verfügbar",
+    "fallbackNote": "Dokument in der angeforderten Sprache nicht verfügbar. Es wird die {locale} Version angezeigt."
+  },
+  "cta": {
+    "heading": "Interesse an Ladestationen?",
+    "description": "Kontaktieren Sie uns für eine kostenlose Beratung. Wir helfen Ihnen bei der Auswahl der richtigen Lösung.",
+    "buttonLabel": "Kontaktieren Sie uns"
   }
 }

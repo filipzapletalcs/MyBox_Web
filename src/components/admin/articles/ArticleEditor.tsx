@@ -4,7 +4,9 @@ import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
 import Placeholder from '@tiptap/extension-placeholder'
+import { CustomImage } from './extensions/CustomImage'
 import { EditorToolbar } from './EditorToolbar'
+import { ImageBubbleMenu } from './ImageBubbleMenu'
 import { cn } from '@/lib/utils'
 import { useEffect } from 'react'
 
@@ -37,6 +39,7 @@ export function ArticleEditor({
           class: 'text-green-400 underline hover:text-green-300',
         },
       }),
+      CustomImage,
       Placeholder.configure({
         placeholder,
         emptyEditorClass:
@@ -57,6 +60,8 @@ export function ArticleEditor({
           'prose-ul:list-disc prose-ul:pl-6',
           'prose-ol:list-decimal prose-ol:pl-6',
           'prose-li:text-text-secondary',
+          'prose-img:cursor-pointer prose-img:transition-shadow hover:prose-img:shadow-lg',
+          '[&_.ProseMirror-selectednode]:ring-2 [&_.ProseMirror-selectednode]:ring-green-500/50',
           'min-h-[400px] p-4 focus:outline-none'
         ),
       },
@@ -96,6 +101,7 @@ export function ArticleEditor({
       <EditorToolbar editor={editor} />
       <div className="relative bg-bg-tertiary">
         <EditorContent editor={editor} />
+        {editor && <ImageBubbleMenu editor={editor} />}
       </div>
       {error && (
         <div className="border-t border-red-500/20 bg-red-500/5 px-4 py-2 text-sm text-red-400">

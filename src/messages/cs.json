@@ -298,6 +298,7 @@
       "aboutUs": "O společnosti",
       "references": "Reference a projekty",
       "blog": "Blog o elektromobilitě",
+      "documents": "Dokumenty ke stažení",
       "contact": "Kontaktujte nás"
     }
   },
@@ -486,5 +487,21 @@
     "tableOfContents": "Obsah článku",
     "category": "Kategorie",
     "tags": "Štítky"
+  },
+  "documents": {
+    "title": "Dokumenty ke stažení",
+    "subtitle": "Katalogové listy, instalační manuály a další materiály",
+    "file": "Soubor",
+    "size": "Velikost",
+    "download": "Stáhnout",
+    "preview": "Náhled",
+    "unavailable": "Nedostupné",
+    "noDocuments": "Zatím nejsou k dispozici žádné dokumenty",
+    "fallbackNote": "Dokument v požadovaném jazyce není k dispozici. Zobrazena je verze v jazyce {locale}."
+  },
+  "cta": {
+    "heading": "Máte zájem o nabíjecí stanice?",
+    "description": "Kontaktujte nás pro nezávaznou konzultaci. Rádi vám pomůžeme s výběrem správného řešení.",
+    "buttonLabel": "Kontaktujte nás"
   }
 }

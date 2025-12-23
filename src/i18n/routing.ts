@@ -312,6 +312,13 @@ export const routing = defineRouting({
       en: '/request-quote',
       de: '/anfrage',
     },
+
+    // === DOKUMENTY ===
+    '/dokumenty': {
+      cs: '/dokumenty',
+      en: '/documents',
+      de: '/dokumente',
+    },
   },
 })
 

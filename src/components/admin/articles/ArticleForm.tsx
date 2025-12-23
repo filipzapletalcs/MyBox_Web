@@ -9,6 +9,7 @@ import { Save, Send, ArrowLeft } from 'lucide-react'
 import { Button, Input, Textarea, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, Card } from '@/components/ui'
 import { LocaleTabs, type Locale, type LocaleStatus } from '@/components/admin/ui/LocaleTabs'
 import { TranslateButton } from '@/components/admin/ui/TranslateButton'
+import { FeaturedImagePicker } from '@/components/admin/ui/FeaturedImagePicker'
 import { ArticleEditor } from './ArticleEditor'
 import { type Locale as ConfigLocale } from '@/config/locales'
 
@@ -405,14 +406,19 @@ export function ArticleForm({
 
           {/* Featured image */}
           <Card className="p-6">
-            <Input
-              {...register('featured_image_url')}
-              label="Náhledový obrázek"
-              placeholder="https://..."
-              error={errors.featured_image_url?.message}
-              hint="URL obrázku pro náhled článku"
+            <Controller
+              name="featured_image_url"
+              control={control}
+              render={({ field }) => (
+                <FeaturedImagePicker
+                  value={field.value}
+                  onChange={(url) => field.onChange(url || '')}
+                  error={errors.featured_image_url?.message}
+                  hint="Obrázek pro náhled článku v seznamu"
+                  bucket="article-images"
+                />
+              )}
             />
-            {/* TODO: Add image picker from media library */}
           </Card>
 
           {/* Featured toggle */}

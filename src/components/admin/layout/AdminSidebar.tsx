@@ -10,6 +10,7 @@ import {
   Package,
   HelpCircle,
   Image as ImageIcon,
+  FileDown,
   LogOut,
   ChevronLeft,
   Menu,
@@ -25,6 +26,7 @@ const navigation = [
   { name: 'Články', href: '/admin/articles', icon: FileText },
   { name: 'Kategorie', href: '/admin/categories', icon: FolderTree },
   { name: 'Produkty', href: '/admin/products', icon: Package },
+  { name: 'Dokumenty', href: '/admin/documents', icon: FileDown },
   { name: 'FAQ', href: '/admin/faqs', icon: HelpCircle },
   { name: 'Média', href: '/admin/media', icon: ImageIcon },
 ]

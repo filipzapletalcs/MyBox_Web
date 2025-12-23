@@ -32,7 +32,8 @@ export function Header() {
   // Pages with light background (no dark hero) - need dark text in light mode
   const isLightBgPage = pathname === '/kontakt' ||
     pathname === '/blog' ||
-    pathname.startsWith('/blog/kategorie')
+    pathname.startsWith('/blog/kategorie') ||
+    pathname === '/dokumenty'
 
   // Refs for hover timeout management
   const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null)

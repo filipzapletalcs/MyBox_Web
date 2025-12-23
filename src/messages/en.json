@@ -298,6 +298,7 @@
       "aboutUs": "About Us",
       "references": "References & Projects",
       "blog": "E-Mobility Blog",
+      "documents": "Downloads",
       "contact": "Contact Us"
     }
   },
@@ -486,5 +487,21 @@
       "ourAddress": "Our Address",
       "getDirections": "Get Directions"
     }
+  },
+  "documents": {
+    "title": "Documents Download",
+    "subtitle": "Catalog sheets, installation manuals and other materials",
+    "file": "File",
+    "size": "Size",
+    "download": "Download",
+    "preview": "Preview",
+    "unavailable": "Unavailable",
+    "noDocuments": "No documents available yet",
+    "fallbackNote": "Document not available in requested language. Showing {locale} version."
+  },
+  "cta": {
+    "heading": "Interested in charging stations?",
+    "description": "Contact us for a free consultation. We'll help you choose the right solution.",
+    "buttonLabel": "Contact us"
   }
 }

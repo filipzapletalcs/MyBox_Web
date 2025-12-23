@@ -13,8 +13,10 @@ import {
   RemoveFormatting,
   Undo,
   Redo,
+  ImagePlus,
 } from 'lucide-react'
 import { Button } from '@/components/ui'
+import { MediaPickerModal } from '@/components/admin/ui/MediaPickerModal'
 import { cn } from '@/lib/utils'
 import { useState, useCallback } from 'react'
 
@@ -63,6 +65,13 @@ interface EditorToolbarProps {
 export function EditorToolbar({ editor }: EditorToolbarProps) {
   const [showLinkInput, setShowLinkInput] = useState(false)
   const [linkUrl, setLinkUrl] = useState('')
+  const [showImagePicker, setShowImagePicker] = useState(false)
+
+  const insertImage = useCallback((url: string) => {
+    if (!editor) return
+    editor.chain().focus().setImage({ src: url }).run()
+    setShowImagePicker(false)
+  }, [editor])
 
   const setLink = useCallback(() => {
     if (!editor) return
@@ -159,6 +168,16 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
 
       <ToolbarSeparator />
 
+      {/* Image */}
+      <ToolbarButton
+        onClick={() => setShowImagePicker(true)}
+        title="Vložit obrázek"
+      >
+        <ImagePlus className="h-4 w-4" />
+      </ToolbarButton>
+
+      <ToolbarSeparator />
+
       {/* Link */}
       {showLinkInput ? (
         <div className="flex items-center gap-2">
@@ -227,6 +246,16 @@ export function EditorToolbar({ editor }: EditorToolbarProps) {
       >
         <RemoveFormatting className="h-4 w-4" />
       </ToolbarButton>
+
+      {/* Image picker modal */}
+      <MediaPickerModal
+        open={showImagePicker}
+        onClose={() => setShowImagePicker(false)}
+        onSelect={insertImage}
+        bucket="media"
+        uploadBucket="article-images"
+        title="Vložit obrázek do článku"
+      />
     </div>
   )
 }
