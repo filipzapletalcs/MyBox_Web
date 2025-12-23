@@ -29,74 +29,67 @@ Web běží na [http://localhost:3000](http://localhost:3000)
 ```
 /src
 ├── app/                          # Next.js App Router
-│   ├── [locale]/                 # Lokalizované stránky
+│   ├── [locale]/                 # Lokalizované veřejné stránky
 │   │   ├── layout.tsx           # Root layout s providery
 │   │   ├── page.tsx             # Homepage
 │   │   ├── nabijeci-stanice/    # Nabíjecí stanice sekce
-│   │   │   ├── page.tsx         # Landing page
-│   │   │   ├── ChargingStationsHero.tsx
-│   │   │   ├── ACDCSelector.tsx
-│   │   │   ├── ProductShowcase.tsx
-│   │   │   ├── USPSection.tsx
-│   │   │   ├── FAQSection.tsx
-│   │   │   ├── ac/              # AC stanice
+│   │   │   ├── ac/mybox-profi/  # Produktová stránka (z DB)
 │   │   │   └── dc/              # DC stanice
-│   │   ├── nabijeni-pro-firmy/  # B2B sekce
-│   │   ├── reseni-nabijeni/     # Segmenty
-│   │   ├── vyhody-reseni/       # Výhody
-│   │   ├── rizeni-nabijeni/     # Cloud, App, DLM
-│   │   ├── reference/           # Case studies
-│   │   ├── blog/                # Blog
-│   │   ├── o-nas/               # O nás
 │   │   ├── kontakt/             # Kontakt
-│   │   └── poptavka/            # Poptávkový formulář
-│   ├── api/                     # API routes
+│   │   └── blog/                # Blog (TODO)
+│   ├── admin/                   # CMS administrace (bez i18n)
+│   │   ├── login/               # Login stránka
+│   │   └── (dashboard)/         # Chráněné admin routes
+│   │       ├── articles/        # Správa článků
+│   │       ├── categories/      # Správa kategorií
+│   │       ├── products/        # Správa produktů
+│   │       ├── faqs/            # Správa FAQ
+│   │       └── media/           # Media library
+│   ├── api/                     # REST API routes
+│   │   ├── articles/            # Articles CRUD
+│   │   ├── categories/          # Categories CRUD
+│   │   ├── products/            # Products CRUD
+│   │   ├── faqs/                # FAQs CRUD
+│   │   └── media/               # Media upload
 │   └── globals.css              # Globální styly + design tokens
 ├── components/
-│   ├── layout/                  # Layout komponenty
-│   │   ├── Header.tsx          # Navigace
-│   │   ├── Footer.tsx          # Patička
-│   │   ├── Logo.tsx            # Logo komponenta
-│   │   ├── MegaMenu.tsx        # Mega menu navigace
-│   │   ├── LanguageSwitcher.tsx # Přepínač jazyků
-│   │   └── ThemeToggle.tsx     # Dark/Light mode
-│   ├── sections/               # Sekční komponenty
-│   │   ├── Hero.tsx
-│   │   ├── HeroVideo.tsx
-│   │   ├── ProductGrid.tsx
-│   │   ├── FAQ.tsx
-│   │   ├── CTA.tsx
-│   │   └── Newsletter.tsx
-│   ├── ui/                     # UI primitiva (shadcn-style)
-│   │   ├── Button.tsx
-│   │   ├── Card.tsx
-│   │   ├── Input.tsx
-│   │   ├── Select.tsx
-│   │   ├── Textarea.tsx
-│   │   ├── Accordion.tsx
-│   │   ├── Dialog.tsx
-│   │   ├── Badge.tsx
-│   │   └── index.ts            # Barrel export
-│   └── providers/
-│       └── Providers.tsx       # Theme + další providery
+│   ├── layout/                  # Layout komponenty (Header, Footer, etc.)
+│   ├── sections/                # Sekční komponenty (Hero, CTA, FAQ)
+│   ├── product/                 # Produktové komponenty
+│   │   ├── ProductPageContent.tsx  # Univerzální produkt stránka
+│   │   ├── TechnicalSpecifications.tsx
+│   │   ├── ColorVariantSlider.tsx
+│   │   └── ...
+│   ├── admin/                   # CMS admin komponenty
+│   │   ├── layout/              # AdminSidebar, AdminHeader
+│   │   ├── ui/                  # DataTable, LocaleTabs
+│   │   ├── articles/            # TipTap editor, ArticleForm
+│   │   └── ...
+│   ├── ui/                      # UI primitiva (shadcn-style)
+│   ├── seo/                     # SEO komponenty (JSON-LD)
+│   └── providers/               # Theme + další providery
 ├── lib/
-│   ├── fonts.ts                # HalisR font konfigurace
-│   ├── utils.ts                # Utility funkce (cn, etc.)
-│   ├── design-tokens.ts        # TypeScript design tokens
-│   └── metadata.ts             # SEO helpers
-├── i18n/
-│   ├── request.ts              # next-intl konfigurace
-│   ├── navigation.ts           # Lokalizovaná navigace
-│   └── routing.ts              # Route mapping
-├── messages/                   # Překlady
-│   ├── cs.json                 # Čeština
-│   ├── en.json                 # Angličtina
-│   └── de.json                 # Němčina
-├── data/
-│   ├── navigation.ts           # Navigační struktura
-│   └── products.ts             # Produktová data
+│   ├── supabase/                # Supabase clients
+│   │   ├── client.ts            # Browser client
+│   │   ├── server.ts            # Server client
+│   │   └── admin.ts             # Service role client
+│   ├── transformers/            # DB → TypeScript transformery
+│   │   └── product.ts           # getProductBySlug()
+│   ├── validations/             # Zod validation schemas
+│   ├── fonts.ts                 # HalisR font konfigurace
+│   └── utils.ts                 # Utility funkce (cn, etc.)
+├── i18n/                        # Internationalization
+├── messages/                    # Překlady (cs, en, de)
+├── data/                        # Statická data (postupně migrována do DB)
 └── types/
-    └── index.ts                # TypeScript typy
+    ├── index.ts                 # TypeScript typy
+    ├── product.ts               # Product types
+    └── database.ts              # Auto-generated z Supabase
+
+/supabase                        # Supabase konfigurace
+├── config.toml                  # Docker konfigurace
+├── migrations/                  # SQL migrace
+└── seed*.sql                    # Seed data
 ```
 
 ---
@@ -335,29 +328,25 @@ Pro FAQ sekce:
 
 #### Produktová data pro SEO
 
-Každý produkt má SEO pole v datovém souboru:
+Produkty jsou uloženy v Supabase databázi a transformovány na `FullProductData`:
 
 ```typescript
-// src/data/mybox-profi.ts
-export const myboxProfiData: FullProductData = {
-  // Základní info
-  name: 'MyBox Profi',
-  tagline: 'Profesionální wallbox...',
-  description: 'Wallbox s výkonem 2×22 kW...',
+// src/app/[locale]/nabijeci-stanice/ac/mybox-profi/page.tsx
+import { getProductBySlug } from '@/lib/transformers/product'
 
-  // SEO & Structured Data
-  sku: 'MYBOX-PROFI',
-  category: 'Nabíjecí stanice pro elektromobily',
-  manufacturer: {
-    name: 'ELEXIM, a.s.',
-    url: 'https://mybox.eco',
-  },
-  countryOfOrigin: 'CZ',
+export default async function MyBoxProfiPage() {
+  const locale = await getLocale()
+  const product = await getProductBySlug('mybox-profi', locale)
 
-  // Specifikace → additionalProperty
-  specifications: [...],
+  return <ProductPageContent product={product} ... />
 }
 ```
+
+Transformer načte z DB a vrátí `FullProductData` s:
+- Základní info (name, tagline, description)
+- SEO pole (sku, category, manufacturer, countryOfOrigin)
+- Specifikace → Schema.org additionalProperty
+- Obrázky, barevné varianty, feature points
 
 ### Výhody strukturovaných dat
 
@@ -414,41 +403,97 @@ Pro správu obsahu webu (blog, produkty, media) používáme **self-hosted Supab
 | **Kontrola** | 100% vlastnictví infrastruktury |
 | **AI Ready** | pgvector pro chatbot |
 
-### Implementace
+### Quick Start (lokální vývoj)
 
-Kompletní implementační plán včetně:
-- Docker Compose konfigurace
-- SQL schéma s RLS policies
-- Next.js integrace
-- AI chatbot API
-- Backup skripty
+```bash
+# 1. Spustit Supabase (vyžaduje Docker)
+npx supabase start
 
-📄 **Viz:** [CMS_IMPLEMENTATION_PLAN.md](./CMS_IMPLEMENTATION_PLAN.md)
+# 2. Aplikovat migrace
+npx supabase db reset
 
-### Struktura (plánovaná)
+# 3. Vytvořit admin uživatele
+npx ts-node scripts/create-admin.ts
+
+# 4. Spustit Next.js
+npm run dev
+
+# Admin panel: http://localhost:3000/admin
+# Supabase Studio: http://127.0.0.1:54323
+```
+
+### Implementovaná struktura
 
 ```
 /src
 ├── app/
-│   ├── [locale]/
-│   │   └── admin/              # CMS administrace
-│   │       ├── layout.tsx      # Admin layout s auth
-│   │       ├── page.tsx        # Dashboard
-│   │       ├── posts/          # Správa článků
-│   │       ├── products/       # Správa produktů
-│   │       ├── media/          # Media library
-│   │       └── knowledge/      # AI knowledge base
+│   ├── admin/                  # CMS administrace (bez i18n)
+│   │   ├── layout.tsx          # Root admin layout
+│   │   ├── login/page.tsx      # Login stránka
+│   │   └── (dashboard)/        # Chráněné routes
+│   │       ├── layout.tsx      # Dashboard layout (sidebar, header)
+│   │       ├── page.tsx        # Dashboard home
+│   │       ├── articles/       # CRUD články
+│   │       ├── categories/     # CRUD kategorie
+│   │       ├── products/       # CRUD produkty
+│   │       ├── faqs/           # CRUD FAQ
+│   │       └── media/          # Media library
 │   └── api/
-│       ├── chat/               # AI chatbot endpoint
-│       └── webhooks/           # Supabase webhooks
+│       ├── articles/           # Articles REST API
+│       ├── categories/         # Categories REST API
+│       ├── products/           # Products REST API
+│       ├── faqs/               # FAQs REST API
+│       ├── tags/               # Tags REST API
+│       └── media/              # Media upload API
+├── components/
+│   └── admin/                  # Admin komponenty
+│       ├── layout/             # Sidebar, Header, Breadcrumbs
+│       ├── ui/                 # DataTable, LocaleTabs, ConfirmDialog
+│       ├── articles/           # TipTap editor, ArticleForm
+│       ├── categories/         # CategoryForm, CategoryList
+│       ├── products/           # ProductForm, ProductList
+│       ├── faqs/               # FaqForm, FaqList
+│       └── media/              # MediaLibrary, MediaUploader
 ├── lib/
-│   └── supabase/
-│       ├── client.ts           # Browser client
-│       ├── server.ts           # Server client
-│       └── admin.ts            # Admin client (service role)
+│   ├── supabase/
+│   │   ├── client.ts           # Browser client
+│   │   ├── server.ts           # Server client (cookies)
+│   │   └── admin.ts            # Service role client
+│   ├── transformers/
+│   │   └── product.ts          # DB → FullProductData transformer
+│   └── validations/            # Zod schemas
 └── types/
-    └── database.ts             # Generated TypeScript types
+    └── database.ts             # Auto-generated z Supabase
+
+/supabase
+├── config.toml                 # Supabase konfigurace
+├── migrations/                 # SQL migrace
+│   ├── 20241223000000_initial_schema.sql
+│   ├── 20241223090000_add_category_parent.sql
+│   └── 20241223100000_product_extensions.sql
+├── seed.sql                    # Základní seed data
+└── seed-mybox-profi.sql        # MyBox Profi produkt
 ```
+
+### API Endpoints
+
+| Endpoint | Metody | Popis |
+|----------|--------|-------|
+| `/api/articles` | GET, POST | Seznam/vytvoření článků |
+| `/api/articles/[id]` | GET, PATCH, DELETE | Detail/úprava/smazání |
+| `/api/categories` | GET, POST | Kategorie |
+| `/api/products` | GET, POST | Produkty |
+| `/api/faqs` | GET, POST | FAQ |
+| `/api/tags` | GET, POST | Tagy |
+| `/api/media` | POST | Upload souborů |
+
+### Regenerace TypeScript typů
+
+```bash
+npx supabase gen types typescript --local > src/types/database.ts
+```
+
+📄 **Plán:** [CMS_IMPLEMENTATION_PLAN.md](./CMS_IMPLEMENTATION_PLAN.md)
 
 ---
 
