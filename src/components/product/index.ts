@@ -5,6 +5,7 @@ export { TechnicalSpecifications } from './TechnicalSpecifications'
 export { ContentSection } from './ContentSection'
 export { ProductFeatureShowcase } from './ProductFeatureShowcase'
 export { DownloadButton } from './DownloadButton'
+export { ProductPageContent } from './ProductPageContent'
 
 // Re-export types
 export type {

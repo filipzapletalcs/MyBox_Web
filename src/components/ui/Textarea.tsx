@@ -1,6 +1,6 @@
 'use client'
 
-import { forwardRef, type TextareaHTMLAttributes, useState } from 'react'
+import { forwardRef, type TextareaHTMLAttributes, useState, useId } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
@@ -32,7 +32,8 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     const [charCount, setCharCount] = useState(
       typeof props.value === 'string' ? props.value.length : 0
     )
-    const textareaId = id || `textarea-${Math.random().toString(36).substr(2, 9)}`
+    const generatedId = useId()
+    const textareaId = id || generatedId
 
     const state = error ? 'error' : success ? 'success' : isFocused ? 'focused' : 'default'
 
