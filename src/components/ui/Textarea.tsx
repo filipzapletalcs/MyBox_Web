@@ -33,7 +33,8 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
       typeof props.value === 'string' ? props.value.length : 0
     )
     const generatedId = useId()
-    const textareaId = id || generatedId
+    // Use provided id, or name-based id, or fallback to generated id
+    const textareaId = id || (props.name ? `textarea-${props.name.replace(/\./g, '-')}` : generatedId)
 
     const state = error ? 'error' : success ? 'success' : isFocused ? 'focused' : 'default'
 

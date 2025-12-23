@@ -45,7 +45,10 @@ export function DocumentRow({ document, locale, labels, index }: DocumentRowProp
     (t) => t.locale === locale
   ) || document.document_translations?.[0]
 
-  const resolvedFile = resolveDocumentFile(document, locale)
+  const resolvedFile = resolveDocumentFile({
+    ...document,
+    fallback_locale: document.fallback_locale as Locale | null
+  }, locale)
   const fileExtension = resolvedFile ? getFileExtension(resolvedFile.path) : ''
 
   const getFileIcon = () => {

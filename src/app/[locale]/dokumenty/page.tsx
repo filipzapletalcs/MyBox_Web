@@ -66,8 +66,9 @@ export default async function DocumentsPage({ params }: DocumentsPageProps) {
     .order('sort_order', { ascending: true })
 
   // Group documents by category
+  type Category = NonNullable<typeof categories>[number]
   const getCategoryTranslation = (
-    cat: (typeof categories)[0],
+    cat: Category,
     loc: string
   ) => {
     return (
@@ -94,7 +95,10 @@ export default async function DocumentsPage({ params }: DocumentsPageProps) {
             const translation = getCategoryTranslation(category, locale)
             const categoryDocs = documents?.filter(
               (d) => d.category_id === category.id
-            )
+            ).map(d => ({
+              ...d,
+              fallback_locale: d.fallback_locale as Locale | null
+            }))
 
             if (!categoryDocs?.length) return null
 

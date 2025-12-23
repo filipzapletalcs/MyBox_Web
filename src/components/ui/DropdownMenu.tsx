@@ -1,8 +1,23 @@
 'use client'
 
-import { forwardRef, type ComponentPropsWithoutRef, type ElementRef } from 'react'
+import { forwardRef, useState, useEffect, type ComponentPropsWithoutRef, type ElementRef } from 'react'
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 import { cn } from '@/lib/utils'
+
+// Client-only wrapper to prevent hydration mismatches with Radix UI IDs
+function ClientOnlyDropdownMenu({ children, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
+
+  return <DropdownMenuPrimitive.Root {...props}>{children}</DropdownMenuPrimitive.Root>
+}
 
 // Icons
 const CheckIcon = ({ className }: { className?: string }) => (
@@ -56,7 +71,7 @@ const CircleIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-const DropdownMenu = DropdownMenuPrimitive.Root
+const DropdownMenu = ClientOnlyDropdownMenu
 
 const DropdownMenuTrigger = DropdownMenuPrimitive.Trigger
 

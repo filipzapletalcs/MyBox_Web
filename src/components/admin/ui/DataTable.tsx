@@ -224,7 +224,7 @@ export function DataTable<T extends Record<string, unknown>>({
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody suppressHydrationWarning>
             {sortedData.map((row, rowIndex) => {
               const key = rowKey?.(row) || String(rowIndex)
               const isSelected = selectedRows.has(key)

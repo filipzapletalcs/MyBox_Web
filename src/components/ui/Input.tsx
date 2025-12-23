@@ -89,7 +89,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
   ) => {
     const [isFocused, setIsFocused] = useState(false)
     const generatedId = useId()
-    const inputId = id || generatedId
+    // Use provided id, or name-based id, or fallback to generated id
+    const inputId = id || (props.name ? `input-${props.name.replace(/\./g, '-')}` : generatedId)
 
     const state = error ? 'error' : success ? 'success' : isFocused ? 'focused' : 'default'
 

@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getDocumentUrl } from '@/lib/utils/documents'
 import type {
   FullProductData,
   SpecificationCategory,
@@ -41,6 +42,15 @@ export async function getProductBySlug(
       product_content_sections(
         id, image_url, image_alt, sort_order,
         product_content_section_translations(*)
+      ),
+      product_documents(
+        document_id, sort_order,
+        documents(
+          id, slug,
+          file_cs, file_en, file_de,
+          fallback_locale,
+          document_translations(locale, title)
+        )
       )
     `
     )
@@ -96,6 +106,17 @@ function transformProductData(dbProduct: any, locale: Locale): FullProductData {
   // Transform features (badges)
   const features = transformFeatures(dbProduct.product_to_features || [], locale)
 
+  // Get datasheet from product_documents (preferred) or fallback to direct URL
+  const datasheet = getDatasheetFromDocuments(
+    dbProduct.product_documents || [],
+    locale
+  ) || (dbProduct.datasheet_url
+    ? {
+        url: dbProduct.datasheet_url,
+        fileName: dbProduct.datasheet_filename || 'datasheet.pdf',
+      }
+    : undefined)
+
   return {
     id: dbProduct.id,
     slug: dbProduct.slug,
@@ -140,12 +161,7 @@ function transformProductData(dbProduct: any, locale: Locale): FullProductData {
     contentSections: contentSections.length > 0 ? contentSections : undefined,
 
     // Datasheet
-    datasheet: dbProduct.datasheet_url
-      ? {
-          url: dbProduct.datasheet_url,
-          fileName: dbProduct.datasheet_filename || 'datasheet.pdf',
-        }
-      : undefined,
+    datasheet,
 
     // Features (badges)
     features,
@@ -352,5 +368,63 @@ function getLocalizedLabel(
       return spec.label_de || spec.label_cs || spec.spec_key
     default:
       return spec.label_cs || spec.spec_key
+  }
+}
+
+/**
+ * Get datasheet from product_documents
+ * Finds the first document with "datasheet" in slug and returns URL for current locale
+ */
+function getDatasheetFromDocuments(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  productDocuments: any[],
+  locale: Locale
+): { url: string; fileName: string } | undefined {
+  // Sort by sort_order and find first datasheet
+  const sortedDocs = [...productDocuments].sort(
+    (a, b) => (a.sort_order || 0) - (b.sort_order || 0)
+  )
+
+  const datasheetDoc = sortedDocs.find((pd) =>
+    pd.documents?.slug?.includes('datasheet')
+  )
+
+  if (!datasheetDoc?.documents) {
+    return undefined
+  }
+
+  const doc = datasheetDoc.documents
+
+  // Get file for current locale with fallback
+  const fileKey = `file_${locale}` as 'file_cs' | 'file_en' | 'file_de'
+  let filePath = doc[fileKey]
+
+  // Fallback to Czech if locale file not available
+  if (!filePath && locale !== 'cs') {
+    filePath = doc.file_cs
+  }
+
+  // Fallback to fallback_locale if set
+  if (!filePath && doc.fallback_locale) {
+    const fallbackKey = `file_${doc.fallback_locale}` as 'file_cs' | 'file_en' | 'file_de'
+    filePath = doc[fallbackKey]
+  }
+
+  if (!filePath) {
+    return undefined
+  }
+
+  // Get document title from translations or generate from slug
+  const translation = doc.document_translations?.find(
+    (t: { locale: string }) => t.locale === locale
+  ) || doc.document_translations?.[0]
+
+  const fileName = translation?.title
+    ? `${translation.title}.pdf`
+    : `${doc.slug}.pdf`
+
+  return {
+    url: getDocumentUrl(filePath),
+    fileName,
   }
 }

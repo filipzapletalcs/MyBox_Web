@@ -5,17 +5,18 @@ import { motion, useInView } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
+import { getMediaUrl } from '@/lib/supabase/storage'
 
 // Client logos data
 const clients = [
-  { name: 'Volvo', logo: '/images/logos/volvo_logo.svg' },
-  { name: 'ČEZ', logo: '/images/logos/cez_group_logo.svg' },
-  { name: 'Zentiva', logo: '/images/logos/zentiva.svg' },
-  { name: 'DPD', logo: '/images/logos/dpd_logo_2015.svg' },
-  { name: 'Sonepar', logo: '/images/logos/sonepar_logo.svg' },
-  { name: 'Gebrüder Weiss', logo: '/images/logos/transport-and-logistics-_-gebruder-weiss-1.svg' },
-  { name: 'Signal Chain', logo: '/images/logos/signal-chain.svg' },
-  { name: 'WSM', logo: '/images/logos/wsm-czech-republic-s-r-o.svg' },
+  { name: 'Volvo', logo: getMediaUrl('logos/volvo_logo.svg') },
+  { name: 'ČEZ', logo: getMediaUrl('logos/cez_group_logo.svg') },
+  { name: 'Zentiva', logo: getMediaUrl('logos/zentiva.svg') },
+  { name: 'DPD', logo: getMediaUrl('logos/dpd_logo_2015.svg') },
+  { name: 'Sonepar', logo: getMediaUrl('logos/sonepar_logo.svg') },
+  { name: 'Gebrüder Weiss', logo: getMediaUrl('logos/transport-and-logistics-_-gebruder-weiss-1.svg') },
+  { name: 'Signal Chain', logo: getMediaUrl('logos/signal-chain.svg') },
+  { name: 'WSM', logo: getMediaUrl('logos/wsm-czech-republic-s-r-o.svg') },
 ]
 
 interface ClientLogosProps {

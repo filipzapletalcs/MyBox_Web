@@ -229,6 +229,162 @@ export type Database = {
           },
         ]
       }
+      document_categories: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          slug: string
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          slug: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      document_category_translations: {
+        Row: {
+          category_id: string
+          created_at: string | null
+          description: string | null
+          id: string
+          locale: string
+          name: string
+        }
+        Insert: {
+          category_id: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          locale: string
+          name: string
+        }
+        Update: {
+          category_id?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          locale?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_category_translations_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "document_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      document_translations: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          document_id: string
+          id: string
+          locale: string
+          title: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          document_id: string
+          id?: string
+          locale: string
+          title: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          document_id?: string
+          id?: string
+          locale?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_translations_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      documents: {
+        Row: {
+          category_id: string
+          created_at: string | null
+          fallback_locale: string | null
+          file_cs: string | null
+          file_de: string | null
+          file_en: string | null
+          file_size_cs: number | null
+          file_size_de: number | null
+          file_size_en: number | null
+          id: string
+          is_active: boolean | null
+          slug: string
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          category_id: string
+          created_at?: string | null
+          fallback_locale?: string | null
+          file_cs?: string | null
+          file_de?: string | null
+          file_en?: string | null
+          file_size_cs?: number | null
+          file_size_de?: number | null
+          file_size_en?: number | null
+          id?: string
+          is_active?: boolean | null
+          slug: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          category_id?: string
+          created_at?: string | null
+          fallback_locale?: string | null
+          file_cs?: string | null
+          file_de?: string | null
+          file_en?: string | null
+          file_size_cs?: number | null
+          file_size_de?: number | null
+          file_size_en?: number | null
+          id?: string
+          is_active?: boolean | null
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "document_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       faq_translations: {
         Row: {
           answer: string
@@ -465,6 +621,42 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "product_content_sections_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_documents: {
+        Row: {
+          created_at: string | null
+          document_id: string
+          product_id: string
+          sort_order: number | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_id: string
+          product_id: string
+          sort_order?: number | null
+        }
+        Update: {
+          created_at?: string | null
+          document_id?: string
+          product_id?: string
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_documents_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_documents_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
