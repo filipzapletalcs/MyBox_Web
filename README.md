@@ -4,12 +4,30 @@ Prezentační web pro českého výrobce nabíjecích stanic pro elektromobily.
 
 ## Technologie
 
-- **Framework:** Next.js 15 (App Router)
+### Core
+- **Framework:** Next.js 16 (App Router)
+- **React:** 19
+- **TypeScript:** 5
 - **Styling:** Tailwind CSS 4
+
+### Backend & CMS
+- **Databáze:** Supabase (PostgreSQL + Auth + Storage)
+- **AI překlady:** OpenAI API
+
+### UI & UX
+- **Komponenty:** Radix UI
+- **Ikony:** Lucide React
 - **Animace:** Framer Motion
+- **Rich Text Editor:** TipTap
+- **Toasty:** Sonner
+
+### Formuláře & Validace
+- **Forms:** React Hook Form
+- **Validace:** Zod
+- **Styling:** CVA (class-variance-authority)
+
+### Internationalizace
 - **i18n:** next-intl (CS, EN, DE)
-- **UI Primitiva:** Radix UI
-- **Font:** HalisR (vlastní)
 
 ## Quick Start
 
