@@ -8,6 +8,25 @@ import { LanguageSwitcher } from './LanguageSwitcher'
 import { ThemeToggle } from './ThemeToggle'
 import { navigationConfig } from '@/data/navigation'
 
+interface CompanyDetails {
+  name: string
+  division: string | null
+  address: string
+  city: string
+  zip: string
+  country: string | null
+  ico: string
+  dic: string | null
+  facebook_url: string | null
+  instagram_url: string | null
+  linkedin_url: string | null
+  youtube_url: string | null
+}
+
+interface FooterProps {
+  companyDetails?: CompanyDetails | null
+}
+
 // Social icons
 const LinkedInIcon = ({ className }: { className?: string }) => (
   <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -41,7 +60,16 @@ const InstagramIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-export function Footer() {
+const YouTubeIcon = ({ className }: { className?: string }) => (
+  <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none">
+    <path
+      d="M17.79 6.04c-.2-.75-.79-1.34-1.54-1.54C14.88 4.17 10 4.17 10 4.17s-4.88 0-6.25.33c-.75.2-1.34.79-1.54 1.54C1.88 7.42 1.88 10 1.88 10s0 2.58.33 3.96c.2.75.79 1.34 1.54 1.54 1.37.33 6.25.33 6.25.33s4.88 0 6.25-.33c.75-.2 1.34-.79 1.54-1.54.33-1.38.33-3.96.33-3.96s0-2.58-.33-3.96zM8.33 12.5V7.5L12.5 10l-4.17 2.5z"
+      fill="currentColor"
+    />
+  </svg>
+)
+
+export function Footer({ companyDetails }: FooterProps) {
   const t = useTranslations()
 
   // Helper function to get nested translation
@@ -62,11 +90,23 @@ export function Footer() {
 
   const currentYear = new Date().getFullYear()
 
+  // Build social links from companyDetails or use fallback
   const socialLinks = [
+    companyDetails?.linkedin_url && { icon: LinkedInIcon, href: companyDetails.linkedin_url, label: 'LinkedIn' },
+    companyDetails?.facebook_url && { icon: FacebookIcon, href: companyDetails.facebook_url, label: 'Facebook' },
+    companyDetails?.instagram_url && { icon: InstagramIcon, href: companyDetails.instagram_url, label: 'Instagram' },
+    companyDetails?.youtube_url && { icon: YouTubeIcon, href: companyDetails.youtube_url, label: 'YouTube' },
+  ].filter(Boolean) as { icon: typeof LinkedInIcon; href: string; label: string }[]
+
+  // Fallback if no companyDetails
+  const defaultSocialLinks = [
     { icon: LinkedInIcon, href: 'https://www.linkedin.com/company/mybox-charging-stations/', label: 'LinkedIn' },
     { icon: FacebookIcon, href: 'https://www.facebook.com/myboxchargingstations', label: 'Facebook' },
     { icon: InstagramIcon, href: 'https://instagram.com/myboxchargingstations', label: 'Instagram' },
+    { icon: YouTubeIcon, href: 'https://www.youtube.com/@myboxchargingstations', label: 'YouTube' },
   ]
+
+  const activeSocialLinks = socialLinks.length > 0 ? socialLinks : defaultSocialLinks
 
   return (
     <footer className="border-t border-border-subtle bg-bg-secondary">
@@ -83,15 +123,15 @@ export function Footer() {
             {/* Company info */}
             <div className="mt-6 text-sm">
               <span className="block font-semibold text-text-primary">
-                ELEXIM, a.s. – Divize MyBox
+                {companyDetails ? `${companyDetails.name}${companyDetails.division ? ` – ${companyDetails.division}` : ''}` : 'ELEXIM, a.s. – Divize MyBox'}
               </span>
               <address className="mt-3 not-italic text-text-secondary">
-                <span className="block">Hulínská 1814/1b</span>
-                <span className="block">767 01 Kroměříž</span>
+                <span className="block">{companyDetails?.address || 'Hulínská 1814/1b'}</span>
+                <span className="block">{companyDetails ? `${companyDetails.zip} ${companyDetails.city}` : '767 01 Kroměříž'}</span>
                 <span className="block">Česká republika</span>
               </address>
-              <span className="mt-3 block text-text-secondary">IČ: 25565044</span>
-              <span className="block text-text-secondary">DIČ: CZ25565044</span>
+              <span className="mt-3 block text-text-secondary">IČ: {companyDetails?.ico || '25565044'}</span>
+              <span className="block text-text-secondary">DIČ: {companyDetails?.dic || 'CZ25565044'}</span>
             </div>
           </div>
 
@@ -176,7 +216,7 @@ export function Footer() {
 
             {/* Social links */}
             <div className="flex gap-3">
-              {socialLinks.map((social) => (
+              {activeSocialLinks.map((social) => (
                 <a
                   key={social.label}
                   href={social.href}

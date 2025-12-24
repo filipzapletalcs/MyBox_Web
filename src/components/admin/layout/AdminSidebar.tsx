@@ -14,6 +14,9 @@ import {
   LogOut,
   ChevronLeft,
   Menu,
+  Users,
+  Mail,
+  Building2,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui'
@@ -29,6 +32,7 @@ const navigation = [
   { name: 'Dokumenty', href: '/admin/documents', icon: FileDown },
   { name: 'FAQ', href: '/admin/faqs', icon: HelpCircle },
   { name: 'Média', href: '/admin/media', icon: ImageIcon },
+  { name: 'Kontakty', href: '/admin/contacts', icon: Users },
 ]
 
 interface AdminSidebarProps {

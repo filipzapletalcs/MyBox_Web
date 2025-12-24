@@ -19,6 +19,8 @@ export { Badge, badgeVariants, type BadgeProps } from './Badge'
 // Form elements
 export { Input, inputVariants, type InputProps } from './Input'
 export { Textarea, type TextareaProps } from './Textarea'
+export { Label } from './Label'
+export { Switch } from './Switch'
 export {
   Select,
   SelectGroup,

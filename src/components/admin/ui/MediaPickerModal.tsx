@@ -57,8 +57,8 @@ interface MediaPickerModalProps {
   open: boolean
   onClose: () => void
   onSelect: (url: string) => void
-  bucket?: 'article-images' | 'product-images' | 'media'
-  uploadBucket?: 'article-images' | 'product-images' | 'media'
+  bucket?: 'article-images' | 'product-images' | 'media' | 'team-images'
+  uploadBucket?: 'article-images' | 'product-images' | 'media' | 'team-images'
   title?: string
   mediaType?: MediaType
 }

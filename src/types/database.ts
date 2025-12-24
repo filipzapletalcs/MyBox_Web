@@ -229,6 +229,81 @@ export type Database = {
           },
         ]
       }
+      company_details: {
+        Row: {
+          address: string
+          city: string
+          country: string | null
+          created_at: string | null
+          dic: string | null
+          division: string | null
+          facebook_url: string | null
+          hours_saturday: string | null
+          hours_sunday: string | null
+          hours_weekdays: string | null
+          ico: string
+          id: string
+          instagram_url: string | null
+          linkedin_url: string | null
+          name: string
+          sales_email: string | null
+          sales_phone: string | null
+          service_email: string | null
+          service_phone: string | null
+          updated_at: string | null
+          youtube_url: string | null
+          zip: string
+        }
+        Insert: {
+          address: string
+          city: string
+          country?: string | null
+          created_at?: string | null
+          dic?: string | null
+          division?: string | null
+          facebook_url?: string | null
+          hours_saturday?: string | null
+          hours_sunday?: string | null
+          hours_weekdays?: string | null
+          ico: string
+          id?: string
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          name: string
+          sales_email?: string | null
+          sales_phone?: string | null
+          service_email?: string | null
+          service_phone?: string | null
+          updated_at?: string | null
+          youtube_url?: string | null
+          zip: string
+        }
+        Update: {
+          address?: string
+          city?: string
+          country?: string | null
+          created_at?: string | null
+          dic?: string | null
+          division?: string | null
+          facebook_url?: string | null
+          hours_saturday?: string | null
+          hours_sunday?: string | null
+          hours_weekdays?: string | null
+          ico?: string
+          id?: string
+          instagram_url?: string | null
+          linkedin_url?: string | null
+          name?: string
+          sales_email?: string | null
+          sales_phone?: string | null
+          service_email?: string | null
+          service_phone?: string | null
+          updated_at?: string | null
+          youtube_url?: string | null
+          zip?: string
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           company: string

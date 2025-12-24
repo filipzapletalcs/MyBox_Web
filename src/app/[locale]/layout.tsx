@@ -8,6 +8,7 @@ import { routing } from '@/i18n/routing'
 import { Providers } from '@/components/providers'
 import { Header, Footer } from '@/components/layout'
 import { TooltipProvider } from '@/components/ui'
+import { createClient } from '@/lib/supabase/server'
 import '../globals.css'
 
 export function generateStaticParams() {
@@ -104,6 +105,13 @@ export default async function LocaleLayout({
   // Get messages for the locale
   const messages = await getMessages()
 
+  // Fetch company details for footer
+  const supabase = await createClient()
+  const { data: companyDetails } = await supabase
+    .from('company_details')
+    .select('*')
+    .single()
+
   return (
     <html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">
       <body className={`${halisR.variable} font-sans antialiased`}>
@@ -112,7 +120,7 @@ export default async function LocaleLayout({
             <TooltipProvider>
               <Header />
               <main className="min-h-screen bg-transparent">{children}</main>
-              <Footer />
+              <Footer companyDetails={companyDetails} />
             </TooltipProvider>
           </Providers>
         </NextIntlClientProvider>
