@@ -1,26 +1,16 @@
 'use client'
 
 import { cn } from '@/lib/utils'
+import { LOCALES, LOCALE_NAMES, LOCALE_FLAGS, type Locale } from '@/config/locales'
 
-export type Locale = 'cs' | 'en' | 'de'
+// Re-export Locale type for backward compatibility
+export type { Locale }
 export type LocaleStatus = 'complete' | 'partial' | 'empty'
-
-const localeLabels: Record<Locale, string> = {
-  cs: 'Čeština',
-  en: 'English',
-  de: 'Deutsch',
-}
-
-const localeFlags: Record<Locale, string> = {
-  cs: '🇨🇿',
-  en: '🇬🇧',
-  de: '🇩🇪',
-}
 
 export interface LocaleTabsProps {
   activeLocale: Locale
   onLocaleChange: (locale: Locale) => void
-  localeStatus?: Record<Locale, LocaleStatus>
+  localeStatus?: Partial<Record<Locale, LocaleStatus>>
   className?: string
 }
 
@@ -30,7 +20,8 @@ export function LocaleTabs({
   localeStatus,
   className,
 }: LocaleTabsProps) {
-  const locales: Locale[] = ['cs', 'en', 'de']
+  // Use centralized locale configuration - automatically adapts when new locales are added
+  const locales = LOCALES
 
   const getStatusColor = (status?: LocaleStatus) => {
     switch (status) {
@@ -68,8 +59,8 @@ export function LocaleTabs({
                 : 'text-text-secondary hover:bg-white/5 hover:text-text-primary'
             )}
           >
-            <span>{localeFlags[locale]}</span>
-            <span>{localeLabels[locale]}</span>
+            <span>{LOCALE_FLAGS[locale]}</span>
+            <span>{LOCALE_NAMES[locale]}</span>
             {status && (
               <span
                 className={cn(
