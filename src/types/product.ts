@@ -50,6 +50,15 @@ export interface ContentSectionData {
   }
 }
 
+// Accessory item
+export interface AccessoryItem {
+  id: string
+  name: string
+  description: string
+  image: string
+  link?: string
+}
+
 // Manufacturer info for structured data
 export interface ManufacturerInfo {
   name: string
@@ -97,6 +106,9 @@ export interface FullProductData {
 
   // SEO content sections
   contentSections?: ContentSectionData[]
+
+  // Accessories
+  accessories?: AccessoryItem[]
 
   // Datasheet
   datasheet?: {

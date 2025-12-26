@@ -8,17 +8,17 @@ import { z } from 'zod'
 import { Button, Input, Switch, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui'
 import { LocaleTabs, type Locale } from '@/components/admin/ui/LocaleTabs'
 import { TranslateButton } from '@/components/admin/ui/TranslateButton'
+import { FeaturedImagePicker } from '@/components/admin/ui/FeaturedImagePicker'
+import { ArticleEditor } from '@/components/admin/articles/ArticleEditor'
 import { LOCALES } from '@/config/locales'
-import { ArrowLeft, Save, Plus, Trash2 } from 'lucide-react'
+import { ArrowLeft, Save, Building2 } from 'lucide-react'
 import { CASE_STUDY_INDUSTRIES, INDUSTRY_LABELS, type CaseStudyIndustry } from '@/types/case-study'
 
 // Translation fields type
 const translationSchema = z.object({
   title: z.string().min(1, 'Titulek je povinný'),
   subtitle: z.string().optional().nullable(),
-  challenge: z.string().optional().nullable(),
-  solution: z.string().optional().nullable(),
-  results: z.string().optional().nullable(),
+  content: z.string().optional().nullable(), // TipTap JSON
   testimonial_text: z.string().optional().nullable(),
   testimonial_author: z.string().optional().nullable(),
   seo_title: z.string().optional().nullable(),
@@ -59,9 +59,7 @@ interface CaseStudyFormProps {
       locale: string
       title: string
       subtitle: string | null
-      challenge: string | null
-      solution: string | null
-      results: string | null
+      content: unknown | null
       testimonial_text: string | null
       testimonial_author: string | null
       seo_title: string | null
@@ -77,15 +75,13 @@ export function CaseStudyForm({ caseStudy, isNew = false }: CaseStudyFormProps) 
   const [activeLocale, setActiveLocale] = useState<Locale>('cs')
 
   // Transform translations array to record
-  const translationsRecord: Record<string, any> = {}
+  const translationsRecord: Record<string, TranslationFields> = {}
   LOCALES.forEach(locale => {
     const existing = caseStudy?.translations?.find(t => t.locale === locale)
     translationsRecord[locale] = existing ? {
       title: existing.title || '',
       subtitle: existing.subtitle || '',
-      challenge: existing.challenge || '',
-      solution: existing.solution || '',
-      results: existing.results || '',
+      content: existing.content ? JSON.stringify(existing.content) : '',
       testimonial_text: existing.testimonial_text || '',
       testimonial_author: existing.testimonial_author || '',
       seo_title: existing.seo_title || '',
@@ -93,9 +89,7 @@ export function CaseStudyForm({ caseStudy, isNew = false }: CaseStudyFormProps) 
     } : {
       title: '',
       subtitle: '',
-      challenge: '',
-      solution: '',
-      results: '',
+      content: '',
       testimonial_text: '',
       testimonial_author: '',
       seo_title: '',
@@ -127,6 +121,8 @@ export function CaseStudyForm({ caseStudy, isNew = false }: CaseStudyFormProps) 
   })
 
   const translations = watch('translations')
+  const featuredImageUrl = watch('featured_image_url')
+  const clientLogoUrl = watch('client_logo_url')
 
   // Get locale status for tabs
   const getLocaleStatus = () => {
@@ -135,7 +131,7 @@ export function CaseStudyForm({ caseStudy, isNew = false }: CaseStudyFormProps) 
       const t = translations?.[locale]
       if (!t?.title) {
         status[locale] = 'empty'
-      } else if (t.title && t.challenge && t.solution && t.results) {
+      } else if (t.title && t.content) {
         status[locale] = 'complete'
       } else {
         status[locale] = 'partial'
@@ -155,9 +151,7 @@ export function CaseStudyForm({ caseStudy, isNew = false }: CaseStudyFormProps) 
           locale,
           title: t.title,
           subtitle: t.subtitle || null,
-          challenge: t.challenge || null,
-          solution: t.solution || null,
-          results: t.results || null,
+          content: t.content ? JSON.parse(t.content) : null,
           testimonial_text: t.testimonial_text || null,
           testimonial_author: t.testimonial_author || null,
           seo_title: t.seo_title || null,
@@ -202,7 +196,7 @@ export function CaseStudyForm({ caseStudy, isNew = false }: CaseStudyFormProps) 
 
   // Handle AI translation
   const handleTranslated = (locale: Locale, field: string, value: string) => {
-    setValue(`translations.${locale}.${field}` as any, value, { shouldDirty: true })
+    setValue(`translations.${locale}.${field}` as keyof FormData, value, { shouldDirty: true })
   }
 
   // Get source texts for translation (from Czech)
@@ -211,13 +205,24 @@ export function CaseStudyForm({ caseStudy, isNew = false }: CaseStudyFormProps) 
     return {
       title: csTranslation.title || '',
       subtitle: csTranslation.subtitle || '',
-      challenge: csTranslation.challenge || '',
-      solution: csTranslation.solution || '',
-      results: csTranslation.results || '',
       testimonial_text: csTranslation.testimonial_text || '',
       testimonial_author: csTranslation.testimonial_author || '',
       seo_title: csTranslation.seo_title || '',
       seo_description: csTranslation.seo_description || '',
+    }
+  }
+
+  // Auto-generate slug from client name
+  const clientName = watch('client_name')
+  const handleClientNameBlur = () => {
+    if (isNew && clientName && !watch('slug')) {
+      const slug = clientName
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '')
+      setValue('slug', slug)
     }
   }
 
@@ -236,7 +241,7 @@ export function CaseStudyForm({ caseStudy, isNew = false }: CaseStudyFormProps) 
           </Button>
           <div>
             <h1 className="text-2xl font-semibold text-text-primary">
-              {isNew ? 'Nová case study' : 'Upravit case study'}
+              {isNew ? 'Nová případová studie' : 'Upravit případovou studii'}
             </h1>
             {!isNew && <p className="text-text-secondary">{caseStudy?.client_name}</p>}
           </div>
@@ -247,195 +252,208 @@ export function CaseStudyForm({ caseStudy, isNew = false }: CaseStudyFormProps) 
         </Button>
       </div>
 
-      {/* Basic info */}
-      <div className="rounded-xl border border-border-subtle bg-bg-elevated p-6">
-        <h2 className="mb-4 text-lg font-medium text-text-primary">Základní informace</h2>
-        <div className="grid gap-4 md:grid-cols-2">
-          <Input
-            label="Slug"
-            {...register('slug')}
-            error={errors.slug?.message}
-            placeholder="nazev-case-study"
-          />
-          <Input
-            label="Název klienta"
-            {...register('client_name')}
-            error={errors.client_name?.message}
-          />
-          <Input
-            label="URL loga klienta"
-            {...register('client_logo_url')}
-            placeholder="https://..."
-          />
-          <Input
-            label="URL hlavního obrázku"
-            {...register('featured_image_url')}
-            placeholder="https://..."
-          />
-          <div>
-            <label className="mb-2 block text-sm font-medium text-text-secondary">
-              Odvětví
-            </label>
-            <Controller
-              name="industry"
-              control={control}
-              render={({ field }) => (
-                <Select value={field.value || ''} onValueChange={field.onChange}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Vyberte odvětví" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CASE_STUDY_INDUSTRIES.map(industry => (
-                      <SelectItem key={industry} value={industry}>
-                        {INDUSTRY_LABELS[industry as CaseStudyIndustry]}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
-          </div>
-          <Input
-            label="Počet stanic"
-            type="number"
-            {...register('station_count', { valueAsNumber: true })}
-          />
-          <Input
-            label="Pořadí"
-            type="number"
-            {...register('sort_order', { valueAsNumber: true })}
-          />
-          <div className="flex flex-col gap-4 pt-2">
-            <div className="flex items-center gap-3">
-              <Controller
-                name="is_active"
-                control={control}
-                render={({ field }) => (
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                )}
+      <div className="grid gap-8 lg:grid-cols-3">
+        {/* Main content */}
+        <div className="space-y-6 lg:col-span-2">
+          {/* Basic info */}
+          <div className="rounded-xl border border-border-subtle bg-bg-elevated p-6">
+            <h2 className="mb-4 text-lg font-medium text-text-primary">Základní informace</h2>
+            <div className="grid gap-4 md:grid-cols-2">
+              <Input
+                label="Název klienta"
+                {...register('client_name')}
+                error={errors.client_name?.message}
+                onBlur={handleClientNameBlur}
               />
-              <span className="text-sm text-text-secondary">Aktivní</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Controller
-                name="is_featured"
-                control={control}
-                render={({ field }) => (
-                  <Switch
-                    checked={field.value}
-                    onCheckedChange={field.onChange}
-                  />
-                )}
+              <Input
+                label="Slug"
+                {...register('slug')}
+                error={errors.slug?.message}
+                placeholder="nazev-case-study"
               />
-              <span className="text-sm text-text-secondary">Zvýrazněná</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Translations */}
-      <div className="rounded-xl border border-border-subtle bg-bg-elevated p-6">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-medium text-text-primary">Obsah a překlady</h2>
-          <TranslateButton
-            sourceTexts={getSourceTexts()}
-            onTranslated={handleTranslated}
-            context="Case study for corporate EV charging solutions"
-          />
-        </div>
-
-        <LocaleTabs
-          activeLocale={activeLocale}
-          onLocaleChange={setActiveLocale}
-          localeStatus={getLocaleStatus()}
-        />
-
-        <div className="mt-4 space-y-4">
-          <Input
-            label="Titulek"
-            {...register(`translations.${activeLocale}.title`)}
-            error={errors.translations?.[activeLocale]?.title?.message}
-          />
-          <Input
-            label="Podtitulek"
-            {...register(`translations.${activeLocale}.subtitle`)}
-          />
-
-          <div className="grid gap-4 md:grid-cols-1">
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-text-secondary">
-                Výzva
-              </label>
-              <textarea
-                {...register(`translations.${activeLocale}.challenge`)}
-                rows={4}
-                className="w-full rounded-lg border border-border-default bg-bg-primary px-4 py-2.5 text-text-primary placeholder:text-text-muted focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                placeholder="Popište výzvu, kterou klient řešil..."
-              />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-text-secondary">
-                Řešení
-              </label>
-              <textarea
-                {...register(`translations.${activeLocale}.solution`)}
-                rows={4}
-                className="w-full rounded-lg border border-border-default bg-bg-primary px-4 py-2.5 text-text-primary placeholder:text-text-muted focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                placeholder="Popište navržené řešení..."
-              />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-text-secondary">
-                Výsledky
-              </label>
-              <textarea
-                {...register(`translations.${activeLocale}.results`)}
-                rows={4}
-                className="w-full rounded-lg border border-border-default bg-bg-primary px-4 py-2.5 text-text-primary placeholder:text-text-muted focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                placeholder="Popište dosažené výsledky..."
+              <div>
+                <label className="mb-2 block text-sm font-medium text-text-secondary">
+                  Odvětví
+                </label>
+                <Controller
+                  name="industry"
+                  control={control}
+                  render={({ field }) => (
+                    <Select value={field.value || ''} onValueChange={field.onChange}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Vyberte odvětví" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {CASE_STUDY_INDUSTRIES.map(industry => (
+                          <SelectItem key={industry} value={industry}>
+                            {INDUSTRY_LABELS[industry as CaseStudyIndustry]}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
+              <Input
+                label="Počet stanic"
+                type="number"
+                {...register('station_count', { valueAsNumber: true })}
               />
             </div>
           </div>
 
-          <div className="border-t border-border-subtle pt-4">
-            <h3 className="mb-3 text-sm font-medium text-text-secondary">Testimonial</h3>
+          {/* Content */}
+          <div className="rounded-xl border border-border-subtle bg-bg-elevated p-6">
+            <div className="mb-4 flex items-center justify-between">
+              <h2 className="text-lg font-medium text-text-primary">Obsah</h2>
+              <div className="flex items-center gap-3">
+                <TranslateButton
+                  sourceTexts={getSourceTexts()}
+                  onTranslated={handleTranslated}
+                  context="Case study for corporate EV charging solutions"
+                />
+                <LocaleTabs
+                  activeLocale={activeLocale}
+                  onLocaleChange={setActiveLocale}
+                  localeStatus={getLocaleStatus()}
+                />
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <Input
+                label="Titulek"
+                {...register(`translations.${activeLocale}.title`)}
+                error={errors.translations?.[activeLocale]?.title?.message}
+                placeholder="325 dobíjecích bodů pro PPL"
+              />
+              <Input
+                label="Podtitulek (krátký popis pro karty)"
+                {...register(`translations.${activeLocale}.subtitle`)}
+                placeholder="Elektrifikace vozového parku doručovacích služeb"
+              />
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-text-secondary">
+                  Obsah případové studie
+                </label>
+                <Controller
+                  name={`translations.${activeLocale}.content`}
+                  control={control}
+                  render={({ field }) => (
+                    <ArticleEditor
+                      content={field.value || ''}
+                      onChange={field.onChange}
+                      placeholder="Napište obsah případové studie..."
+                    />
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Testimonial */}
+          <div className="rounded-xl border border-border-subtle bg-bg-elevated p-6">
+            <h2 className="mb-4 text-lg font-medium text-text-primary">Reference od klienta</h2>
             <div className="space-y-4">
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-text-secondary">
-                  Text reference
+                  Citace
                 </label>
                 <textarea
                   {...register(`translations.${activeLocale}.testimonial_text`)}
                   rows={3}
                   className="w-full rounded-lg border border-border-default bg-bg-primary px-4 py-2.5 text-text-primary placeholder:text-text-muted focus:border-green-500 focus:outline-none focus:ring-1 focus:ring-green-500"
-                  placeholder="Citace od klienta..."
+                  placeholder="Díky MyBox jsme dokázali elektrifikovat celou flotilu..."
                 />
               </div>
               <Input
-                label="Autor reference"
+                label="Autor citace"
                 {...register(`translations.${activeLocale}.testimonial_author`)}
-                placeholder="Jméno, Pozice"
+                placeholder="Jan Novák, Fleet Manager, PPL"
               />
             </div>
           </div>
 
-          <div className="border-t border-border-subtle pt-4">
-            <h3 className="mb-3 text-sm font-medium text-text-secondary">SEO</h3>
+          {/* SEO */}
+          <div className="rounded-xl border border-border-subtle bg-bg-elevated p-6">
+            <h2 className="mb-4 text-lg font-medium text-text-primary">SEO</h2>
             <div className="space-y-4">
               <Input
                 label="SEO titulek"
                 {...register(`translations.${activeLocale}.seo_title`)}
                 maxLength={60}
+                placeholder="325 dobíjecích bodů pro PPL | MyBox Reference"
               />
               <Input
                 label="SEO popis"
                 {...register(`translations.${activeLocale}.seo_description`)}
                 maxLength={160}
+                placeholder="Případová studie elektrifikace vozového parku PPL..."
               />
             </div>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* Status */}
+          <div className="rounded-xl border border-border-subtle bg-bg-elevated p-6">
+            <h2 className="mb-4 text-lg font-medium text-text-primary">Nastavení</h2>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-text-secondary">Aktivní</span>
+                <Controller
+                  name="is_active"
+                  control={control}
+                  render={({ field }) => (
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-text-secondary">Zvýrazněná</span>
+                <Controller
+                  name="is_featured"
+                  control={control}
+                  render={({ field }) => (
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  )}
+                />
+              </div>
+              <Input
+                label="Pořadí"
+                type="number"
+                {...register('sort_order', { valueAsNumber: true })}
+              />
+            </div>
+          </div>
+
+          {/* Featured image */}
+          <div className="rounded-xl border border-border-subtle bg-bg-elevated p-6">
+            <h2 className="mb-4 text-lg font-medium text-text-primary">Hlavní obrázek</h2>
+            <FeaturedImagePicker
+              value={featuredImageUrl || ''}
+              onChange={(url) => setValue('featured_image_url', url)}
+            />
+          </div>
+
+          {/* Client logo */}
+          <div className="rounded-xl border border-border-subtle bg-bg-elevated p-6">
+            <h2 className="mb-4 flex items-center gap-2 text-lg font-medium text-text-primary">
+              <Building2 className="h-5 w-5" />
+              Logo klienta
+            </h2>
+            <FeaturedImagePicker
+              value={clientLogoUrl || ''}
+              onChange={(url) => setValue('client_logo_url', url)}
+            />
           </div>
         </div>
       </div>

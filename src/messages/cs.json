@@ -486,7 +486,12 @@
     "share": "Sdílet",
     "tableOfContents": "Obsah článku",
     "category": "Kategorie",
-    "tags": "Štítky"
+    "tags": "Štítky",
+    "cta": {
+      "heading": "Máte zájem o nabíjecí stanice?",
+      "description": "Kontaktujte nás pro nezávaznou konzultaci. Rádi vám pomůžeme s výběrem správného řešení.",
+      "button": "Kontaktujte nás"
+    }
   },
   "documents": {
     "title": "Dokumenty ke stažení",

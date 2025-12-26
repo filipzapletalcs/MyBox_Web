@@ -7,11 +7,12 @@ import type { ContentSectionProps } from '@/types/product'
 
 const easeOut = [0.25, 0.1, 0.25, 1] as const
 
+// Jednotné varianty s y-axis animací (prevence horizontal overflow)
 const textVariants = {
-  hidden: { opacity: 0, x: -30 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
-    x: 0,
+    y: 0,
     transition: {
       duration: 0.6,
       ease: easeOut,
@@ -20,37 +21,14 @@ const textVariants = {
 }
 
 const imageVariants = {
-  hidden: { opacity: 0, x: 30 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
-    x: 0,
+    y: 0,
     transition: {
       duration: 0.6,
       ease: easeOut,
-    },
-  },
-}
-
-const reversedTextVariants = {
-  hidden: { opacity: 0, x: 30 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.6,
-      ease: easeOut,
-    },
-  },
-}
-
-const reversedImageVariants = {
-  hidden: { opacity: 0, x: -30 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: {
-      duration: 0.6,
-      ease: easeOut,
+      delay: 0.1,
     },
   },
 }
@@ -64,17 +42,17 @@ export function ContentSection({
   className,
 }: ContentSectionProps) {
   return (
-    <section className={cn('py-16 md:py-24', className)}>
+    <section className={cn('py-10 md:py-16 lg:py-24 overflow-hidden', className)}>
       <div className="container-custom">
         <div
           className={cn(
-            'grid gap-12 lg:gap-20 items-center',
+            'grid gap-8 md:gap-12 lg:gap-20 items-center',
             'lg:grid-cols-2'
           )}
         >
           {/* Text Content */}
           <motion.div
-            variants={reverse ? reversedTextVariants : textVariants}
+            variants={textVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}
@@ -89,7 +67,7 @@ export function ContentSection({
               </span>
             )}
 
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-6">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary mb-4 md:mb-6">
               {title}
             </h2>
 
@@ -106,7 +84,7 @@ export function ContentSection({
 
           {/* Image */}
           <motion.div
-            variants={reverse ? reversedImageVariants : imageVariants}
+            variants={imageVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: '-100px' }}

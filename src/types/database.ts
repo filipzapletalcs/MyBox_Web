@@ -34,6 +34,71 @@ export type Database = {
   }
   public: {
     Tables: {
+      accessories: {
+        Row: {
+          created_at: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          link_url: string | null
+          slug: string
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          link_url?: string | null
+          slug: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          link_url?: string | null
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      accessory_translations: {
+        Row: {
+          accessory_id: string
+          description: string | null
+          id: string
+          locale: string
+          name: string
+        }
+        Insert: {
+          accessory_id: string
+          description?: string | null
+          id?: string
+          locale: string
+          name: string
+        }
+        Update: {
+          accessory_id?: string
+          description?: string | null
+          id?: string
+          locale?: string
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "accessory_translations_accessory_id_fkey"
+            columns: ["accessory_id"]
+            isOneToOne: false
+            referencedRelation: "accessories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       article_tags: {
         Row: {
           article_id: string
@@ -158,6 +223,209 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      case_studies: {
+        Row: {
+          client_logo_url: string | null
+          client_name: string
+          created_at: string | null
+          featured_image_url: string | null
+          id: string
+          industry: string | null
+          is_active: boolean | null
+          is_featured: boolean | null
+          published_at: string | null
+          slug: string
+          sort_order: number | null
+          station_count: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          client_logo_url?: string | null
+          client_name: string
+          created_at?: string | null
+          featured_image_url?: string | null
+          id?: string
+          industry?: string | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          published_at?: string | null
+          slug: string
+          sort_order?: number | null
+          station_count?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          client_logo_url?: string | null
+          client_name?: string
+          created_at?: string | null
+          featured_image_url?: string | null
+          id?: string
+          industry?: string | null
+          is_active?: boolean | null
+          is_featured?: boolean | null
+          published_at?: string | null
+          slug?: string
+          sort_order?: number | null
+          station_count?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      case_study_images: {
+        Row: {
+          alt: string | null
+          case_study_id: string
+          created_at: string | null
+          id: string
+          is_primary: boolean | null
+          sort_order: number | null
+          url: string
+        }
+        Insert: {
+          alt?: string | null
+          case_study_id: string
+          created_at?: string | null
+          id?: string
+          is_primary?: boolean | null
+          sort_order?: number | null
+          url: string
+        }
+        Update: {
+          alt?: string | null
+          case_study_id?: string
+          created_at?: string | null
+          id?: string
+          is_primary?: boolean | null
+          sort_order?: number | null
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "case_study_images_case_study_id_fkey"
+            columns: ["case_study_id"]
+            isOneToOne: false
+            referencedRelation: "case_studies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      case_study_metric_translations: {
+        Row: {
+          id: string
+          label: string
+          locale: string
+          metric_id: string
+        }
+        Insert: {
+          id?: string
+          label: string
+          locale: string
+          metric_id: string
+        }
+        Update: {
+          id?: string
+          label?: string
+          locale?: string
+          metric_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "case_study_metric_translations_metric_id_fkey"
+            columns: ["metric_id"]
+            isOneToOne: false
+            referencedRelation: "case_study_metrics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      case_study_metrics: {
+        Row: {
+          case_study_id: string
+          created_at: string | null
+          icon: string | null
+          id: string
+          sort_order: number | null
+          value: string
+        }
+        Insert: {
+          case_study_id: string
+          created_at?: string | null
+          icon?: string | null
+          id?: string
+          sort_order?: number | null
+          value: string
+        }
+        Update: {
+          case_study_id?: string
+          created_at?: string | null
+          icon?: string | null
+          id?: string
+          sort_order?: number | null
+          value?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "case_study_metrics_case_study_id_fkey"
+            columns: ["case_study_id"]
+            isOneToOne: false
+            referencedRelation: "case_studies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      case_study_translations: {
+        Row: {
+          case_study_id: string
+          challenge: string | null
+          id: string
+          locale: string
+          results: string | null
+          seo_description: string | null
+          seo_title: string | null
+          solution: string | null
+          subtitle: string | null
+          testimonial_author: string | null
+          testimonial_text: string | null
+          title: string
+        }
+        Insert: {
+          case_study_id: string
+          challenge?: string | null
+          id?: string
+          locale: string
+          results?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          solution?: string | null
+          subtitle?: string | null
+          testimonial_author?: string | null
+          testimonial_text?: string | null
+          title: string
+        }
+        Update: {
+          case_study_id?: string
+          challenge?: string | null
+          id?: string
+          locale?: string
+          results?: string | null
+          seo_description?: string | null
+          seo_title?: string | null
+          solution?: string | null
+          subtitle?: string | null
+          testimonial_author?: string | null
+          testimonial_text?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "case_study_translations_case_study_id_fkey"
+            columns: ["case_study_id"]
+            isOneToOne: false
+            referencedRelation: "case_studies"
             referencedColumns: ["id"]
           },
         ]
@@ -351,6 +619,245 @@ export type Database = {
           updated_at?: string | null
         }
         Relationships: []
+      }
+      corporate_benefit_translations: {
+        Row: {
+          benefit_id: string
+          description: string | null
+          id: string
+          locale: string
+          title: string
+        }
+        Insert: {
+          benefit_id: string
+          description?: string | null
+          id?: string
+          locale: string
+          title: string
+        }
+        Update: {
+          benefit_id?: string
+          description?: string | null
+          id?: string
+          locale?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_benefit_translations_benefit_id_fkey"
+            columns: ["benefit_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_benefits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      corporate_benefits: {
+        Row: {
+          color_accent: string | null
+          created_at: string | null
+          icon: string | null
+          id: string
+          is_active: boolean | null
+          page_id: string | null
+          section_id: string | null
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          color_accent?: string | null
+          created_at?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          page_id?: string | null
+          section_id?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          color_accent?: string | null
+          created_at?: string | null
+          icon?: string | null
+          id?: string
+          is_active?: boolean | null
+          page_id?: string | null
+          section_id?: string | null
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_benefits_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_pages"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "corporate_benefits_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      corporate_page_translations: {
+        Row: {
+          hero_heading: string | null
+          hero_subheading: string | null
+          id: string
+          locale: string
+          page_id: string
+          seo_description: string | null
+          seo_title: string | null
+          subtitle: string | null
+          title: string
+        }
+        Insert: {
+          hero_heading?: string | null
+          hero_subheading?: string | null
+          id?: string
+          locale: string
+          page_id: string
+          seo_description?: string | null
+          seo_title?: string | null
+          subtitle?: string | null
+          title: string
+        }
+        Update: {
+          hero_heading?: string | null
+          hero_subheading?: string | null
+          id?: string
+          locale?: string
+          page_id?: string
+          seo_description?: string | null
+          seo_title?: string | null
+          subtitle?: string | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_page_translations_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_pages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      corporate_pages: {
+        Row: {
+          created_at: string | null
+          hero_image_url: string | null
+          hero_video_url: string | null
+          id: string
+          is_active: boolean | null
+          page_type: string
+          slug: string
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          hero_image_url?: string | null
+          hero_video_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          page_type: string
+          slug: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          hero_image_url?: string | null
+          hero_video_url?: string | null
+          id?: string
+          is_active?: boolean | null
+          page_type?: string
+          slug?: string
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      corporate_section_translations: {
+        Row: {
+          content: Json | null
+          heading: string | null
+          id: string
+          locale: string
+          section_id: string
+          subheading: string | null
+        }
+        Insert: {
+          content?: Json | null
+          heading?: string | null
+          id?: string
+          locale: string
+          section_id: string
+          subheading?: string | null
+        }
+        Update: {
+          content?: Json | null
+          heading?: string | null
+          id?: string
+          locale?: string
+          section_id?: string
+          subheading?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_section_translations_section_id_fkey"
+            columns: ["section_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_sections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      corporate_sections: {
+        Row: {
+          config: Json | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          page_id: string
+          section_type: Database["public"]["Enums"]["corporate_section_type"]
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          config?: Json | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          page_id: string
+          section_type: Database["public"]["Enums"]["corporate_section_type"]
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          config?: Json | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          page_id?: string
+          section_type?: Database["public"]["Enums"]["corporate_section_type"]
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "corporate_sections_page_id_fkey"
+            columns: ["page_id"]
+            isOneToOne: false
+            referencedRelation: "corporate_pages"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       document_categories: {
         Row: {
@@ -613,6 +1120,75 @@ export type Database = {
             columns: ["uploaded_by"]
             isOneToOne: false
             referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string | null
+          email: string
+          id: string
+          is_active: boolean | null
+          locale: string
+          subscribed_at: string | null
+          unsubscribed_at: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          id?: string
+          is_active?: boolean | null
+          locale: string
+          subscribed_at?: string | null
+          unsubscribed_at?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          id?: string
+          is_active?: boolean | null
+          locale?: string
+          subscribed_at?: string | null
+          unsubscribed_at?: string | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      product_accessories: {
+        Row: {
+          accessory_id: string
+          created_at: string | null
+          product_id: string
+          sort_order: number | null
+        }
+        Insert: {
+          accessory_id: string
+          created_at?: string | null
+          product_id: string
+          sort_order?: number | null
+        }
+        Update: {
+          accessory_id?: string
+          created_at?: string | null
+          product_id?: string
+          sort_order?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_accessories_accessory_id_fkey"
+            columns: ["accessory_id"]
+            isOneToOne: false
+            referencedRelation: "accessories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "product_accessories_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
             referencedColumns: ["id"]
           },
         ]
@@ -1281,6 +1857,19 @@ export type Database = {
     }
     Enums: {
       article_status: "draft" | "scheduled" | "published" | "archived"
+      corporate_section_type:
+        | "hero"
+        | "client_logos"
+        | "solution_desc"
+        | "stations"
+        | "case_study"
+        | "gallery"
+        | "inquiry_form"
+        | "benefits"
+        | "features"
+        | "cta"
+        | "text_content"
+        | "faq"
       product_type: "ac_mybox" | "dc_alpitronic"
       user_role: "admin" | "editor" | "author"
     }
@@ -1414,6 +2003,20 @@ export const Constants = {
   public: {
     Enums: {
       article_status: ["draft", "scheduled", "published", "archived"],
+      corporate_section_type: [
+        "hero",
+        "client_logos",
+        "solution_desc",
+        "stations",
+        "case_study",
+        "gallery",
+        "inquiry_form",
+        "benefits",
+        "features",
+        "cta",
+        "text_content",
+        "faq",
+      ],
       product_type: ["ac_mybox", "dc_alpitronic"],
       user_role: ["admin", "editor", "author"],
     },

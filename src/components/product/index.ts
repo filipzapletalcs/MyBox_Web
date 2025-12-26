@@ -6,6 +6,7 @@ export { ContentSection } from './ContentSection'
 export { ProductFeatureShowcase } from './ProductFeatureShowcase'
 export { DownloadButton } from './DownloadButton'
 export { ProductPageContent } from './ProductPageContent'
+export { AccessoriesSection } from './AccessoriesSection'
 
 // Re-export types
 export type {
@@ -15,6 +16,7 @@ export type {
   SpecificationCategory,
   FeaturePoint,
   ContentSectionData,
+  AccessoryItem,
   FullProductData,
   ProductImageGalleryProps,
   ColorVariantSliderProps,

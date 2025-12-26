@@ -1,6 +1,7 @@
 'use client'
 
 import { useLocale } from 'next-intl'
+import { useParams } from 'next/navigation'
 import { usePathname, useRouter } from '@/i18n/navigation'
 import { locales, type Locale } from '@/i18n/routing'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -55,6 +56,7 @@ export function LanguageSwitcher({ className, variant = 'default', colorVariant 
   const locale = useLocale() as Locale
   const router = useRouter()
   const pathname = usePathname()
+  const params = useParams()
   const [isOpen, setIsOpen] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
 
@@ -71,8 +73,16 @@ export function LanguageSwitcher({ className, variant = 'default', colorVariant 
   }, [])
 
   const handleLanguageChange = (newLocale: Locale) => {
-    // Pathname is always valid for current page, cast needed for dynamic routes
-    router.replace(pathname as any, { locale: newLocale })
+    // For dynamic routes, we need to pass params (e.g., slug for /blog/[slug])
+    // Filter out the locale param as it's handled separately
+    const { locale: _locale, ...routeParams } = params
+
+    // Use router.replace with pathname and params for dynamic routes
+    router.replace(
+      // @ts-expect-error - Dynamic routes require params object
+      { pathname, params: routeParams },
+      { locale: newLocale }
+    )
     setIsOpen(false)
   }
 

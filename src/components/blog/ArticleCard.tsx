@@ -3,15 +3,16 @@
 import { motion } from 'framer-motion'
 import { Link } from '@/i18n/navigation'
 import Image from 'next/image'
-import { ArrowRight, Calendar } from 'lucide-react'
+import { ArrowRight, Calendar, Clock } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useTranslations } from 'next-intl'
 
 export interface ArticleCardProps {
   article: {
     slug: string
     featured_image_url?: string | null
     published_at?: string | null
-    article_translations: { locale: string; title: string; excerpt?: string | null }[]
+    article_translations: { locale: string; title: string; excerpt?: string | null; reading_time?: number | null }[]
     categories?: { category_translations: { locale: string; name: string }[] } | null
   }
   locale: 'cs' | 'en' | 'de'
@@ -19,13 +20,15 @@ export interface ArticleCardProps {
 }
 
 export function ArticleCard({ article, locale, index = 0 }: ArticleCardProps) {
+  const t = useTranslations('blog')
+
   // Get translation for current locale, fallback to first available
-  const translation = article.article_translations.find(t => t.locale === locale)
+  const translation = article.article_translations.find(tr => tr.locale === locale)
     || article.article_translations[0]
 
   // Get category name for current locale
   const categoryName = article.categories?.category_translations?.find(
-    t => t.locale === locale
+    tr => tr.locale === locale
   )?.name || article.categories?.category_translations?.[0]?.name
 
   // Format date
@@ -36,6 +39,9 @@ export function ArticleCard({ article, locale, index = 0 }: ArticleCardProps) {
         year: 'numeric'
       })
     : null
+
+  // Reading time (fallback to estimate from excerpt if not provided)
+  const readingTime = translation?.reading_time || (translation?.excerpt ? Math.max(1, Math.ceil(translation.excerpt.split(' ').length / 200)) : null)
 
   if (!translation) return null
 
@@ -58,6 +64,7 @@ export function ArticleCard({ article, locale, index = 0 }: ArticleCardProps) {
           'relative h-full overflow-hidden rounded-2xl',
           'bg-bg-secondary border border-border-subtle',
           'transition-all duration-500 ease-out',
+          'flex flex-col',
           // Hover effects
           'hover:border-green-500/30',
           'hover:shadow-[0_8px_40px_rgba(0,0,0,0.3),0_0_60px_rgba(22,163,74,0.08)]',
@@ -109,10 +116,8 @@ export function ArticleCard({ article, locale, index = 0 }: ArticleCardProps) {
                 <span className={cn(
                   'inline-flex items-center px-3 py-1.5 rounded-full',
                   'text-xs font-medium tracking-wide uppercase',
-                  'bg-bg-primary/80 backdrop-blur-sm text-green-400',
-                  'border border-green-500/20',
-                  'transition-all duration-300',
-                  'group-hover:bg-green-500/20 group-hover:border-green-500/40'
+                  'bg-green-600 text-white',
+                  'border border-green-500/30'
                 )}>
                   {categoryName}
                 </span>
@@ -121,23 +126,30 @@ export function ArticleCard({ article, locale, index = 0 }: ArticleCardProps) {
           </div>
 
           {/* Content */}
-          <div className="relative p-6">
-            {/* Date */}
-            {formattedDate && (
-              <div className="mb-3 flex items-center gap-2 text-text-muted">
-                <Calendar className="h-3.5 w-3.5" />
-                <time className="text-xs font-medium tracking-wide">
-                  {formattedDate}
-                </time>
-              </div>
-            )}
+          <div className="relative flex flex-col p-6 flex-1">
+            {/* Date and reading time */}
+            <div className="mb-3 flex items-center justify-between text-text-muted">
+              {formattedDate && (
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="h-3.5 w-3.5" />
+                  <time className="text-xs font-medium tracking-wide">
+                    {formattedDate}
+                  </time>
+                </div>
+              )}
+              {readingTime && (
+                <div className="flex items-center gap-1.5">
+                  <Clock className="h-3.5 w-3.5" />
+                  <span className="text-xs font-medium tracking-wide">
+                    {readingTime} {t('readingTime')}
+                  </span>
+                </div>
+              )}
+            </div>
 
             {/* Title */}
             <h3 className={cn(
               'text-lg font-semibold leading-snug text-text-primary',
-              'transition-colors duration-300',
-              'group-hover:text-green-400',
-              // Line clamp
               'line-clamp-2'
             )}>
               {translation.title}
@@ -153,19 +165,18 @@ export function ArticleCard({ article, locale, index = 0 }: ArticleCardProps) {
               </p>
             )}
 
-            {/* Read more link */}
+            {/* Spacer to push CTA to bottom */}
+            <div className="flex-1 min-h-4" />
+
+            {/* Read more link - always at bottom */}
             <div className="mt-5 flex items-center gap-2">
-              <span className={cn(
-                'text-sm font-medium text-green-400',
-                'transition-all duration-300',
-                'group-hover:text-green-300'
-              )}>
-                Číst článek
+              <span className="text-sm font-medium text-green-600">
+                {t('readMore')}
               </span>
               <ArrowRight className={cn(
-                'h-4 w-4 text-green-400',
-                'transition-all duration-300',
-                'group-hover:text-green-300 group-hover:translate-x-1'
+                'h-4 w-4 text-green-600',
+                'transition-transform duration-300',
+                'group-hover:translate-x-1'
               )} />
             </div>
 

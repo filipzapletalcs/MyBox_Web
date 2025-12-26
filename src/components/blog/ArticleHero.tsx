@@ -22,6 +22,7 @@ export interface ArticleHeroProps {
   readingTime?: number
   locale: 'cs' | 'en' | 'de'
   backLabel?: string
+  readingTimeLabel?: string
 }
 
 export function ArticleHero({
@@ -33,7 +34,8 @@ export function ArticleHero({
   category,
   readingTime,
   locale,
-  backLabel = 'Zpět na blog'
+  backLabel = 'Zpět na blog',
+  readingTimeLabel = 'min čtení'
 }: ArticleHeroProps) {
   // Format date
   const formattedDate = publishedAt
@@ -157,7 +159,7 @@ export function ArticleHero({
           {readingTime && (
             <div className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
-              <span>{readingTime} min čtení</span>
+              <span>{readingTime} {readingTimeLabel}</span>
             </div>
           )}
         </motion.div>

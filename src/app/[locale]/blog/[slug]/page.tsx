@@ -9,6 +9,7 @@ import {
   RelatedArticles
 } from '@/components/blog'
 import { CTASection } from '@/components/sections'
+import { ArticleJsonLd } from '@/components/seo'
 
 interface ArticlePageProps {
   params: Promise<{ locale: string; slug: string }>
@@ -44,12 +45,15 @@ function estimateReadingTime(content: string): number {
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { locale, slug } = await params
   const supabase = await createClient()
+  const baseUrl = 'https://mybox.eco'
 
   const { data: article } = await supabase
     .from('articles')
     .select(`
       slug,
       featured_image_url,
+      published_at,
+      updated_at,
       article_translations(locale, title, excerpt, seo_title, seo_description)
     `)
     .eq('slug', slug)
@@ -66,14 +70,36 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   const title = translation?.seo_title || translation?.title || 'Článek'
   const description = translation?.seo_description || translation?.excerpt || ''
 
+  // Build canonical URL
+  const canonicalUrl = locale === 'cs'
+    ? `${baseUrl}/blog/${slug}`
+    : `${baseUrl}/${locale}/blog/${slug}`
+
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        cs: `${baseUrl}/blog/${slug}`,
+        en: `${baseUrl}/en/blog/${slug}`,
+        de: `${baseUrl}/de/blog/${slug}`,
+      },
+    },
     openGraph: {
       title: `${title} | MyBox.eco`,
       description,
+      url: canonicalUrl,
+      siteName: 'MyBox.eco',
       images: article.featured_image_url ? [article.featured_image_url] : [],
       type: 'article',
+      ...(article.published_at && {
+        publishedTime: new Date(article.published_at).toISOString(),
+      }),
+      ...(article.updated_at && {
+        modifiedTime: new Date(article.updated_at).toISOString(),
+      }),
+      authors: ['MyBox'],
     },
     twitter: {
       card: 'summary_large_image',
@@ -99,8 +125,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       slug,
       featured_image_url,
       published_at,
+      updated_at,
       category_id,
-      article_translations(locale, title, excerpt, content),
+      article_translations(locale, title, excerpt, content, seo_description),
       categories(slug, category_translations(locale, name)),
       profiles(full_name, email),
       article_tags(tags(id, name, slug))
@@ -192,8 +219,27 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     }
   }
 
+  // Build canonical URL for JSON-LD
+  const baseUrl = 'https://mybox.eco'
+  const canonicalUrl = locale === 'cs'
+    ? `${baseUrl}/blog/${slug}`
+    : `${baseUrl}/${locale}/blog/${slug}`
+
   return (
     <>
+      {/* JSON-LD Structured Data */}
+      <ArticleJsonLd
+        title={translation.title}
+        description={translation.seo_description || translation.excerpt || ''}
+        url={canonicalUrl}
+        imageUrl={article.featured_image_url}
+        datePublished={article.published_at}
+        dateModified={article.updated_at}
+        authorName={article.profiles?.full_name}
+        categoryName={category?.name}
+        locale={locale}
+      />
+
       {/* Hero */}
       <ArticleHero
         title={translation.title}
@@ -205,6 +251,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         readingTime={readingTime}
         locale={locale as 'cs' | 'en' | 'de'}
         backLabel={t('backToBlog')}
+        readingTimeLabel={t('readingTime')}
       />
 
       {/* Content + Sidebar */}
@@ -259,9 +306,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
       {/* CTA */}
       <CTASection
-        heading="Máte zájem o nabíjecí stanice?"
-        description="Kontaktujte nás pro nezávaznou konzultaci. Rádi vám pomůžeme s výběrem správného řešení."
-        buttonLabel="Kontaktujte nás"
+        heading={t('cta.heading')}
+        description={t('cta.description')}
+        buttonLabel={t('cta.button')}
         buttonHref="/kontakt"
       />
     </>

@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "backup": "./scripts/backup.sh",
+    "restore": "./scripts/restore.sh",
+    "db:reset": "npx supabase db reset",
+    "db:seed": "npx supabase db reset && cat supabase/seed-mybox-profi.sql | docker exec -i supabase_db_mybox-eco psql -U postgres"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

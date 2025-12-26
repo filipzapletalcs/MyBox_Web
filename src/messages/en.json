@@ -397,7 +397,12 @@
     "share": "Share",
     "tableOfContents": "Table of contents",
     "category": "Category",
-    "tags": "Tags"
+    "tags": "Tags",
+    "cta": {
+      "heading": "Interested in charging stations?",
+      "description": "Contact us for a free consultation. We'll help you choose the right solution.",
+      "button": "Contact us"
+    }
   },
   "contactPage": {
     "hero": {

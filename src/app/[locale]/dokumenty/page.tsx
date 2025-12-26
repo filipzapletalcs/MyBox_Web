@@ -125,7 +125,7 @@ export default async function DocumentsPage({ params }: DocumentsPageProps) {
       <CTASection
         heading={tCta('heading')}
         description={tCta('description')}
-        buttonLabel={tCta('buttonLabel')}
+        buttonLabel={tCta('button')}
         buttonHref="/kontakt"
       />
     </>

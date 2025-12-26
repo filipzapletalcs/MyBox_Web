@@ -19,10 +19,12 @@ export async function translateText(
         content: `You are a professional translator. Translate Czech text to ${LOCALE_NAMES[targetLocale]}.
 Context: Website about EV charging stations (MyBox.eco).
 Rules:
-- Maintain the same tone and formatting
-- Preserve any HTML/markdown
+- Maintain the same tone
+- Output ONLY the translated text, nothing else
+- Do NOT add any markdown formatting (no **, no *, no #, no links)
+- Do NOT add quotation marks around the translation
 - Keep technical terms accurate
-- Do not add any explanations, just translate
+- Preserve line breaks if present
 ${context ? `Additional context: ${context}` : ''}`
       },
       { role: 'user', content: text }

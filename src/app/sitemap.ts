@@ -221,6 +221,83 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
+  // ============================================
+  // 6. CORPORATE PAGES (Firemní nabíjení)
+  // ============================================
+  const { data: corporatePages } = await supabase
+    .from('corporate_pages')
+    .select('slug, page_type, updated_at')
+    .eq('is_active', true)
+
+  if (corporatePages) {
+    for (const page of corporatePages) {
+      for (const locale of locales) {
+        // Localized base path for corporate section
+        const localizedBasePath = locale === 'cs'
+          ? '/nabijeni-pro-firmy'
+          : locale === 'en'
+            ? '/corporate-charging'
+            : '/laden-fur-unternehmen'
+
+        // Landing page has no slug in URL
+        const url = page.page_type === 'landing'
+          ? (locale === defaultLocale
+              ? `${baseUrl}${localizedBasePath}`
+              : `${baseUrl}/${locale}${localizedBasePath}`)
+          : (locale === defaultLocale
+              ? `${baseUrl}${localizedBasePath}/${page.slug}`
+              : `${baseUrl}/${locale}${localizedBasePath}/${page.slug}`)
+
+        entries.push({
+          url,
+          lastModified: page.updated_at ? new Date(page.updated_at) : new Date(),
+          changeFrequency: 'monthly',
+          priority: page.page_type === 'landing' ? 0.9 : 0.7,
+          alternates: {
+            languages: page.page_type === 'landing'
+              ? generateDynamicAlternates(localizedBasePath, '')
+              : generateDynamicAlternates(localizedBasePath, page.slug),
+          },
+        })
+      }
+    }
+  }
+
+  // ============================================
+  // 7. CASE STUDIES
+  // ============================================
+  const { data: caseStudies } = await supabase
+    .from('case_studies')
+    .select('slug, updated_at')
+    .eq('is_active', true)
+    .not('published_at', 'is', null)
+
+  if (caseStudies) {
+    for (const caseStudy of caseStudies) {
+      for (const locale of locales) {
+        const localizedBasePath = locale === 'cs'
+          ? '/reference'
+          : locale === 'en'
+            ? '/case-studies'
+            : '/referenzen'
+
+        const url = locale === defaultLocale
+          ? `${baseUrl}${localizedBasePath}/${caseStudy.slug}`
+          : `${baseUrl}/${locale}${localizedBasePath}/${caseStudy.slug}`
+
+        entries.push({
+          url,
+          lastModified: caseStudy.updated_at ? new Date(caseStudy.updated_at) : new Date(),
+          changeFrequency: 'monthly',
+          priority: 0.7,
+          alternates: {
+            languages: generateDynamicAlternates(localizedBasePath, caseStudy.slug),
+          },
+        })
+      }
+    }
+  }
+
   return entries
 }
 

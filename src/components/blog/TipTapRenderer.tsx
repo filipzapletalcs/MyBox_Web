@@ -1,3 +1,5 @@
+'use client'
+
 import { generateHTML } from '@tiptap/core'
 import StarterKit from '@tiptap/starter-kit'
 import Link from '@tiptap/extension-link'
@@ -69,6 +71,7 @@ export function TipTapRenderer({ content, className }: TipTapRendererProps) {
         className
       )}
       dangerouslySetInnerHTML={{ __html: html }}
+      suppressHydrationWarning
     />
   )
 }

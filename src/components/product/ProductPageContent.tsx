@@ -11,6 +11,7 @@ import {
   ContentSection,
   ProductFeatureShowcase,
   DownloadButton,
+  AccessoriesSection,
 } from '@/components/product'
 import { ProductJsonLd, BreadcrumbJsonLd } from '@/components/seo'
 import { getVideoUrl } from '@/lib/supabase/storage'
@@ -105,54 +106,21 @@ export function ProductPageContent({
         />
       )}
 
-      {/* Product Gallery & Info */}
-      <section className="py-16 md:py-24 bg-bg-primary">
+      {/* Product Gallery */}
+      <section className="py-6 md:py-10 lg:py-16 bg-bg-primary">
         <div className="container-custom">
-          <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-            <ProductImageGallery
-              images={product.gallery}
-              productName={product.name}
-            />
-
-            <div className="flex flex-col justify-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
-                {product.name}
-              </h2>
-              <p className="text-lg text-text-secondary mb-6 leading-relaxed">
-                {product.description}
-              </p>
-
-              {/* Dynamic features from product */}
-              {product.features && product.features.length > 0 && (
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {product.features.slice(0, 4).map((feature) => (
-                    <span
-                      key={feature}
-                      className="px-3 py-1.5 rounded-full bg-green-500/10 text-green-500 text-sm font-medium"
-                    >
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              {product.datasheet && (
-                <DownloadButton
-                  href={product.datasheet.url}
-                  fileName={product.datasheet.fileName}
-                  label="Stáhnout datasheet"
-                />
-              )}
-            </div>
-          </div>
+          <ProductImageGallery
+            images={product.gallery}
+            productName={product.name}
+          />
         </div>
       </section>
 
       {/* Color Variants */}
       {product.colorVariants && (
-        <section className="py-16 md:py-24 bg-bg-secondary">
+        <section className="py-10 md:py-16 lg:py-24 bg-bg-secondary">
           <div className="container-custom">
-            <div className="section-header mb-10 md:mb-14">
+            <div className="section-header mb-8 md:mb-12">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary">
                 Barevné varianty
               </h2>
@@ -184,6 +152,15 @@ export function ProductPageContent({
         />
       ))}
 
+      {/* Accessories Section */}
+      {product.accessories && product.accessories.length > 0 && (
+        <AccessoriesSection
+          accessories={product.accessories}
+          productName={product.name}
+          className="bg-bg-secondary"
+        />
+      )}
+
       {/* Technical Specifications */}
       <TechnicalSpecifications
         specifications={product.specifications}
@@ -191,7 +168,7 @@ export function ProductPageContent({
       />
 
       {/* Bottom CTA */}
-      <section className="py-16 md:py-24 bg-bg-primary">
+      <section className="py-10 md:py-16 lg:py-24 bg-bg-primary">
         <div className="container-custom text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-text-primary mb-4">
             Máte zájem o {product.name}?

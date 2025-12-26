@@ -5,8 +5,8 @@ export const articleTranslationSchema = z.object({
   title: z.string().min(1, 'Titulek je povinný').max(200),
   excerpt: z.string().max(500).optional().nullable(),
   content: z.any(), // TipTap JSON
-  seo_title: z.string().max(60).optional().nullable(),
-  seo_description: z.string().max(160).optional().nullable(),
+  seo_title: z.string().optional().nullable(),
+  seo_description: z.string().optional().nullable(),
 })
 
 export const createArticleSchema = z.object({
@@ -17,7 +17,7 @@ export const createArticleSchema = z.object({
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Neplatný formát slug'),
   status: z.enum(['draft', 'scheduled', 'published', 'archived']).default('draft'),
   published_at: z.string().datetime().optional().nullable(),
-  category_id: z.string().uuid().optional().nullable(),
+  category_id: z.string().optional().nullable(),
   featured_image_url: z.string().url().optional().nullable(),
   is_featured: z.boolean().default(false),
   translations: z

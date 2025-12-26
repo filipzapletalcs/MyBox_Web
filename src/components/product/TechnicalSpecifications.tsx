@@ -1,6 +1,7 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { Card } from '@/components/ui/Card'
 import type { TechnicalSpecificationsProps, SpecificationCategory } from '@/types/product'
@@ -37,24 +38,30 @@ const CategoryIcons = {
   ),
 }
 
-const containerVariants = {
-  hidden: { opacity: 0 },
+// Chevron icon for expand/collapse button
+const ChevronDownIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M6 9l6 6 6-6" />
+  </svg>
+)
+
+const easeOut = [0.25, 0.1, 0.25, 1] as const
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.95 },
   visible: {
     opacity: 1,
+    scale: 1,
     transition: {
-      staggerChildren: 0.1,
+      duration: 0.3,
+      ease: easeOut,
     },
   },
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
+  exit: {
+    opacity: 0,
+    scale: 0.95,
     transition: {
-      duration: 0.5,
-      ease: [0.25, 0.1, 0.25, 1] as const,
+      duration: 0.2,
     },
   },
 }
@@ -63,42 +70,40 @@ function SpecificationCard({ category }: { category: SpecificationCategory }) {
   const IconComponent = CategoryIcons[category.icon] || CategoryIcons.power
 
   return (
-    <motion.div variants={itemVariants}>
-      <Card variant="default" padding="md" radius="lg" className="h-full">
-        {/* Category Header */}
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2.5 rounded-xl bg-green-500/10">
-            <IconComponent className="h-5 w-5 text-green-500" />
-          </div>
-          <h3 className="font-semibold text-lg text-text-primary">
-            {category.title}
-          </h3>
+    <Card variant="default" padding="md" radius="lg" className="h-full">
+      {/* Category Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="p-2.5 rounded-xl bg-green-500/10">
+          <IconComponent className="h-5 w-5 text-green-500" />
         </div>
+        <h3 className="font-semibold text-lg text-text-primary">
+          {category.title}
+        </h3>
+      </div>
 
-        {/* Specs List */}
-        <dl className="space-y-3">
-          {category.specs.map((spec) => (
-            <div
-              key={spec.key}
-              className="flex justify-between items-baseline gap-4 py-2 border-b border-border-subtle last:border-0"
+      {/* Specs List */}
+      <dl className="space-y-3">
+        {category.specs.map((spec) => (
+          <div
+            key={spec.key}
+            className="flex justify-between items-baseline gap-4 py-2 border-b border-border-subtle last:border-0"
+          >
+            <dt className="text-text-secondary text-sm">
+              {spec.label}
+            </dt>
+            <dd
+              className={cn(
+                'font-medium text-sm text-right',
+                spec.highlight ? 'text-green-500' : 'text-text-primary'
+              )}
             >
-              <dt className="text-text-secondary text-sm">
-                {spec.label}
-              </dt>
-              <dd
-                className={cn(
-                  'font-medium text-sm text-right',
-                  spec.highlight ? 'text-green-500' : 'text-text-primary'
-                )}
-              >
-                {spec.value}
-                {spec.unit && <span className="text-text-secondary ml-1">{spec.unit}</span>}
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </Card>
-    </motion.div>
+              {spec.value}
+              {spec.unit && <span className="text-text-secondary ml-1">{spec.unit}</span>}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </Card>
   )
 }
 
@@ -106,8 +111,41 @@ export function TechnicalSpecifications({
   specifications,
   className,
 }: TechnicalSpecificationsProps) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const [visibleCount, setVisibleCount] = useState(4)
+
+  // Detekce breakpointu pro responzivní zobrazení
+  useEffect(() => {
+    const updateVisibleCount = () => {
+      if (window.innerWidth >= 1280) {
+        // xl: 4 karty - vše viditelné
+        setVisibleCount(specifications.length)
+      } else if (window.innerWidth >= 1024) {
+        // lg: 3 karty
+        setVisibleCount(3)
+      } else if (window.innerWidth >= 640) {
+        // sm: 2 karty
+        setVisibleCount(2)
+      } else {
+        // mobile: 1 karta
+        setVisibleCount(1)
+      }
+    }
+
+    updateVisibleCount()
+    window.addEventListener('resize', updateVisibleCount)
+    return () => window.removeEventListener('resize', updateVisibleCount)
+  }, [specifications.length])
+
+  const displayedSpecs = isExpanded
+    ? specifications
+    : specifications.slice(0, visibleCount)
+
+  const hasMore = specifications.length > visibleCount
+  const remainingCount = specifications.length - visibleCount
+
   return (
-    <section className={cn('py-16 md:py-24', className)}>
+    <section id="specifikace" className={cn('py-10 md:py-16 lg:py-24', className)}>
       <div className="container-custom">
         {/* Section Header */}
         <motion.div
@@ -115,7 +153,7 @@ export function TechnicalSpecifications({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="section-header items-start text-left mb-10 md:mb-14"
+          className="section-header items-start text-left mb-8 md:mb-12"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary">
             Technické parametry
@@ -127,16 +165,58 @@ export function TechnicalSpecifications({
 
         {/* Specifications Grid */}
         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          className={cn(
+            'grid gap-4 md:gap-6',
+            // Responzivní grid
+            'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+          )}
         >
-          {specifications.map((category) => (
-            <SpecificationCard key={category.id} category={category} />
-          ))}
+          <AnimatePresence mode="popLayout">
+            {displayedSpecs.map((category) => (
+              <motion.div
+                key={category.id}
+                variants={cardVariants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                layout
+              >
+                <SpecificationCard category={category} />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </motion.div>
+
+        {/* Tlačítko Zobrazit více/méně - pouze pod xl breakpoint */}
+        {hasMore && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-6 text-center xl:hidden"
+          >
+            <button
+              onClick={() => setIsExpanded(!isExpanded)}
+              className={cn(
+                'inline-flex items-center gap-2 px-6 py-3 rounded-xl',
+                'bg-bg-tertiary hover:bg-bg-secondary',
+                'border border-border-subtle',
+                'text-text-primary font-medium',
+                'transition-colors duration-200'
+              )}
+            >
+              {isExpanded ? 'Zobrazit méně' : `Zobrazit více (${remainingCount})`}
+              <ChevronDownIcon
+                className={cn(
+                  'w-5 h-5 transition-transform duration-200',
+                  isExpanded && 'rotate-180'
+                )}
+              />
+            </button>
+          </motion.div>
+        )}
       </div>
     </section>
   )

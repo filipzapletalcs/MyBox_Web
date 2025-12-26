@@ -19,16 +19,9 @@ const BUCKET_LIMITS: Record<BucketName, number> = {
 }
 
 // GET /api/media - Seznam souborů (z media tabulky)
+// Veřejný endpoint - nepotřebuje autentizaci pro listing
 export async function GET(request: NextRequest) {
   const supabase = await createClient()
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
 
   const { searchParams } = new URL(request.url)
   const bucket = searchParams.get('bucket') as BucketName | 'all' | null

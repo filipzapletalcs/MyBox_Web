@@ -1,6 +1,5 @@
-export {
-  ProductJsonLd,
-  BreadcrumbJsonLd,
-  OrganizationJsonLd,
-  FAQJsonLd,
-} from './ProductJsonLd'
+export { ProductJsonLd } from './ProductJsonLd'
+export { BreadcrumbJsonLd } from './BreadcrumbJsonLd'
+export { OrganizationJsonLd } from './OrganizationJsonLd'
+export { FAQJsonLd } from './FAQJsonLd'
+export { ArticleJsonLd } from './ArticleJsonLd'

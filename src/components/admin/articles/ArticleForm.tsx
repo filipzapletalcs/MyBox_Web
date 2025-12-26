@@ -2,9 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useForm, Controller } from 'react-hook-form'
+import { useForm, Controller, FieldErrors } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { toast } from 'sonner'
 import { Save, Send, ArrowLeft } from 'lucide-react'
 import { Button, Input, Textarea, Select, SelectTrigger, SelectValue, SelectContent, SelectItem, Card } from '@/components/ui'
 import { LocaleTabs, type Locale, type LocaleStatus } from '@/components/admin/ui/LocaleTabs'
@@ -21,7 +22,7 @@ const articleFormSchema = z.object({
     .max(100)
     .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Slug může obsahovat pouze malá písmena, čísla a pomlčky'),
   status: z.enum(['draft', 'scheduled', 'published', 'archived']),
-  category_id: z.string().uuid().optional().nullable(),
+  category_id: z.string().nullable().optional(),
   featured_image_url: z.string().url().optional().nullable().or(z.literal('')),
   is_featured: z.boolean(),
   translations: z.object({
@@ -149,6 +150,7 @@ export function ArticleForm({
     handleSubmit,
     watch,
     setValue,
+    getValues,
     formState: { errors, isDirty },
   } = useForm<ArticleFormData>({
     resolver: zodResolver(articleFormSchema),
@@ -192,13 +194,51 @@ export function ArticleForm({
     await onSubmit(data, publish)
   }
 
+  const onValidationError = (errors: FieldErrors<ArticleFormData>) => {
+    // Collect all error messages - deep traverse errors object
+    const messages: string[] = []
+
+    const flattenErrors = (obj: any, prefix = ''): void => {
+      if (!obj) return
+      for (const key of Object.keys(obj)) {
+        const value = obj[key]
+        const path = prefix ? `${prefix}.${key}` : key
+        if (value?.message) {
+          messages.push(`${path}: ${value.message}`)
+        } else if (typeof value === 'object') {
+          flattenErrors(value, path)
+        }
+      }
+    }
+
+    flattenErrors(errors)
+
+    if (messages.length > 0) {
+      toast.error('Validační chyby', {
+        description: messages.join('\n'),
+      })
+    } else {
+      // If no specific error messages, try to get raw zod error
+      const formValues = getValues()
+      const result = articleFormSchema.safeParse(formValues)
+      if (!result.success) {
+        const zodMessages = result.error.issues.map(i => `${i.path.join('.')}: ${i.message}`)
+        toast.error('Validační chyby', {
+          description: zodMessages.join('\n'),
+        })
+      } else {
+        toast.error('Formulář obsahuje chyby')
+      }
+    }
+  }
+
   const getCategoryName = (category: Category, locale = 'cs') => {
     const t = category.translations.find((tr) => tr.locale === locale)
     return t?.name || category.translations[0]?.name || category.slug
   }
 
   return (
-    <form onSubmit={handleSubmit((data) => handleFormSubmit(data, false))}>
+    <form onSubmit={handleSubmit((data) => handleFormSubmit(data, false), onValidationError)}>
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-4">
@@ -228,7 +268,7 @@ export function ArticleForm({
             type="button"
             variant="primary"
             isLoading={isSubmitting}
-            onClick={handleSubmit((data) => handleFormSubmit(data, true))}
+            onClick={handleSubmit((data) => handleFormSubmit(data, true), onValidationError)}
           >
             <Send className="mr-2 h-4 w-4" />
             Publikovat
@@ -331,30 +371,51 @@ export function ArticleForm({
                 key={`seo_title-${activeLocale}`}
                 name={`translations.${activeLocale}.seo_title`}
                 control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    value={field.value || ''}
-                    label="SEO titulek"
-                    placeholder="Titulek pro vyhledávače (max 60 znaků)"
-                    hint="Pokud nevyplníte, použije se hlavní titulek"
-                  />
-                )}
+                render={({ field }) => {
+                  const length = field.value?.length || 0
+                  const isOverLimit = length > 60
+                  return (
+                    <div>
+                      <Input
+                        {...field}
+                        value={field.value || ''}
+                        label="SEO titulek"
+                        placeholder="Titulek pro vyhledávače (doporučeno max 60 znaků)"
+                        hint="Pokud nevyplníte, použije se hlavní titulek"
+                      />
+                      {isOverLimit && (
+                        <p className="mt-1 text-sm text-yellow-500">
+                          Upozornění: Titulek má {length} znaků, doporučeno je max 60 znaků
+                        </p>
+                      )}
+                    </div>
+                  )
+                }}
               />
               <Controller
                 key={`seo_description-${activeLocale}`}
                 name={`translations.${activeLocale}.seo_description`}
                 control={control}
-                render={({ field }) => (
-                  <Textarea
-                    {...field}
-                    value={field.value || ''}
-                    label="SEO popisek"
-                    placeholder="Popis pro vyhledávače (max 160 znaků)"
-                    maxLength={160}
-                    showCount
-                  />
-                )}
+                render={({ field }) => {
+                  const length = field.value?.length || 0
+                  const isOverLimit = length > 160
+                  return (
+                    <div>
+                      <Textarea
+                        {...field}
+                        value={field.value || ''}
+                        label="SEO popisek"
+                        placeholder="Popis pro vyhledávače (doporučeno max 160 znaků)"
+                        showCount
+                      />
+                      {isOverLimit && (
+                        <p className="mt-1 text-sm text-yellow-500">
+                          Upozornění: Popis má {length} znaků, doporučeno je max 160 znaků
+                        </p>
+                      )}
+                    </div>
+                  )
+                }}
               />
             </div>
           </Card>

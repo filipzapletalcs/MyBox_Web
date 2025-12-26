@@ -10,6 +10,7 @@ export const caseStudyTranslationSchema = z.object({
   locale: localeSchema,
   title: z.string().min(1, 'Titulek je povinný').max(200),
   subtitle: z.string().max(300).optional().nullable(),
+  content: z.unknown().optional().nullable(), // TipTap JSON content
   challenge: z.string().max(2000).optional().nullable(),
   solution: z.string().max(2000).optional().nullable(),
   results: z.string().max(2000).optional().nullable(),

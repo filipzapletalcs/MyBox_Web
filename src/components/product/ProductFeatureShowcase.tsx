@@ -50,20 +50,17 @@ const containerVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.15,
+      staggerChildren: 0.1,
       delayChildren: 0.2,
     },
   },
 }
 
 const featureVariants = {
-  hidden: (position: 'left' | 'right') => ({
-    opacity: 0,
-    x: position === 'left' ? -30 : 30,
-  }),
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
-    x: 0,
+    y: 0,
     transition: {
       duration: 0.5,
       ease: easeOut,
@@ -83,22 +80,27 @@ const imageVariants = {
   },
 }
 
-function FeatureItem({ feature, index }: { feature: FeaturePoint; index: number }) {
+// Desktop feature item - pro layout vlevo/vpravo od produktu
+function DesktopFeatureItem({ feature }: { feature: FeaturePoint }) {
   const IconComponent = FeatureIcons[feature.icon] || FeatureIcons.power
   const isLeft = feature.position === 'left'
 
   return (
     <motion.div
-      custom={feature.position}
       variants={featureVariants}
       className={cn(
         'flex items-center gap-4',
-        isLeft ? 'flex-row text-right' : 'flex-row-reverse text-left'
+        isLeft ? 'flex-row-reverse text-right' : 'flex-row text-left'
       )}
     >
+      {/* Icon */}
+      <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-green-500/10 flex items-center justify-center">
+        <IconComponent className="w-7 h-7 text-green-500" />
+      </div>
+
       {/* Text */}
       <div className={cn('flex-1', isLeft ? 'pr-4' : 'pl-4')}>
-        <div className="text-lg md:text-xl font-bold text-text-primary">
+        <div className="text-xl font-bold text-text-primary">
           {feature.value}
         </div>
         <div className="text-sm text-text-secondary">
@@ -106,20 +108,40 @@ function FeatureItem({ feature, index }: { feature: FeaturePoint; index: number 
         </div>
       </div>
 
-      {/* Icon */}
-      <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-xl bg-green-500/10 flex items-center justify-center">
-        <IconComponent className="w-6 h-6 md:w-7 md:h-7 text-green-500" />
-      </div>
-
       {/* Connector line */}
       <div
         className={cn(
-          'hidden lg:block w-8 xl:w-12 h-px bg-gradient-to-r',
+          'w-8 xl:w-12 h-px bg-gradient-to-r',
           isLeft
             ? 'from-transparent to-border-default'
             : 'from-border-default to-transparent'
         )}
       />
+    </motion.div>
+  )
+}
+
+// Mobile feature item - vertikální layout, zarovnané na střed
+function MobileFeatureItem({ feature }: { feature: FeaturePoint }) {
+  const IconComponent = FeatureIcons[feature.icon] || FeatureIcons.power
+
+  return (
+    <motion.div
+      variants={featureVariants}
+      className="flex flex-col items-center text-center py-4"
+    >
+      {/* Icon - nahoře, větší */}
+      <div className="w-14 h-14 rounded-2xl bg-green-500/10 flex items-center justify-center mb-3">
+        <IconComponent className="w-7 h-7 text-green-500" />
+      </div>
+
+      {/* Text - pod ikonkou */}
+      <div className="text-base font-bold text-text-primary leading-tight">
+        {feature.value}
+      </div>
+      <div className="text-sm text-text-secondary mt-1">
+        {feature.label}
+      </div>
     </motion.div>
   )
 }
@@ -134,7 +156,7 @@ export function ProductFeatureShowcase({
   const rightFeatures = features.filter(f => f.position === 'right')
 
   return (
-    <section className={cn('py-16 md:py-24 overflow-hidden', className)}>
+    <section className={cn('py-10 md:py-16 lg:py-24 overflow-hidden', className)}>
       <div className="container-custom">
         {/* Section Header */}
         <motion.div
@@ -142,7 +164,7 @@ export function ProductFeatureShowcase({
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="section-header mb-12 md:mb-16"
+          className="section-header mb-8 md:mb-12 lg:mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-primary">
             Klíčové vlastnosti
@@ -152,27 +174,58 @@ export function ProductFeatureShowcase({
           </p>
         </motion.div>
 
-        {/* Feature Showcase Grid */}
+        {/* MOBILE: Grid 2x3 */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-2 gap-2 mb-8 lg:hidden"
+        >
+          {features.map((feature) => (
+            <MobileFeatureItem key={feature.id} feature={feature} />
+          ))}
+        </motion.div>
+
+        {/* MOBILE: Velký produktový obrázek pod gridem */}
+        <motion.div
+          variants={imageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="relative mx-auto lg:hidden"
+        >
+          <div className="absolute inset-0 bg-gradient-radial from-green-500/5 via-transparent to-transparent blur-3xl scale-125" />
+          <div className="relative w-full max-w-sm mx-auto aspect-[3/4]">
+            <Image
+              src={productImage}
+              alt={productAlt}
+              fill
+              className="object-contain drop-shadow-2xl"
+              sizes="(max-width: 768px) 80vw, 400px"
+              priority
+            />
+          </div>
+        </motion.div>
+
+        {/* DESKTOP: Původní layout - features vlevo a vpravo od produktu */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-100px' }}
-          className="grid lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-4 xl:gap-8 items-center"
+          className="hidden lg:grid lg:grid-cols-[1fr_auto_1fr] gap-4 xl:gap-8 items-center"
         >
           {/* Left Features */}
-          <div className="space-y-6 md:space-y-8 order-2 lg:order-1">
-            {leftFeatures.map((feature, index) => (
-              <FeatureItem key={feature.id} feature={feature} index={index} />
+          <div className="space-y-8">
+            {leftFeatures.map((feature) => (
+              <DesktopFeatureItem key={feature.id} feature={feature} />
             ))}
           </div>
 
           {/* Center Product Image */}
-          <motion.div
-            variants={imageVariants}
-            className="relative order-1 lg:order-2 mx-auto lg:mx-0"
-          >
-            <div className="relative w-[280px] md:w-[320px] lg:w-[360px] xl:w-[400px] aspect-[3/4]">
+          <motion.div variants={imageVariants} className="relative mx-4 xl:mx-8">
+            <div className="relative w-[360px] xl:w-[400px] aspect-[3/4]">
               {/* Glow effect */}
               <div className="absolute inset-0 bg-gradient-radial from-green-500/10 via-transparent to-transparent blur-3xl scale-150" />
 
@@ -183,7 +236,7 @@ export function ProductFeatureShowcase({
                   alt={productAlt}
                   fill
                   className="object-contain drop-shadow-2xl"
-                  sizes="(max-width: 768px) 280px, (max-width: 1024px) 320px, 400px"
+                  sizes="400px"
                   priority
                 />
               </div>
@@ -191,9 +244,9 @@ export function ProductFeatureShowcase({
           </motion.div>
 
           {/* Right Features */}
-          <div className="space-y-6 md:space-y-8 order-3">
-            {rightFeatures.map((feature, index) => (
-              <FeatureItem key={feature.id} feature={feature} index={index} />
+          <div className="space-y-8">
+            {rightFeatures.map((feature) => (
+              <DesktopFeatureItem key={feature.id} feature={feature} />
             ))}
           </div>
         </motion.div>

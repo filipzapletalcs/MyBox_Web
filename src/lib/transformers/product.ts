@@ -8,6 +8,7 @@ import type {
   ProductImage,
   ColorVariant,
   ContentSectionData,
+  AccessoryItem,
 } from '@/types/product'
 
 type Locale = 'cs' | 'en' | 'de'
@@ -50,6 +51,13 @@ export async function getProductBySlug(
           file_cs, file_en, file_de,
           fallback_locale,
           document_translations(locale, title)
+        )
+      ),
+      product_accessories(
+        sort_order,
+        accessories(
+          id, slug, image_url, link_url,
+          accessory_translations(locale, name, description)
         )
       )
     `
@@ -159,6 +167,9 @@ function transformProductData(dbProduct: any, locale: Locale): FullProductData {
 
     // Content sections
     contentSections: contentSections.length > 0 ? contentSections : undefined,
+
+    // Accessories (from DB)
+    accessories: transformAccessories(dbProduct.product_accessories || [], locale),
 
     // Datasheet
     datasheet,
@@ -427,4 +438,37 @@ function getDatasheetFromDocuments(
     url: getDocumentUrl(filePath),
     fileName,
   }
+}
+
+/**
+ * Transform accessories from product_accessories junction
+ * Returns localized accessories for the product
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function transformAccessories(productAccessories: any[], locale: Locale): AccessoryItem[] | undefined {
+  if (!productAccessories || productAccessories.length === 0) {
+    return undefined
+  }
+
+  const accessories = productAccessories
+    .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+    .map((pa) => {
+      const accessory = pa.accessories
+      if (!accessory) return null
+
+      const translation = accessory.accessory_translations?.find(
+        (t: { locale: string }) => t.locale === locale
+      ) || accessory.accessory_translations?.[0]
+
+      return {
+        id: accessory.slug || accessory.id,
+        name: translation?.name || '',
+        description: translation?.description || '',
+        image: accessory.image_url || '',
+        link: accessory.link_url || '/poptavka',
+      }
+    })
+    .filter(Boolean) as AccessoryItem[]
+
+  return accessories.length > 0 ? accessories : undefined
 }

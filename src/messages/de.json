@@ -397,7 +397,12 @@
     "share": "Teilen",
     "tableOfContents": "Inhaltsverzeichnis",
     "category": "Kategorie",
-    "tags": "Tags"
+    "tags": "Tags",
+    "cta": {
+      "heading": "Interessiert an Ladestationen?",
+      "description": "Kontaktieren Sie uns für eine kostenlose Beratung. Wir helfen Ihnen bei der Auswahl der richtigen Lösung.",
+      "button": "Kontaktieren Sie uns"
+    }
   },
   "contactPage": {
     "hero": {
