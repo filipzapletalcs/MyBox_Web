@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { X, ChevronLeft, ChevronRight, ImageIcon } from 'lucide-react'
@@ -25,8 +25,6 @@ export function GallerySection({
   images,
   className,
 }: GallerySectionProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: true, margin: '-100px' })
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null)
 
   // Default placeholder images if none provided
@@ -54,40 +52,31 @@ export function GallerySection({
 
   return (
     <>
-      <section ref={containerRef} className={cn('py-20 md:py-28', className)}>
+      <section className={cn('py-20 md:py-28', className)} role="region" aria-label={heading}>
         <div className="container-custom">
           {/* Header */}
           <div className="mb-12 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
+            <div
               className="mb-4 inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1"
             >
               <ImageIcon className="h-3 w-3 text-green-400" />
               <span className="text-xs font-medium uppercase tracking-wider text-green-400">
                 Galerie
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 }}
+            <h2
               className="text-3xl font-bold text-text-primary md:text-4xl"
             >
               {heading}
-            </motion.h2>
+            </h2>
 
             {subheading && (
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 }}
+              <p
                 className="mx-auto mt-4 max-w-xl text-lg text-text-secondary"
               >
                 {subheading}
-              </motion.p>
+              </p>
             )}
           </div>
 
@@ -96,10 +85,10 @@ export function GallerySection({
             {displayImages.map((image, index) => (
               <motion.button
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
+                initial={false}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
                 onClick={() => openLightbox(index)}
                 className="group relative aspect-[4/3] overflow-hidden rounded-2xl bg-bg-secondary focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-bg-primary"
               >
@@ -107,6 +96,7 @@ export function GallerySection({
                   src={image.url}
                   alt={image.alt || `Galerie obrázek ${index + 1}`}
                   fill
+                  loading="lazy"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   onError={(e) => {

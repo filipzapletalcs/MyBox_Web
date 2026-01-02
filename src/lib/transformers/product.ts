@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { getDocumentUrl } from '@/lib/utils/documents'
+import { getProductImageUrl } from '@/lib/supabase/storage'
 import type {
   FullProductData,
   SpecificationCategory,
@@ -460,11 +461,18 @@ function transformAccessories(productAccessories: any[], locale: Locale): Access
         (t: { locale: string }) => t.locale === locale
       ) || accessory.accessory_translations?.[0]
 
+      // Convert accessory image_url to full storage URL
+      let imageUrl = accessory.image_url || ''
+      if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
+        // Relative path like 'accessories/...' - convert to storage URL
+        imageUrl = getProductImageUrl(imageUrl)
+      }
+
       return {
         id: accessory.slug || accessory.id,
         name: translation?.name || '',
         description: translation?.description || '',
-        image: accessory.image_url || '',
+        image: imageUrl,
         link: accessory.link_url || '/poptavka',
       }
     })

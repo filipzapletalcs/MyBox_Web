@@ -8,7 +8,7 @@ export function OrganizationJsonLd() {
     name: 'MyBox',
     legalName: 'ELEXIM, a.s.',
     url: 'https://mybox.eco',
-    logo: 'https://mybox.eco/logo.svg',
+    logo: 'https://mybox.eco/images/logo-mybox.svg',
     description: 'Český výrobce nabíjecích stanic pro elektromobily. AC a DC wallboxy pro domácnosti, firmy i veřejnou infrastrukturu.',
     address: {
       '@type': 'PostalAddress',

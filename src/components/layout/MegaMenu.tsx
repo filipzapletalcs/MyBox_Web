@@ -222,7 +222,7 @@ function ProductsMenu({
             href="/nabijeci-stanice/ac"
             className="group mb-10 mt-4 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-text-muted transition-colors hover:text-text-primary"
           >
-            AC nabíjecí stanice
+            {getTranslation('navigation.acChargingStations')}
             <ArrowIcon className="h-4 w-4 opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-1" />
           </Link>
         </motion.div>
@@ -254,7 +254,7 @@ function ProductsMenu({
             href="/nabijeci-stanice/dc"
             className="group mb-10 mt-4 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-text-muted transition-colors hover:text-text-primary"
           >
-            DC nabíjecí stanice
+            {getTranslation('navigation.dcChargingStations')}
             <ArrowIcon className="h-4 w-4 opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-1" />
           </Link>
         </motion.div>
@@ -371,7 +371,7 @@ function CategoriesMenu({
           />
         </Link>
         <p className="mt-2 text-sm text-text-muted">
-          Prozkoumat všechny možnosti
+          {getTranslation('navigation.exploreAllOptions')}
         </p>
       </motion.div>
 

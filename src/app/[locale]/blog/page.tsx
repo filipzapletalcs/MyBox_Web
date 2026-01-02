@@ -57,7 +57,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       locale: locale === 'cs' ? 'cs_CZ' : locale === 'de' ? 'de_DE' : 'en_US',
       images: [
         {
-          url: `${baseUrl}/images/og/blog-og.jpg`,
+          url: `${baseUrl}/images/og/blog-og.png`,
           width: 1200,
           height: 630,
           alt: title,
@@ -68,7 +68,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       card: 'summary_large_image',
       title: `${title} | MyBox.eco`,
       description,
-      images: [`${baseUrl}/images/og/blog-og.jpg`],
+      images: [`${baseUrl}/images/og/blog-og.png`],
     },
     // Extended robots directives for optimal indexing
     robots: {

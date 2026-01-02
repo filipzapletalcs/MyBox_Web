@@ -44,6 +44,13 @@ export async function generateMetadata({
   const translation =
     page.translations.find((t) => t.locale === locale) || page.translations[0]
 
+  const baseUrl = 'https://mybox.eco'
+  const localizedPaths: Record<string, string> = {
+    cs: `/nabijeni-pro-firmy/${slug}`,
+    en: `/corporate-charging/${slug}`,
+    de: `/firmenladen/${slug}`,
+  }
+
   return {
     title: translation?.seo_title || translation?.title,
     description: translation?.seo_description || translation?.subtitle || undefined,
@@ -51,6 +58,21 @@ export async function generateMetadata({
       title: translation?.seo_title || translation?.title,
       description: translation?.seo_description || translation?.subtitle || undefined,
       type: 'website',
+      locale: locale === 'cs' ? 'cs_CZ' : locale === 'de' ? 'de_DE' : 'en_US',
+      siteName: 'MyBox.eco',
+    },
+    twitter: {
+      card: 'summary',
+      title: translation?.seo_title || translation?.title,
+      description: translation?.seo_description || translation?.subtitle || undefined,
+    },
+    alternates: {
+      canonical: `${baseUrl}${localizedPaths[locale]}`,
+      languages: {
+        cs: `${baseUrl}${localizedPaths.cs}`,
+        en: `${baseUrl}${localizedPaths.en}`,
+        de: `${baseUrl}${localizedPaths.de}`,
+      },
     },
   }
 }

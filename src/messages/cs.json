@@ -13,7 +13,13 @@
     "blog": "Blog",
     "aboutUs": "O nás",
     "contact": "Kontakt",
-    "requestQuote": "Poptávka"
+    "requestQuote": "Poptávka",
+    "skipToMain": "Přeskočit na obsah",
+    "acChargingStations": "AC nabíjecí stanice",
+    "dcChargingStations": "DC nabíjecí stanice",
+    "exploreAllOptions": "Prozkoumat všechny možnosti",
+    "back": "Zpět",
+    "closeMenu": "Zavřít menu"
   },
   "chargingStations": {
     "title": "Nabíjecí stanice",
@@ -283,7 +289,18 @@
     "backToHome": "Zpět na úvod",
     "loading": "Načítání...",
     "error": "Něco se pokazilo",
-    "retry": "Zkusit znovu"
+    "retry": "Zkusit znovu",
+    "countryName": "Česká republika",
+    "ico": "IČ",
+    "dic": "DIČ",
+    "interested": "Mám zájem",
+    "technicalSpecs": "Technické parametry"
+  },
+  "cookies": {
+    "message": "Tento web používá cookies pro zlepšení vašeho zážitku a analýzu návštěvnosti.",
+    "accept": "Přijmout vše",
+    "decline": "Pouze nezbytné",
+    "learnMore": "Více informací"
   },
   "footer": {
     "company": "ELEXIM, a.s.",
@@ -291,7 +308,7 @@
     "allRightsReserved": "Všechna práva vyhrazena",
     "privacyPolicy": "Ochrana osobních údajů",
     "terms": "Obchodní podmínky",
-    "cookies": "Cookies",
+    "cookiesLink": "Cookies",
     "stayUpdated": "Zůstaňte v obraze",
     "newsletterText": "Máte zájem o naše řešení? Kontaktujte nás pro nezávaznou konzultaci.",
     "links": {

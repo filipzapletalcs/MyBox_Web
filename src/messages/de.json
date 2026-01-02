@@ -13,7 +13,13 @@
     "blog": "Blog",
     "aboutUs": "Über uns",
     "contact": "Kontakt",
-    "requestQuote": "Anfrage"
+    "requestQuote": "Anfrage",
+    "skipToMain": "Zum Hauptinhalt springen",
+    "acChargingStations": "AC-Ladestationen",
+    "dcChargingStations": "DC-Schnellladestationen",
+    "exploreAllOptions": "Alle Optionen erkunden",
+    "back": "Zurück",
+    "closeMenu": "Menü schließen"
   },
   "chargingStations": {
     "title": "Ladestationen",
@@ -283,7 +289,18 @@
     "backToHome": "Zurück zur Startseite",
     "loading": "Wird geladen...",
     "error": "Etwas ist schiefgelaufen",
-    "retry": "Erneut versuchen"
+    "retry": "Erneut versuchen",
+    "countryName": "Tschechische Republik",
+    "ico": "Reg.-Nr.",
+    "dic": "USt-IdNr.",
+    "interested": "Interesse anmelden",
+    "technicalSpecs": "Technische Daten"
+  },
+  "cookies": {
+    "message": "Diese Website verwendet Cookies, um Ihre Erfahrung zu verbessern und den Datenverkehr zu analysieren.",
+    "accept": "Alle akzeptieren",
+    "decline": "Nur notwendige",
+    "learnMore": "Mehr erfahren"
   },
   "footer": {
     "company": "ELEXIM, a.s.",
@@ -291,7 +308,7 @@
     "allRightsReserved": "Alle Rechte vorbehalten",
     "privacyPolicy": "Datenschutz",
     "terms": "AGB",
-    "cookies": "Cookies",
+    "cookiesLink": "Cookies",
     "stayUpdated": "Bleiben Sie informiert",
     "newsletterText": "Interessiert an unseren Lösungen? Kontaktieren Sie uns für eine kostenlose Beratung.",
     "links": {

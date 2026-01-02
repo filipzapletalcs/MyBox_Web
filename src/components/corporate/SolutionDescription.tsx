@@ -1,7 +1,5 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
 import Image from 'next/image'
 import { Link } from '@/i18n/navigation'
 import { cn } from '@/lib/utils'
@@ -29,14 +27,11 @@ export function SolutionDescription({
   showProductLink = false,
   className,
 }: SolutionDescriptionProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: true, margin: '-100px' })
-
   // Parse content if it's TipTap JSON
   const contentHtml = typeof content === 'string' ? content : null
 
   return (
-    <section ref={containerRef} className={cn('py-20 md:py-28', className)}>
+    <section className={cn('py-20 md:py-28', className)}>
       <div className="container-custom">
         <div
           className={cn(
@@ -45,61 +40,42 @@ export function SolutionDescription({
           )}
         >
           {/* Text content */}
-          <motion.div
-            initial={{ opacity: 0, x: reversed ? 30 : -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-          >
+          <div>
             {/* Section badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.4, delay: 0.1 }}
+            <div
               className="mb-4 inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1"
             >
               <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
               <span className="text-xs font-medium uppercase tracking-wider text-green-400">
                 Řešení
               </span>
-            </motion.div>
+            </div>
 
             {heading && (
-              <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 }}
+              <h2
                 className="mb-4 text-3xl font-bold text-text-primary md:text-4xl lg:text-5xl"
               >
                 {heading}
-              </motion.h2>
+              </h2>
             )}
 
             {subheading && (
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.3 }}
+              <p
                 className="mb-6 text-lg text-text-secondary"
               >
                 {subheading}
-              </motion.p>
+              </p>
             )}
 
             {contentHtml && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.4 }}
+              <div
                 className="prose prose-invert prose-green max-w-none"
                 dangerouslySetInnerHTML={{ __html: contentHtml }}
               />
             )}
 
             {/* Key points - hardcoded for now, can be made dynamic */}
-            <motion.ul
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.5 }}
+            <ul
               className="mt-6 space-y-3"
             >
               {[
@@ -115,13 +91,10 @@ export function SolutionDescription({
                   <span className="text-text-secondary">{point}</span>
                 </li>
               ))}
-            </motion.ul>
+            </ul>
 
             {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.6 }}
+            <div
               className="mt-8 flex flex-wrap gap-4"
             >
               <Button
@@ -144,14 +117,11 @@ export function SolutionDescription({
                   </Link>
                 </Button>
               )}
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
           {/* Image */}
-          <motion.div
-            initial={{ opacity: 0, x: reversed ? -30 : 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          <div
             className="relative"
           >
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-bg-secondary">
@@ -160,6 +130,7 @@ export function SolutionDescription({
                   src={imageSrc}
                   alt={imageAlt}
                   fill
+                  loading="lazy"
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 50vw"
                 />
@@ -187,10 +158,7 @@ export function SolutionDescription({
             </div>
 
             {/* Floating accent element */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.5, delay: 0.5 }}
+            <div
               className={cn(
                 'absolute -bottom-4 z-10 rounded-xl border border-green-500/20 bg-bg-elevated p-4 shadow-xl shadow-black/20',
                 reversed ? '-left-4 md:-left-8' : '-right-4 md:-right-8'
@@ -209,8 +177,8 @@ export function SolutionDescription({
                   </div>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

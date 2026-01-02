@@ -9,6 +9,13 @@ interface DocumentsPageProps {
   params: Promise<{ locale: string }>
 }
 
+const baseUrl = 'https://mybox.eco'
+const localizedPaths: Record<string, string> = {
+  cs: '/dokumenty',
+  en: '/documents',
+  de: '/dokumente',
+}
+
 export async function generateMetadata({
   params,
 }: DocumentsPageProps): Promise<Metadata> {
@@ -21,6 +28,22 @@ export async function generateMetadata({
     openGraph: {
       title: `${t('title')} | MyBox.eco`,
       description: t('subtitle'),
+      type: 'website',
+      locale: locale === 'cs' ? 'cs_CZ' : locale === 'de' ? 'de_DE' : 'en_US',
+      siteName: 'MyBox.eco',
+    },
+    twitter: {
+      card: 'summary',
+      title: t('title'),
+      description: t('subtitle'),
+    },
+    alternates: {
+      canonical: `${baseUrl}${localizedPaths[locale]}`,
+      languages: {
+        cs: `${baseUrl}${localizedPaths.cs}`,
+        en: `${baseUrl}${localizedPaths.en}`,
+        de: `${baseUrl}${localizedPaths.de}`,
+      },
     },
   }
 }

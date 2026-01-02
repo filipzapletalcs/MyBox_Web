@@ -1,6 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { updateAccessorySchema } from '@/lib/validations/accessory'
+import { getProductImageUrl } from '@/lib/supabase/storage'
+
+// Helper to convert relative image path to full storage URL
+function transformAccessoryImageUrl(imageUrl: string | null): string | null {
+  if (!imageUrl) return null
+  // If already a full URL or starts with /, return as-is
+  if (imageUrl.startsWith('http') || imageUrl.startsWith('/')) {
+    return imageUrl
+  }
+  // Relative path like 'accessories/...' - convert to storage URL
+  return getProductImageUrl(imageUrl)
+}
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -36,7 +48,13 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ data })
+  // Transform image_url to full storage URL
+  const transformedData = {
+    ...data,
+    image_url: transformAccessoryImageUrl(data.image_url),
+  }
+
+  return NextResponse.json({ data: transformedData })
 }
 
 // PATCH /api/accessories/[id]

@@ -1,7 +1,7 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { ChevronDown, HelpCircle } from 'lucide-react'
 
@@ -29,11 +29,7 @@ function FAQAccordionItem({
   onToggle: () => void
 }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-50px' }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
+    <div
       className={cn(
         'border-b border-border-subtle transition-colors duration-200',
         isOpen && 'border-green-500/30'
@@ -79,7 +75,7 @@ function FAQAccordionItem({
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.div>
+    </div>
   )
 }
 
@@ -89,8 +85,6 @@ export function FAQSection({
   items,
   className,
 }: FAQSectionProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: true, margin: '-100px' })
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   // Default FAQ items if none provided
@@ -114,41 +108,32 @@ export function FAQSection({
   ]
 
   return (
-    <section ref={containerRef} className={cn('py-20 md:py-28', className)}>
+    <section className={cn('py-20 md:py-28', className)}>
       <div className="container-custom">
         <div className="mx-auto max-w-3xl">
           {/* Header */}
           <div className="mb-10 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5 }}
+            <div
               className="mb-4 inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1"
             >
               <HelpCircle className="h-3 w-3 text-green-400" />
               <span className="text-xs font-medium uppercase tracking-wider text-green-400">
                 FAQ
               </span>
-            </motion.div>
+            </div>
 
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.1 }}
+            <h2
               className="text-3xl font-bold text-text-primary md:text-4xl"
             >
               {heading}
-            </motion.h2>
+            </h2>
 
             {subheading && (
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.2 }}
+              <p
                 className="mt-4 text-lg text-text-secondary"
               >
                 {subheading}
-              </motion.p>
+              </p>
             )}
           </div>
 

@@ -1,6 +1,7 @@
 export { ProductJsonLd } from './ProductJsonLd'
 export { BreadcrumbJsonLd } from './BreadcrumbJsonLd'
 export { OrganizationJsonLd } from './OrganizationJsonLd'
+export { LocalBusinessJsonLd } from './LocalBusinessJsonLd'
 export { FAQJsonLd } from './FAQJsonLd'
 export { ArticleJsonLd } from './ArticleJsonLd'
 export { CollectionPageJsonLd } from './CollectionPageJsonLd'

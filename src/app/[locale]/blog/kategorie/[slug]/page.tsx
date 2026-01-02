@@ -148,12 +148,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       </section>
 
       {/* CTA Section */}
-      <CTASection
-        heading="Máte zájem o nabíjecí stanice?"
-        description="Kontaktujte nás pro nezávaznou konzultaci. Rádi vám pomůžeme s výběrem správného řešení."
-        buttonLabel="Kontaktujte nás"
-        buttonHref="/kontakt"
-      />
+      <CTASection />
     </>
   )
 }

@@ -13,7 +13,13 @@
     "blog": "Blog",
     "aboutUs": "About",
     "contact": "Contact",
-    "requestQuote": "Request Quote"
+    "requestQuote": "Request Quote",
+    "skipToMain": "Skip to main content",
+    "acChargingStations": "AC Charging Stations",
+    "dcChargingStations": "DC Fast Charging Stations",
+    "exploreAllOptions": "Explore all options",
+    "back": "Back",
+    "closeMenu": "Close menu"
   },
   "chargingStations": {
     "title": "Charging Stations",
@@ -283,7 +289,18 @@
     "backToHome": "Back to Home",
     "loading": "Loading...",
     "error": "Something went wrong",
-    "retry": "Try Again"
+    "retry": "Try Again",
+    "countryName": "Czech Republic",
+    "ico": "Reg. No.",
+    "dic": "Tax ID",
+    "interested": "I'm Interested",
+    "technicalSpecs": "Technical Specifications"
+  },
+  "cookies": {
+    "message": "This website uses cookies to improve your experience and analyze traffic.",
+    "accept": "Accept All",
+    "decline": "Essential Only",
+    "learnMore": "Learn More"
   },
   "footer": {
     "company": "ELEXIM, a.s.",
@@ -291,7 +308,7 @@
     "allRightsReserved": "All rights reserved",
     "privacyPolicy": "Privacy Policy",
     "terms": "Terms of Service",
-    "cookies": "Cookies",
+    "cookiesLink": "Cookies",
     "stayUpdated": "Stay Updated",
     "newsletterText": "Interested in our solutions? Contact us for a free consultation.",
     "links": {

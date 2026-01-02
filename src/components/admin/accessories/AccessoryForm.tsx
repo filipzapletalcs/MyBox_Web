@@ -238,12 +238,14 @@ export function AccessoryForm({
               <h2 className="text-lg font-medium text-text-primary">Překlady</h2>
               <div className="flex items-center gap-2">
                 <TranslateButton
-                  sourceLocale="cs"
-                  targetLocale={activeLocale}
-                  sourceText={translations?.cs?.name || ''}
-                  onTranslated={(text) => setValue(`translations.${activeLocale}.name`, text)}
+                  sourceTexts={{
+                    name: translations?.cs?.name || '',
+                    description: translations?.cs?.description || '',
+                  }}
+                  onTranslated={(locale, field, value) => {
+                    setValue(`translations.${locale}.${field}` as keyof AccessoryFormData, value, { shouldDirty: true })
+                  }}
                   disabled={activeLocale === 'cs'}
-                  label="Název"
                 />
                 <LocaleTabs
                   activeLocale={activeLocale}

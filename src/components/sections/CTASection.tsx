@@ -65,7 +65,7 @@ export function CTASection({
   const isInView = useInView(ref, { once: true, amount: 0.3 })
 
   return (
-    <section className={cn('py-16 md:py-24', className)}>
+    <section className={cn('py-16 md:py-24', className)} role="region" aria-label={heading || t('heading')}>
       <div className="container-custom">
         <motion.div
           ref={ref}

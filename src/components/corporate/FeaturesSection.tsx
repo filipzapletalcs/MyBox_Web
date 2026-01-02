@@ -1,7 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import {
   Zap,
@@ -46,9 +45,6 @@ export function FeaturesSection({
   features,
   className,
 }: FeaturesSectionProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: true, margin: '-100px' })
-
   // Default features if none provided
   const displayFeatures = features || [
     {
@@ -84,40 +80,31 @@ export function FeaturesSection({
   ]
 
   return (
-    <section ref={containerRef} className={cn('py-20 md:py-28', className)}>
+    <section className={cn('py-20 md:py-28', className)}>
       <div className="container-custom">
         {/* Header */}
         <div className="mb-12 text-center md:mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
+          <div
             className="mb-4 inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1"
           >
             <Settings className="h-3 w-3 text-green-400" />
             <span className="text-xs font-medium uppercase tracking-wider text-green-400">
               Funkce
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
+          <h2
             className="text-3xl font-bold text-text-primary md:text-4xl lg:text-5xl"
           >
             {heading}
-          </motion.h2>
+          </h2>
 
           {subheading && (
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 }}
+            <p
               className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary"
             >
               {subheading}
-            </motion.p>
+            </p>
           )}
         </div>
 
@@ -129,12 +116,12 @@ export function FeaturesSection({
             return (
               <motion.div
                 key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
+                initial={false}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-50px' }}
                 transition={{
                   duration: 0.5,
-                  delay: index * 0.1,
+                  delay: index * 0.05,
                   ease: [0.25, 0.1, 0.25, 1],
                 }}
                 className="group relative rounded-2xl border border-border-subtle bg-bg-secondary/50 p-6 transition-all duration-300 hover:border-green-500/30 hover:bg-bg-secondary"

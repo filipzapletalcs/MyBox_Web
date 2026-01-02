@@ -93,3 +93,9 @@ export {
   PillIndicator,
   CarouselNavigation,
 } from './CarouselNavigation'
+
+// Breadcrumbs
+export { Breadcrumbs, type BreadcrumbItem } from './Breadcrumbs'
+
+// Cookie Consent
+export { CookieConsentBanner } from './CookieConsentBanner'

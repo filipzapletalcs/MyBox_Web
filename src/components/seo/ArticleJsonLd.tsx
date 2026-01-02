@@ -12,6 +12,8 @@ interface ArticleJsonLdProps {
   authorName?: string | null
   categoryName?: string | null
   locale?: string
+  /** Optional article body text (plain text, no HTML) for better SEO */
+  articleBody?: string | null
 }
 
 export function ArticleJsonLd({
@@ -24,6 +26,7 @@ export function ArticleJsonLd({
   authorName,
   categoryName,
   locale = 'cs',
+  articleBody,
 }: ArticleJsonLdProps) {
   const baseUrl = 'https://mybox.eco'
 
@@ -60,11 +63,16 @@ export function ArticleJsonLd({
       url: baseUrl,
       logo: {
         '@type': 'ImageObject',
-        url: `${baseUrl}/logo.svg`,
+        url: `${baseUrl}/images/logo-mybox.svg`,
+        width: 85,
+        height: 24,
       },
     },
     ...(categoryName && {
       articleSection: categoryName,
+    }),
+    ...(articleBody && {
+      articleBody: articleBody,
     }),
     inLanguage: language,
   }

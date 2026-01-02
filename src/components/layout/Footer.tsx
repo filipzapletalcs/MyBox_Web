@@ -128,10 +128,10 @@ export function Footer({ companyDetails }: FooterProps) {
               <address className="mt-3 not-italic text-text-secondary">
                 <span className="block">{companyDetails?.address || 'Hulínská 1814/1b'}</span>
                 <span className="block">{companyDetails ? `${companyDetails.zip} ${companyDetails.city}` : '767 01 Kroměříž'}</span>
-                <span className="block">Česká republika</span>
+                <span className="block">{t('common.countryName')}</span>
               </address>
-              <span className="mt-3 block text-text-secondary">IČ: {companyDetails?.ico || '25565044'}</span>
-              <span className="block text-text-secondary">DIČ: {companyDetails?.dic || 'CZ25565044'}</span>
+              <span className="mt-3 block text-text-secondary">{t('common.ico')}: {companyDetails?.ico || '25565044'}</span>
+              <span className="block text-text-secondary">{t('common.dic')}: {companyDetails?.dic || 'CZ25565044'}</span>
             </div>
           </div>
 
@@ -233,22 +233,22 @@ export function Footer({ companyDetails }: FooterProps) {
 
           <div className="flex items-center gap-6">
             <Link
-              href="/kontakt"
+              href="/ochrana-osobnich-udaju"
               className="text-xs text-text-muted transition-colors hover:text-text-secondary"
             >
               {t('footer.privacyPolicy')}
             </Link>
             <Link
-              href="/kontakt"
+              href="/obchodni-podminky"
               className="text-xs text-text-muted transition-colors hover:text-text-secondary"
             >
               {t('footer.terms')}
             </Link>
             <Link
-              href="/kontakt"
+              href="/zasady-cookies"
               className="text-xs text-text-muted transition-colors hover:text-text-secondary"
             >
-              {t('footer.cookies')}
+              {t('footer.cookiesLink')}
             </Link>
 
             {/* Divider */}

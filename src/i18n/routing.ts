@@ -319,6 +319,23 @@ export const routing = defineRouting({
       en: '/documents',
       de: '/dokumente',
     },
+
+    // === PRÁVNÍ STRÁNKY ===
+    '/ochrana-osobnich-udaju': {
+      cs: '/ochrana-osobnich-udaju',
+      en: '/privacy-policy',
+      de: '/datenschutz',
+    },
+    '/zasady-cookies': {
+      cs: '/zasady-cookies',
+      en: '/cookie-policy',
+      de: '/cookie-richtlinie',
+    },
+    '/obchodni-podminky': {
+      cs: '/obchodni-podminky',
+      en: '/terms-of-service',
+      de: '/agb',
+    },
   },
 })
 

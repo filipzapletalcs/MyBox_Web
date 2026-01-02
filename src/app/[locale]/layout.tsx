@@ -7,7 +7,7 @@ import { halisR } from '@/lib/fonts'
 import { routing } from '@/i18n/routing'
 import { Providers } from '@/components/providers'
 import { Header, Footer } from '@/components/layout'
-import { TooltipProvider } from '@/components/ui'
+import { TooltipProvider, CookieConsentBanner } from '@/components/ui'
 import { createClient } from '@/lib/supabase/server'
 import '../globals.css'
 
@@ -119,8 +119,9 @@ export default async function LocaleLayout({
           <Providers>
             <TooltipProvider>
               <Header />
-              <main className="min-h-screen bg-transparent">{children}</main>
+              <main id="main-content" className="min-h-screen bg-transparent">{children}</main>
               <Footer companyDetails={companyDetails} />
+              <CookieConsentBanner />
             </TooltipProvider>
           </Providers>
         </NextIntlClientProvider>

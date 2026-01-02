@@ -1,7 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import {
   Zap,
@@ -66,12 +65,12 @@ function BenefitCard({ icon, colorAccent = 'green', title, description, index }:
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
+      initial={false}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{
         duration: 0.5,
-        delay: index * 0.1,
+        delay: index * 0.05,
         ease: [0.25, 0.1, 0.25, 1],
       }}
       whileHover={{ y: -4 }}
@@ -112,12 +111,8 @@ function BenefitCard({ icon, colorAccent = 'green', title, description, index }:
       )}
 
       {/* Bottom line accent */}
-      <motion.div
-        className={cn('absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-green-500 to-green-400')}
-        initial={{ width: 0 }}
-        whileInView={{ width: '30%' }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
+      <div
+        className="absolute bottom-0 left-0 h-[2px] w-[30%] bg-gradient-to-r from-green-500 to-green-400"
       />
     </motion.div>
   )
@@ -138,47 +133,35 @@ export function BenefitsGrid({
   locale,
   className,
 }: BenefitsGridProps) {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(containerRef, { once: true, margin: '-100px' })
-
   // Sort benefits by sort_order
   const sortedBenefits = [...benefits].sort((a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0))
 
   return (
-    <section ref={containerRef} className={cn('py-20 md:py-28', className)}>
+    <section className={cn('py-20 md:py-28', className)}>
       <div className="container-custom">
         {/* Header */}
         <div className="mb-12 text-center md:mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
+          <div
             className="mb-4 inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-3 py-1"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
             <span className="text-xs font-medium uppercase tracking-wider text-green-400">
               Proč MyBox
             </span>
-          </motion.div>
+          </div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.1 }}
+          <h2
             className="text-3xl font-bold text-text-primary md:text-4xl lg:text-5xl"
           >
             {heading}
-          </motion.h2>
+          </h2>
 
           {subheading && (
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.2 }}
+            <p
               className="mx-auto mt-4 max-w-2xl text-lg text-text-secondary"
             >
               {subheading}
-            </motion.p>
+            </p>
           )}
         </div>
 

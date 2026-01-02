@@ -184,7 +184,7 @@ export function MobileMenu({ isOpen, onClose, items, getTranslation }: MobileMen
                       'text-text-primary transition-colors',
                       'active:bg-white/5'
                     )}
-                    aria-label="Zpět"
+                    aria-label={t('navigation.back')}
                   >
                     <ChevronLeftIcon className="h-6 w-6" />
                   </motion.button>
@@ -200,7 +200,7 @@ export function MobileMenu({ isOpen, onClose, items, getTranslation }: MobileMen
                 'text-text-primary transition-colors',
                 'active:bg-white/5'
               )}
-              aria-label="Zavřít menu"
+              aria-label={t('navigation.closeMenu')}
             >
               <CloseIcon className="h-5 w-5" />
             </button>
@@ -283,7 +283,7 @@ export function MobileMenu({ isOpen, onClose, items, getTranslation }: MobileMen
                       {/* AC Charging Stations - items 0-3 */}
                       <motion.div variants={itemVariants}>
                         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-muted">
-                          AC nabíjecí stanice
+                          {t('navigation.acChargingStations')}
                         </h3>
                         <div className="grid grid-cols-2 gap-3">
                           {activeSubmenu.children?.slice(0, 4).map((product) => {
@@ -333,7 +333,7 @@ export function MobileMenu({ isOpen, onClose, items, getTranslation }: MobileMen
                       {/* DC Charging Stations - items 5-7 */}
                       <motion.div variants={itemVariants}>
                         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wider text-text-muted">
-                          DC nabíjecí stanice
+                          {t('navigation.dcChargingStations')}
                         </h3>
                         <div className="grid grid-cols-2 gap-3">
                           {activeSubmenu.children?.slice(5, 8).map((product) => {
