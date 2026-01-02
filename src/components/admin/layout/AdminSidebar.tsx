@@ -15,10 +15,7 @@ import {
   ChevronLeft,
   Menu,
   Users,
-  Mail,
-  Building2,
   Briefcase,
-  Award,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui'
@@ -32,7 +29,6 @@ const navigation = [
   { name: 'Kategorie', href: '/admin/categories', icon: FolderTree },
   { name: 'Produkty', href: '/admin/products', icon: Package },
   { name: 'Firemní nabíjení', href: '/admin/corporate', icon: Briefcase },
-  { name: 'Case Studies', href: '/admin/case-studies', icon: Award },
   { name: 'Dokumenty', href: '/admin/documents', icon: FileDown },
   { name: 'FAQ', href: '/admin/faqs', icon: HelpCircle },
   { name: 'Média', href: '/admin/media', icon: ImageIcon },

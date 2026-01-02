@@ -1,6 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { updateArticleSchema } from '@/lib/validations/article'
+
+const LOCALES = ['cs', 'en', 'de']
+
+/**
+ * Revalidate article pages after update
+ */
+async function revalidateArticle(slug: string) {
+  try {
+    // Revalidate article detail page for all locales
+    for (const locale of LOCALES) {
+      revalidatePath(`/${locale}/blog/${slug}`)
+    }
+    // Revalidate blog listing for all locales
+    for (const locale of LOCALES) {
+      revalidatePath(`/${locale}/blog`)
+    }
+  } catch (error) {
+    console.error('Revalidation error:', error)
+  }
+}
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -121,6 +142,11 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     .eq('id', id)
     .single()
 
+  // Revalidate article pages (on-demand ISR)
+  if (updatedArticle?.slug) {
+    await revalidateArticle(updatedArticle.slug)
+  }
+
   return NextResponse.json({ data: updatedArticle })
 }
 
@@ -138,10 +164,22 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // Get article slug before deletion for revalidation
+  const { data: article } = await supabase
+    .from('articles')
+    .select('slug')
+    .eq('id', id)
+    .single()
+
   const { error } = await supabase.from('articles').delete().eq('id', id)
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
+  // Revalidate after deletion
+  if (article?.slug) {
+    await revalidateArticle(article.slug)
   }
 
   return NextResponse.json({ success: true })

@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@/types/database'
+import type { Database } from '@/lib/supabase/database.types'
 
 // Service role client - pouze pro server-side operace!
 // NIKDY nepoužívat na frontendu!

@@ -29,8 +29,8 @@ interface FAQ {
   id: string
   slug: string
   category: string | null
-  is_active: boolean
-  sort_order: number
+  is_active: boolean | null
+  sort_order: number | null
   faq_translations: FAQTranslation[]
 }
 

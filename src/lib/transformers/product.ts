@@ -49,9 +49,8 @@ export async function getProductBySlug(
         document_id, sort_order,
         documents(
           id, slug,
-          file_cs, file_en, file_de,
           fallback_locale,
-          document_translations(locale, title)
+          document_translations(locale, title, file_path, file_size)
         )
       ),
       product_accessories(
@@ -386,6 +385,7 @@ function getLocalizedLabel(
 /**
  * Get datasheet from product_documents
  * Finds the first document with "datasheet" in slug and returns URL for current locale
+ * Updated to use translations pattern (file_path in document_translations)
  */
 function getDatasheetFromDocuments(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -406,37 +406,44 @@ function getDatasheetFromDocuments(
   }
 
   const doc = datasheetDoc.documents
+  const translations = doc.document_translations || []
 
-  // Get file for current locale with fallback
-  const fileKey = `file_${locale}` as 'file_cs' | 'file_en' | 'file_de'
-  let filePath = doc[fileKey]
-
-  // Fallback to Czech if locale file not available
-  if (!filePath && locale !== 'cs') {
-    filePath = doc.file_cs
+  // Fallback chain: current locale -> fallback_locale -> cs -> first available
+  const fallbackChain: Locale[] = [locale]
+  if (doc.fallback_locale && doc.fallback_locale !== locale) {
+    fallbackChain.push(doc.fallback_locale as Locale)
+  }
+  if (!fallbackChain.includes('cs')) {
+    fallbackChain.push('cs')
   }
 
-  // Fallback to fallback_locale if set
-  if (!filePath && doc.fallback_locale) {
-    const fallbackKey = `file_${doc.fallback_locale}` as 'file_cs' | 'file_en' | 'file_de'
-    filePath = doc[fallbackKey]
+  // Find translation with file_path using fallback chain
+  let translation = null
+  for (const loc of fallbackChain) {
+    translation = translations.find(
+      (t: { locale: string; file_path: string | null }) =>
+        t.locale === loc && t.file_path
+    )
+    if (translation) break
   }
 
-  if (!filePath) {
+  // Last resort: any translation with a file
+  if (!translation) {
+    translation = translations.find(
+      (t: { file_path: string | null }) => t.file_path
+    )
+  }
+
+  if (!translation?.file_path) {
     return undefined
   }
 
-  // Get document title from translations or generate from slug
-  const translation = doc.document_translations?.find(
-    (t: { locale: string }) => t.locale === locale
-  ) || doc.document_translations?.[0]
-
-  const fileName = translation?.title
+  const fileName = translation.title
     ? `${translation.title}.pdf`
     : `${doc.slug}.pdf`
 
   return {
-    url: getDocumentUrl(filePath),
+    url: getDocumentUrl(translation.file_path),
     fileName,
   }
 }

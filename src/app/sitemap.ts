@@ -263,41 +263,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  // ============================================
-  // 7. CASE STUDIES
-  // ============================================
-  const { data: caseStudies } = await supabase
-    .from('case_studies')
-    .select('slug, updated_at')
-    .eq('is_active', true)
-    .not('published_at', 'is', null)
-
-  if (caseStudies) {
-    for (const caseStudy of caseStudies) {
-      for (const locale of locales) {
-        const localizedBasePath = locale === 'cs'
-          ? '/reference'
-          : locale === 'en'
-            ? '/case-studies'
-            : '/referenzen'
-
-        const url = locale === defaultLocale
-          ? `${baseUrl}${localizedBasePath}/${caseStudy.slug}`
-          : `${baseUrl}/${locale}${localizedBasePath}/${caseStudy.slug}`
-
-        entries.push({
-          url,
-          lastModified: caseStudy.updated_at ? new Date(caseStudy.updated_at) : new Date(),
-          changeFrequency: 'monthly',
-          priority: 0.7,
-          alternates: {
-            languages: generateDynamicAlternates(localizedBasePath, caseStudy.slug),
-          },
-        })
-      }
-    }
-  }
-
   return entries
 }
 
@@ -305,7 +270,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 function getChangeFrequency(path: string): 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never' {
   if (path === '/') return 'weekly'
   if (path.includes('/blog')) return 'daily'
-  if (path.includes('/reference')) return 'weekly'
   if (path.includes('/nabijeci-stanice')) return 'monthly'
   return 'monthly'
 }

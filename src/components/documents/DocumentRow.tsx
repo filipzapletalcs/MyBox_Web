@@ -15,17 +15,13 @@ interface DocumentTranslation {
   locale: string
   title: string
   description: string | null
+  file_path: string | null
+  file_size: number | null
 }
 
 interface Document {
   id: string
   slug: string
-  file_cs: string | null
-  file_en: string | null
-  file_de: string | null
-  file_size_cs: number | null
-  file_size_en: number | null
-  file_size_de: number | null
   fallback_locale: string | null
   document_translations: DocumentTranslation[]
 }
@@ -45,10 +41,13 @@ export function DocumentRow({ document, locale, labels, index }: DocumentRowProp
     (t) => t.locale === locale
   ) || document.document_translations?.[0]
 
-  const resolvedFile = resolveDocumentFile({
-    ...document,
-    fallback_locale: document.fallback_locale as Locale | null
-  }, locale)
+  const resolvedFile = resolveDocumentFile(
+    {
+      ...document,
+      fallback_locale: document.fallback_locale as Locale | null,
+    },
+    locale
+  )
   const fileExtension = resolvedFile ? getFileExtension(resolvedFile.path) : ''
 
   const getFileIcon = () => {

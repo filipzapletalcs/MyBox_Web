@@ -155,7 +155,13 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     .eq('id', id)
     .single()
 
-  return NextResponse.json({ data: updatedAccessory })
+  // Transform image_url to full storage URL
+  const transformedAccessory = updatedAccessory ? {
+    ...updatedAccessory,
+    image_url: transformAccessoryImageUrl(updatedAccessory.image_url),
+  } : null
+
+  return NextResponse.json({ data: transformedAccessory })
 }
 
 // DELETE /api/accessories/[id]

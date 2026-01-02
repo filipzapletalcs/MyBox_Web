@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { updateCorporateSectionSchema } from '@/lib/validations/corporate-page'
-import type { Json } from '@/types/database'
+import type { Json } from '@/lib/supabase/database.types'
 import type { CorporateSectionType } from '@/types/corporate'
 
 interface RouteParams {

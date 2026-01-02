@@ -64,8 +64,9 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
     return { title: 'Článek nenalezen' }
   }
 
-  const translation = article.article_translations?.find(t => t.locale === locale)
-    || article.article_translations?.[0]
+  const translation = article.article_translations?.find(
+    (t: { locale: string }) => t.locale === locale
+  ) || article.article_translations?.[0]
 
   const title = translation?.seo_title || translation?.title || 'Článek'
   const description = translation?.seo_description || translation?.excerpt || ''
@@ -141,8 +142,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   }
 
   // Get translation for current locale
-  const translation = article.article_translations?.find(t => t.locale === locale)
-    || article.article_translations?.[0]
+  const translation = article.article_translations?.find(
+    (t: { locale: string }) => t.locale === locale
+  ) || article.article_translations?.[0]
 
   if (!translation) {
     notFound()
@@ -150,7 +152,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   // Get category info
   const categoryTranslation = article.categories?.category_translations?.find(
-    t => t.locale === locale
+    (t: { locale: string }) => t.locale === locale
   ) || article.categories?.category_translations?.[0]
 
   const category = article.categories && categoryTranslation
@@ -158,7 +160,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     : null
 
   // Get tags
-  const tags = article.article_tags?.map(at => at.tags).filter(Boolean) || []
+  const tags = article.article_tags?.map((at: { tags: { id: string; name: string; slug: string } | null }) => at.tags).filter(Boolean) || []
 
   // Calculate reading time - content is stored as JSON, stringify if needed
   const contentString = typeof translation.content === 'string'

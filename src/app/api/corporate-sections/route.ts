@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createCorporateSectionSchema, reorderSectionsSchema } from '@/lib/validations/corporate-page'
-import type { Json } from '@/types/database'
+import type { Json } from '@/lib/supabase/database.types'
 import type { CorporateSectionType } from '@/types/corporate'
 
 // GET /api/corporate-sections - List sections (optionally filtered by page)

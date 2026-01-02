@@ -9,7 +9,6 @@ export { TextContentSection } from './TextContentSection'
 export { FAQSection } from './FAQSection'
 export { GallerySection } from './GallerySection'
 export { InquiryFormSection } from './InquiryFormSection'
-export { CaseStudySection } from './CaseStudySection'
 
 // Re-export types
 export type { SectionRendererProps } from './SectionRenderer'
@@ -22,4 +21,3 @@ export type { TextContentSectionProps } from './TextContentSection'
 export type { FAQSectionProps } from './FAQSection'
 export type { GallerySectionProps } from './GallerySection'
 export type { InquiryFormSectionProps } from './InquiryFormSection'
-export type { CaseStudySectionProps } from './CaseStudySection'

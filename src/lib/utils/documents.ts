@@ -2,18 +2,32 @@
  * Document utility functions
  *
  * Handles fallback logic for multi-language documents and file size formatting.
+ * Updated to use translations pattern (file_path in document_translations).
  */
 
 export type Locale = 'cs' | 'en' | 'de'
 
-export interface DocumentFile {
-  file_cs: string | null
-  file_en: string | null
-  file_de: string | null
-  file_size_cs: number | null
-  file_size_en: number | null
-  file_size_de: number | null
+// Document translation with file info
+export interface DocumentTranslation {
+  locale: string
+  title: string
+  description: string | null
+  file_path: string | null
+  file_size: number | null
+}
+
+// Minimal document interface for file resolution
+export interface DocumentBase {
   fallback_locale: Locale | null
+  document_translations: DocumentTranslation[]
+}
+
+// Full document interface with all fields
+export interface Document extends DocumentBase {
+  id: string
+  slug: string
+  category_id: string
+  sort_order: number | null
 }
 
 export interface ResolvedFile {
@@ -47,28 +61,39 @@ export function getDocumentUrl(path: string): string {
 }
 
 /**
+ * Get translation for a specific locale
+ */
+export function getDocumentTranslation(
+  document: DocumentBase,
+  locale: Locale
+): DocumentTranslation | null {
+  return (
+    document.document_translations.find((t) => t.locale === locale) ||
+    document.document_translations[0] ||
+    null
+  )
+}
+
+/**
  * Resolve the best available file for a given locale
  * Uses fallback chain to find available version
  */
 export function resolveDocumentFile(
-  document: DocumentFile,
+  document: DocumentBase,
   requestedLocale: Locale
 ): ResolvedFile | null {
   const fallbackChain = LOCALE_FALLBACKS[requestedLocale]
+  const translations = document.document_translations
 
   // Try each locale in the fallback chain
   for (const locale of fallbackChain) {
-    const fileKey = `file_${locale}` as keyof DocumentFile
-    const sizeKey = `file_size_${locale}` as keyof DocumentFile
+    const translation = translations.find((t) => t.locale === locale)
 
-    const filePath = document[fileKey] as string | null
-    const fileSize = document[sizeKey] as number | null
-
-    if (filePath && fileSize) {
+    if (translation?.file_path && translation?.file_size) {
       return {
-        url: getDocumentUrl(filePath),
-        path: filePath,
-        size: fileSize,
+        url: getDocumentUrl(translation.file_path),
+        path: translation.file_path,
+        size: translation.file_size,
         locale,
         isFallback: locale !== requestedLocale,
       }
@@ -78,18 +103,27 @@ export function resolveDocumentFile(
   // Last resort: use explicit fallback_locale if set
   if (document.fallback_locale) {
     const locale = document.fallback_locale
-    const fileKey = `file_${locale}` as keyof DocumentFile
-    const sizeKey = `file_size_${locale}` as keyof DocumentFile
+    const translation = translations.find((t) => t.locale === locale)
 
-    const filePath = document[fileKey] as string | null
-    const fileSize = document[sizeKey] as number | null
-
-    if (filePath && fileSize) {
+    if (translation?.file_path && translation?.file_size) {
       return {
-        url: getDocumentUrl(filePath),
-        path: filePath,
-        size: fileSize,
+        url: getDocumentUrl(translation.file_path),
+        path: translation.file_path,
+        size: translation.file_size,
         locale,
+        isFallback: true,
+      }
+    }
+  }
+
+  // Try any available translation with a file
+  for (const translation of translations) {
+    if (translation.file_path && translation.file_size) {
+      return {
+        url: getDocumentUrl(translation.file_path),
+        path: translation.file_path,
+        size: translation.file_size,
+        locale: translation.locale as Locale,
         isFallback: true,
       }
     }
@@ -136,3 +170,8 @@ export const LOCALE_FLAGS: Record<Locale, string> = {
   en: '🇬🇧',
   de: '🇩🇪',
 }
+
+/**
+ * All supported locales
+ */
+export const SUPPORTED_LOCALES: Locale[] = ['cs', 'en', 'de']

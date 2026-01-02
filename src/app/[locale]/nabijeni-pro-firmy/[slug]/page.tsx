@@ -4,7 +4,6 @@ import { setRequestLocale } from 'next-intl/server'
 import {
   getCorporatePage,
   getCorporateBenefits,
-  getFeaturedCaseStudies,
 } from '@/lib/data/corporate'
 import { SectionRenderer } from '@/components/corporate'
 
@@ -96,10 +95,7 @@ export default async function CorporateSubpage({
   }
 
   // Fetch related data
-  const [benefits, caseStudies] = await Promise.all([
-    getCorporateBenefits(page.id),
-    getFeaturedCaseStudies(),
-  ])
+  const benefits = await getCorporateBenefits(page.id)
 
   // Filter active sections
   const activeSections = page.sections.filter((s) => s.is_active)
@@ -116,7 +112,6 @@ export default async function CorporateSubpage({
             hero_image_url: page.hero_image_url,
           }}
           benefits={benefits}
-          caseStudies={caseStudies}
         />
       ))}
     </>

@@ -60,7 +60,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: documentError.message }, { status: 500 })
   }
 
-  // Update translations (upsert)
+  // Update translations (upsert) including file_path and file_size
   if (translations && translations.length > 0) {
     for (const t of translations) {
       const { error: translationError } = await supabase
@@ -71,6 +71,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
             locale: t.locale,
             title: t.title,
             description: t.description,
+            file_path: t.file_path,
+            file_size: t.file_size,
           },
           {
             onConflict: 'document_id,locale',
@@ -113,20 +115,17 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  // Get document to delete associated files
-  const { data: document } = await supabase
-    .from('documents')
-    .select('file_cs, file_en, file_de')
-    .eq('id', id)
-    .single()
+  // Get document translations to delete associated files
+  const { data: translations } = await supabase
+    .from('document_translations')
+    .select('file_path')
+    .eq('document_id', id)
 
   // Delete files from storage
-  if (document) {
-    const filesToDelete = [
-      document.file_cs,
-      document.file_en,
-      document.file_de,
-    ].filter(Boolean) as string[]
+  if (translations && translations.length > 0) {
+    const filesToDelete = translations
+      .map((t) => t.file_path)
+      .filter((path): path is string => !!path)
 
     if (filesToDelete.length > 0) {
       await supabase.storage.from('documents').remove(filesToDelete)

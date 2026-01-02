@@ -1,6 +1,6 @@
 'use client'
 
-import { Link } from '@/i18n/navigation'
+import Link from 'next/link'
 import { ChevronRightIcon } from './icons'
 import { cn } from '@/lib/utils'
 

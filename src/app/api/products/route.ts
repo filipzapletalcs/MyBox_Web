@@ -3,13 +3,22 @@ import { createClient } from '@/lib/supabase/server'
 import { createProductSchema } from '@/lib/validations/product'
 
 // GET /api/products
+// Supports pagination: ?page=1&limit=20
+// Supports filtering: ?type=ac_mybox&active=true
 export async function GET(request: NextRequest) {
   const supabase = await createClient()
   const { searchParams } = new URL(request.url)
 
+  // Pagination params
+  const page = Math.max(1, parseInt(searchParams.get('page') || '1'))
+  const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '50')))
+  const offset = (page - 1) * limit
+
+  // Filter params
   const type = searchParams.get('type')
   const active = searchParams.get('active')
 
+  // Build query with count
   let query = supabase
     .from('products')
     .select(
@@ -19,7 +28,8 @@ export async function GET(request: NextRequest) {
       product_specifications(*),
       product_images(*),
       product_to_features(feature_id, product_features(id, slug, icon, product_feature_translations(*)))
-    `
+    `,
+      { count: 'exact' }
     )
     .order('sort_order', { ascending: true })
 
@@ -31,13 +41,24 @@ export async function GET(request: NextRequest) {
     query = query.eq('is_active', active === 'true')
   }
 
-  const { data, error } = await query
+  // Apply pagination
+  query = query.range(offset, offset + limit - 1)
+
+  const { data, error, count } = await query
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ data })
+  return NextResponse.json({
+    data,
+    pagination: {
+      page,
+      limit,
+      total: count ?? 0,
+      totalPages: count ? Math.ceil(count / limit) : 0,
+    },
+  })
 }
 
 // POST /api/products

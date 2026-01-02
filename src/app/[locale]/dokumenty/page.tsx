@@ -68,22 +68,16 @@ export default async function DocumentsPage({ params }: DocumentsPageProps) {
     .eq('is_active', true)
     .order('sort_order', { ascending: true })
 
-  // Fetch documents with translations
+  // Fetch documents with translations (files are now in translations)
   const { data: documents } = await supabase
     .from('documents')
     .select(`
       id,
       slug,
       category_id,
-      file_cs,
-      file_en,
-      file_de,
-      file_size_cs,
-      file_size_en,
-      file_size_de,
       fallback_locale,
       sort_order,
-      document_translations(locale, title, description)
+      document_translations(locale, title, description, file_path, file_size)
     `)
     .eq('is_active', true)
     .order('sort_order', { ascending: true })
@@ -95,7 +89,7 @@ export default async function DocumentsPage({ params }: DocumentsPageProps) {
     loc: string
   ) => {
     return (
-      cat.document_category_translations?.find((t) => t.locale === loc) ||
+      cat.document_category_translations?.find((t: { locale: string }) => t.locale === loc) ||
       cat.document_category_translations?.[0]
     )
   }

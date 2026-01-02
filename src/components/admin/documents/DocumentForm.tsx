@@ -20,19 +20,22 @@ interface Category {
   }[]
 }
 
+interface TranslationFormData {
+  title: string
+  description: string
+  file: { path: string; size: number } | null
+}
+
 interface DocumentFormData {
   slug: string
   category_id: string
   sort_order: number
   is_active: boolean
   fallback_locale: Locale | null
-  file_cs: { path: string; size: number } | null
-  file_en: { path: string; size: number } | null
-  file_de: { path: string; size: number } | null
   translations: {
-    cs: { title: string; description: string }
-    en: { title: string; description: string }
-    de: { title: string; description: string }
+    cs: TranslationFormData
+    en: TranslationFormData
+    de: TranslationFormData
   }
 }
 
@@ -44,22 +47,18 @@ interface DocumentFormProps {
     sort_order: number | null
     is_active: boolean | null
     fallback_locale: string | null
-    file_cs: string | null
-    file_en: string | null
-    file_de: string | null
-    file_size_cs: number | null
-    file_size_en: number | null
-    file_size_de: number | null
     document_translations: {
       locale: string
       title: string
       description: string | null
+      file_path: string | null
+      file_size: number | null
     }[]
   }
   categories: Category[]
 }
 
-const defaultTranslation = { title: '', description: '' }
+const defaultTranslation: TranslationFormData = { title: '', description: '', file: null }
 
 export function DocumentForm({ document, categories }: DocumentFormProps) {
   const router = useRouter()
@@ -77,9 +76,6 @@ export function DocumentForm({ document, categories }: DocumentFormProps) {
         sort_order: 0,
         is_active: true,
         fallback_locale: null,
-        file_cs: null,
-        file_en: null,
-        file_de: null,
         translations: {
           cs: { ...defaultTranslation },
           en: { ...defaultTranslation },
@@ -94,11 +90,15 @@ export function DocumentForm({ document, categories }: DocumentFormProps) {
       de: { ...defaultTranslation },
     }
 
+    // Map translations including file info
     document.document_translations.forEach((t) => {
       if (t.locale === 'cs' || t.locale === 'en' || t.locale === 'de') {
         translations[t.locale] = {
           title: t.title,
           description: t.description || '',
+          file: t.file_path
+            ? { path: t.file_path, size: t.file_size || 0 }
+            : null,
         }
       }
     })
@@ -109,15 +109,6 @@ export function DocumentForm({ document, categories }: DocumentFormProps) {
       sort_order: document.sort_order || 0,
       is_active: document.is_active ?? true,
       fallback_locale: (document.fallback_locale as Locale) || null,
-      file_cs: document.file_cs
-        ? { path: document.file_cs, size: document.file_size_cs || 0 }
-        : null,
-      file_en: document.file_en
-        ? { path: document.file_en, size: document.file_size_en || 0 }
-        : null,
-      file_de: document.file_de
-        ? { path: document.file_de, size: document.file_size_de || 0 }
-        : null,
       translations,
     }
   }
@@ -158,20 +149,23 @@ export function DocumentForm({ document, categories }: DocumentFormProps) {
   const onSubmit = async (data: DocumentFormData) => {
     setIsSubmitting(true)
 
-    // Validate at least one file
-    if (!data.file_cs && !data.file_en && !data.file_de) {
+    // Validate at least one file exists in translations
+    const hasFile = Object.values(data.translations).some((t) => t.file?.path)
+    if (!hasFile) {
       toast.error('Musíte nahrát alespoň jeden soubor')
       setIsSubmitting(false)
       return
     }
 
-    // Prepare translations array
+    // Prepare translations array with file info
     const translations = Object.entries(data.translations)
       .filter(([, t]) => t.title.trim())
       .map(([locale, t]) => ({
         locale,
         title: t.title,
         description: t.description || null,
+        file_path: t.file?.path || null,
+        file_size: t.file?.size || null,
       }))
 
     if (translations.length === 0) {
@@ -186,12 +180,6 @@ export function DocumentForm({ document, categories }: DocumentFormProps) {
       sort_order: data.sort_order,
       is_active: data.is_active,
       fallback_locale: data.fallback_locale,
-      file_cs: data.file_cs?.path || null,
-      file_en: data.file_en?.path || null,
-      file_de: data.file_de?.path || null,
-      file_size_cs: data.file_cs?.size || null,
-      file_size_en: data.file_en?.size || null,
-      file_size_de: data.file_de?.size || null,
       translations,
     }
 
@@ -296,7 +284,7 @@ export function DocumentForm({ document, categories }: DocumentFormProps) {
             </h3>
             <div className="grid gap-4 md:grid-cols-3">
               <Controller
-                name="file_cs"
+                name="translations.cs.file"
                 control={control}
                 render={({ field }) => (
                   <DocumentUploader
@@ -308,7 +296,7 @@ export function DocumentForm({ document, categories }: DocumentFormProps) {
                 )}
               />
               <Controller
-                name="file_en"
+                name="translations.en.file"
                 control={control}
                 render={({ field }) => (
                   <DocumentUploader
@@ -320,7 +308,7 @@ export function DocumentForm({ document, categories }: DocumentFormProps) {
                 )}
               />
               <Controller
-                name="file_de"
+                name="translations.de.file"
                 control={control}
                 render={({ field }) => (
                   <DocumentUploader

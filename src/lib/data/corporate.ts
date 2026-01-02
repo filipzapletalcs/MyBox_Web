@@ -4,7 +4,6 @@ import type {
   CorporateSectionWithTranslations,
   CorporateBenefitWithTranslations,
 } from '@/types/corporate'
-import type { CaseStudyFull } from '@/types/case-study'
 
 /**
  * Fetch a corporate page by slug with all related data
@@ -88,69 +87,6 @@ export async function getCorporateBenefits(
   }
 
   return (data || []) as CorporateBenefitWithTranslations[]
-}
-
-/**
- * Fetch featured case studies
- */
-export async function getFeaturedCaseStudies(): Promise<CaseStudyFull[]> {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .from('case_studies')
-    .select(
-      `
-      *,
-      translations:case_study_translations(*),
-      images:case_study_images(*),
-      metrics:case_study_metrics(
-        *,
-        translations:case_study_metric_translations(*)
-      )
-    `
-    )
-    .eq('is_active', true)
-    .eq('is_featured', true)
-    .order('sort_order', { ascending: true })
-    .limit(6)
-
-  if (error) {
-    console.error('Error fetching case studies:', error)
-    return []
-  }
-
-  return (data || []) as CaseStudyFull[]
-}
-
-/**
- * Fetch all active case studies
- */
-export async function getAllCaseStudies(): Promise<CaseStudyFull[]> {
-  const supabase = await createClient()
-
-  const { data, error } = await supabase
-    .from('case_studies')
-    .select(
-      `
-      *,
-      translations:case_study_translations(*),
-      images:case_study_images(*),
-      metrics:case_study_metrics(
-        *,
-        translations:case_study_metric_translations(*)
-      )
-    `
-    )
-    .eq('is_active', true)
-    .not('published_at', 'is', null)
-    .order('sort_order', { ascending: true })
-
-  if (error) {
-    console.error('Error fetching case studies:', error)
-    return []
-  }
-
-  return (data || []) as CaseStudyFull[]
 }
 
 /**

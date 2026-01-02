@@ -2,7 +2,6 @@
 
 import dynamic from 'next/dynamic'
 import type { CorporateSectionWithTranslations, CorporateBenefitWithTranslations } from '@/types/corporate'
-import type { CaseStudyFull } from '@/types/case-study'
 
 // Dynamically import section components to reduce initial bundle
 const CorporateHeroSection = dynamic(() => import('./CorporateHeroSection').then(m => ({ default: m.CorporateHeroSection })))
@@ -14,7 +13,6 @@ const TextContentSection = dynamic(() => import('./TextContentSection').then(m =
 const FAQSection = dynamic(() => import('./FAQSection').then(m => ({ default: m.FAQSection })))
 const GallerySection = dynamic(() => import('./GallerySection').then(m => ({ default: m.GallerySection })))
 const InquiryFormSection = dynamic(() => import('./InquiryFormSection').then(m => ({ default: m.InquiryFormSection })))
-const CaseStudySection = dynamic(() => import('./CaseStudySection').then(m => ({ default: m.CaseStudySection })))
 
 // Re-use existing components
 import { ClientLogos } from '@/components/sections/ClientLogos'
@@ -27,7 +25,6 @@ export interface SectionRendererProps {
     hero_image_url?: string | null
   }
   benefits?: CorporateBenefitWithTranslations[]
-  caseStudies?: CaseStudyFull[]
 }
 
 export function SectionRenderer({
@@ -35,7 +32,6 @@ export function SectionRenderer({
   locale,
   pageData,
   benefits,
-  caseStudies,
 }: SectionRendererProps) {
   // Get translation for current locale
   const translation = section.translations.find(t => t.locale === locale)
@@ -86,17 +82,6 @@ export function SectionRenderer({
           content={sectionProps.content as string | Record<string, unknown> | undefined}
           imageSrc={config.image_url as string | undefined}
           showProductLink
-        />
-      )
-
-    case 'case_study':
-      return (
-        <CaseStudySection
-          heading={sectionProps.heading}
-          subheading={sectionProps.subheading}
-          caseStudies={caseStudies || []}
-          locale={locale}
-          featured={config.featured as boolean | undefined}
         />
       )
 

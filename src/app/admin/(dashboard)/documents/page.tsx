@@ -10,12 +10,6 @@ export default async function DocumentsPage() {
       id,
       slug,
       category_id,
-      file_cs,
-      file_en,
-      file_de,
-      file_size_cs,
-      file_size_en,
-      file_size_de,
       fallback_locale,
       sort_order,
       is_active,
@@ -23,7 +17,9 @@ export default async function DocumentsPage() {
       document_translations (
         locale,
         title,
-        description
+        description,
+        file_path,
+        file_size
       ),
       document_categories (
         id,

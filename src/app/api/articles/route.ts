@@ -3,16 +3,20 @@ import { createClient } from '@/lib/supabase/server'
 import { createArticleSchema } from '@/lib/validations/article'
 
 // GET /api/articles - Seznam článků
+// Supports pagination: ?page=1&limit=20
+// Supports filtering: ?status=published&category=uuid
 export async function GET(request: NextRequest) {
   const supabase = await createClient()
   const { searchParams } = new URL(request.url)
 
-  const page = parseInt(searchParams.get('page') || '1')
-  const limit = parseInt(searchParams.get('limit') || '10')
+  // Pagination params with safety limits
+  const page = Math.max(1, parseInt(searchParams.get('page') || '1'))
+  const limit = Math.min(100, Math.max(1, parseInt(searchParams.get('limit') || '20')))
+  const offset = (page - 1) * limit
+
+  // Filter params
   const status = searchParams.get('status')
   const category = searchParams.get('category')
-
-  const offset = (page - 1) * limit
 
   let query = supabase
     .from('articles')

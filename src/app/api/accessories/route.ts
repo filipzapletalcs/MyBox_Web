@@ -1,6 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createAccessorySchema } from '@/lib/validations/accessory'
+import { getProductImageUrl } from '@/lib/supabase/storage'
+
+// Helper to convert relative image path to full storage URL
+function transformAccessoryImageUrl(imageUrl: string | null): string | null {
+  if (!imageUrl) return null
+  if (imageUrl.startsWith('http') || imageUrl.startsWith('/')) {
+    return imageUrl
+  }
+  return getProductImageUrl(imageUrl)
+}
 
 // GET /api/accessories
 export async function GET(request: NextRequest) {
@@ -10,28 +20,14 @@ export async function GET(request: NextRequest) {
   const active = searchParams.get('active')
   const withProducts = searchParams.get('withProducts') === 'true'
 
+  // Build query based on whether we need product relations
+  const selectQuery = withProducts
+    ? '*, accessory_translations(*), product_accessories(product_id, sort_order, products(id, slug, product_translations(locale, name)))'
+    : '*, accessory_translations(*)'
+
   let query = supabase
     .from('accessories')
-    .select(
-      withProducts
-        ? `
-          *,
-          accessory_translations(*),
-          product_accessories(
-            product_id,
-            sort_order,
-            products(
-              id,
-              slug,
-              product_translations(locale, name)
-            )
-          )
-        `
-        : `
-          *,
-          accessory_translations(*)
-        `
-    )
+    .select(selectQuery)
     .order('sort_order', { ascending: true })
 
   if (active !== null) {
@@ -44,7 +40,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 
-  return NextResponse.json({ data })
+  // Transform image_url to full storage URL for each accessory
+  const transformedData = (data as unknown[])?.map((accessory) => {
+    const acc = accessory as Record<string, unknown>
+    return {
+      ...acc,
+      image_url: transformAccessoryImageUrl(acc.image_url as string | null),
+    }
+  })
+
+  return NextResponse.json({ data: transformedData })
 }
 
 // POST /api/accessories
@@ -128,5 +133,11 @@ export async function POST(request: NextRequest) {
     .eq('id', accessory.id)
     .single()
 
-  return NextResponse.json({ data: completeAccessory }, { status: 201 })
+  // Transform image_url to full storage URL
+  const transformedAccessory = completeAccessory ? {
+    ...(completeAccessory as Record<string, unknown>),
+    image_url: transformAccessoryImageUrl(completeAccessory.image_url),
+  } : null
+
+  return NextResponse.json({ data: transformedAccessory }, { status: 201 })
 }

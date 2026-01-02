@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     return { title: 'Kategorie nenalezena' }
   }
 
-  const translation = category.category_translations?.find(t => t.locale === locale)
+  const translation = category.category_translations?.find((t: { locale: string }) => t.locale === locale)
     || category.category_translations?.[0]
 
   const title = translation?.name || 'Kategorie'
@@ -74,7 +74,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   }
 
   // Get translation for current locale
-  const categoryTranslation = category.category_translations?.find(t => t.locale === locale)
+  const categoryTranslation = category.category_translations?.find((t: { locale: string }) => t.locale === locale)
     || category.category_translations?.[0]
 
   if (!categoryTranslation) {

@@ -61,6 +61,7 @@ export async function GET(request: NextRequest) {
 }
 
 // POST /api/documents - Vytvoření dokumentu
+// New pattern: files are stored in document_translations.file_path
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
 
@@ -83,10 +84,20 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // Validate at least one file exists
-  if (!documentData.file_cs && !documentData.file_en && !documentData.file_de) {
+  // Validate translations exist and at least one has a file
+  if (!translations || translations.length === 0) {
     return NextResponse.json(
-      { error: 'At least one file is required' },
+      { error: 'At least one translation is required' },
+      { status: 400 }
+    )
+  }
+
+  const hasFile = translations.some(
+    (t: { file_path?: string }) => t.file_path && t.file_path.trim() !== ''
+  )
+  if (!hasFile) {
+    return NextResponse.json(
+      { error: 'At least one translation must have a file' },
       { status: 400 }
     )
   }
@@ -102,29 +113,29 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: documentError.message }, { status: 500 })
   }
 
-  // Insert translations
-  if (translations && translations.length > 0) {
-    const translationsToInsert = translations.map(
-      (t: { locale: string; title: string; description?: string }) => ({
-        document_id: document.id,
-        locale: t.locale,
-        title: t.title,
-        description: t.description,
-      })
+  // Insert translations with file_path and file_size
+  const translationsToInsert = translations.map(
+    (t: { locale: string; title: string; description?: string; file_path?: string; file_size?: number }) => ({
+      document_id: document.id,
+      locale: t.locale,
+      title: t.title,
+      description: t.description,
+      file_path: t.file_path,
+      file_size: t.file_size,
+    })
+  )
+
+  const { error: translationsError } = await supabase
+    .from('document_translations')
+    .insert(translationsToInsert)
+
+  if (translationsError) {
+    // Rollback document creation
+    await supabase.from('documents').delete().eq('id', document.id)
+    return NextResponse.json(
+      { error: translationsError.message },
+      { status: 500 }
     )
-
-    const { error: translationsError } = await supabase
-      .from('document_translations')
-      .insert(translationsToInsert)
-
-    if (translationsError) {
-      // Rollback document creation
-      await supabase.from('documents').delete().eq('id', document.id)
-      return NextResponse.json(
-        { error: translationsError.message },
-        { status: 500 }
-      )
-    }
   }
 
   // Fetch complete document

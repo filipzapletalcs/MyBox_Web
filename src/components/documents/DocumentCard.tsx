@@ -24,17 +24,13 @@ interface DocumentTranslation {
   locale: string
   title: string
   description: string | null
+  file_path: string | null
+  file_size: number | null
 }
 
 interface Document {
   id: string
   slug: string
-  file_cs: string | null
-  file_en: string | null
-  file_de: string | null
-  file_size_cs: number | null
-  file_size_en: number | null
-  file_size_de: number | null
   fallback_locale: Locale | null
   document_translations: DocumentTranslation[]
 }

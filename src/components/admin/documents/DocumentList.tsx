@@ -28,12 +28,6 @@ export interface Document {
   id: string
   slug: string
   category_id: string
-  file_cs: string | null
-  file_en: string | null
-  file_de: string | null
-  file_size_cs: number | null
-  file_size_en: number | null
-  file_size_de: number | null
   fallback_locale: string | null
   sort_order: number | null
   is_active: boolean | null
@@ -42,6 +36,8 @@ export interface Document {
     locale: string
     title: string
     description: string | null
+    file_path: string | null
+    file_size: number | null
   }[]
   document_categories?: {
     id: string
@@ -102,19 +98,20 @@ export function DocumentList({ documents }: DocumentListProps) {
   }
 
   const getFileBadges = (doc: Document) => {
-    const badges = []
-    if (doc.file_cs) badges.push('CS')
-    if (doc.file_en) badges.push('EN')
-    if (doc.file_de) badges.push('DE')
+    const badges: string[] = []
+    doc.document_translations?.forEach((t) => {
+      if (t.file_path) {
+        badges.push(t.locale.toUpperCase())
+      }
+    })
     return badges
   }
 
   const getTotalSize = (doc: Document) => {
-    return (
-      (doc.file_size_cs || 0) +
-      (doc.file_size_en || 0) +
-      (doc.file_size_de || 0)
-    )
+    return doc.document_translations?.reduce(
+      (sum, t) => sum + (t.file_size || 0),
+      0
+    ) || 0
   }
 
   const columns: ColumnDef<Document>[] = [
