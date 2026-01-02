@@ -38,9 +38,7 @@ export function NewProductForm() {
           unit: spec.unit || null,
           group_name: spec.group_name || null,
           sort_order: spec.sort_order ?? index,
-          label_cs: spec.label_cs || null,
-          label_en: spec.label_en || null,
-          label_de: spec.label_de || null,
+          translations: spec.translations || [],
         })) || [],
       }
 

@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       `
       *,
       product_translations(*),
-      product_specifications(*),
+      product_specifications(*, product_specification_translations(*)),
       product_images(*),
       product_to_features(feature_id, product_features(id, slug, icon, product_feature_translations(*))),
       product_feature_points(
@@ -144,23 +144,45 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
   }
 
   // ============================================
-  // 3. Update specifications
+  // 3. Update specifications (with translations)
   // ============================================
   if (specifications !== undefined) {
+    // Delete old specifications (translations cascade)
     await supabase.from('product_specifications').delete().eq('product_id', id)
 
     if (specifications.length > 0) {
-      const specsToInsert = specifications.map((s) => ({
-        ...s,
-        product_id: id,
-      }))
+      for (const spec of specifications) {
+        const { translations: specTranslations, ...specData } = spec
 
-      const { error: specError } = await supabase
-        .from('product_specifications')
-        .insert(specsToInsert)
+        // Insert specification
+        const { data: insertedSpec, error: specError } = await supabase
+          .from('product_specifications')
+          .insert({
+            ...specData,
+            product_id: id,
+          })
+          .select('id')
+          .single()
 
-      if (specError) {
-        return NextResponse.json({ error: specError.message }, { status: 500 })
+        if (specError) {
+          return NextResponse.json({ error: specError.message }, { status: 500 })
+        }
+
+        // Insert translations
+        if (specTranslations && specTranslations.length > 0) {
+          const translationsToInsert = specTranslations.map((t) => ({
+            ...t,
+            specification_id: insertedSpec.id,
+          }))
+
+          const { error: transError } = await supabase
+            .from('product_specification_translations')
+            .insert(translationsToInsert)
+
+          if (transError) {
+            return NextResponse.json({ error: transError.message }, { status: 500 })
+          }
+        }
       }
     }
   }
@@ -373,7 +395,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       `
       *,
       product_translations(*),
-      product_specifications(*),
+      product_specifications(*, product_specification_translations(*)),
       product_images(*),
       product_to_features(feature_id, product_features(id, slug, icon, product_feature_translations(*))),
       product_feature_points(

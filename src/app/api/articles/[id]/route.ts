@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { updateArticleSchema } from '@/lib/validations/article'
 
@@ -18,6 +18,9 @@ async function revalidateArticle(slug: string) {
     for (const locale of LOCALES) {
       revalidatePath(`/${locale}/blog`)
     }
+    // Revalidate articles cache tag for React cache() deduplication
+    // Note: Next.js 16 requires cache profile as second argument
+    revalidateTag('articles', 'max')
   } catch (error) {
     console.error('Revalidation error:', error)
   }

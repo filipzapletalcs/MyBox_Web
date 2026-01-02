@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
-import { createClient } from '@/lib/supabase/server'
+import { getPublishedArticles, getCategoriesWithCounts } from '@/lib/queries/article'
+import type { Locale } from '@/config/locales'
 import { ArticleGrid, CategoryFilter } from '@/components/blog'
 import { CTASection } from '@/components/sections'
 import { CollectionPageJsonLd } from '@/components/seo'
@@ -111,27 +112,12 @@ export default async function BlogPage({ params }: BlogPageProps) {
   setRequestLocale(locale)
 
   const t = await getTranslations('blog')
-  const supabase = await createClient()
 
-  // Fetch published articles
-  const { data: articles } = await supabase
-    .from('articles')
-    .select(`
-      id,
-      slug,
-      featured_image_url,
-      published_at,
-      article_translations(locale, title, excerpt),
-      categories(slug, category_translations(locale, name))
-    `)
-    .eq('status', 'published')
-    .order('published_at', { ascending: false })
-
-  // Fetch categories
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('id, slug, category_translations(locale, name)')
-    .order('sort_order', { ascending: true })
+  // Use cached queries for better performance
+  const [articles, categories] = await Promise.all([
+    getPublishedArticles(locale as Locale),
+    getCategoriesWithCounts(locale as Locale)
+  ])
 
   // Build URL for JSON-LD
   const canonicalUrl = locale === 'cs'

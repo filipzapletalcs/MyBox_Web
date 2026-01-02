@@ -33,16 +33,17 @@ interface Product {
     seo_title: string | null
     seo_description: string | null
   }[]
-  // Specifications
+  // Specifications (with translations)
   specifications?: {
     spec_key: string
     value: string
     unit: string | null
     group_name: string | null
     sort_order: number | null
-    label_cs: string | null
-    label_en: string | null
-    label_de: string | null
+    product_specification_translations: {
+      locale: string
+      label: string
+    }[]
   }[]
   // Product images (gallery)
   product_images?: {
@@ -202,9 +203,7 @@ export function EditProductForm({ product }: EditProductFormProps) {
           unit: spec.unit || null,
           group_name: spec.group_name || null,
           sort_order: spec.sort_order ?? index,
-          label_cs: spec.label_cs || null,
-          label_en: spec.label_en || null,
-          label_de: spec.label_de || null,
+          translations: spec.translations || [],
         })) || [],
         images,
         feature_points,

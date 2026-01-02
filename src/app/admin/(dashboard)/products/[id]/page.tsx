@@ -29,9 +29,10 @@ export default async function EditProductPage({ params }: PageProps) {
         unit,
         group_name,
         sort_order,
-        label_cs,
-        label_en,
-        label_de
+        product_specification_translations (
+          locale,
+          label
+        )
       ),
       product_images (
         url,
@@ -107,7 +108,21 @@ export default async function EditProductPage({ params }: PageProps) {
     product_category: product.product_category,
     // Relations
     translations: product.product_translations || [],
-    specifications: product.product_specifications || [],
+    specifications: (product.product_specifications || []).map((spec: {
+      spec_key: string;
+      value: string;
+      unit: string | null;
+      group_name: string | null;
+      sort_order: number | null;
+      product_specification_translations: { locale: string; label: string }[]
+    }) => ({
+      spec_key: spec.spec_key,
+      value: spec.value,
+      unit: spec.unit,
+      group_name: spec.group_name,
+      sort_order: spec.sort_order ?? 0,
+      product_specification_translations: spec.product_specification_translations || [],
+    })),
     // Transform images with null handling
     product_images: (product.product_images || []).map((img: { url: string; alt: string | null; is_primary: boolean | null; sort_order: number | null }) => ({
       url: img.url,

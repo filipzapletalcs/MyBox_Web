@@ -37,6 +37,7 @@ export const getArticleBySlug = cache(async (slug: string, locale: Locale) => {
       profiles(
         id,
         full_name,
+        email,
         avatar_url
       ),
       article_tags(

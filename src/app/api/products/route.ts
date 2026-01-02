@@ -115,14 +115,38 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // Specifikace
+  // Specifikace (with translations)
   if (specifications && specifications.length > 0) {
-    const specsToInsert = specifications.map((s) => ({
-      ...s,
-      product_id: product.id,
-    }))
+    for (const spec of specifications) {
+      const { translations: specTranslations, ...specData } = spec
 
-    await supabase.from('product_specifications').insert(specsToInsert)
+      // Insert specification
+      const { data: insertedSpec, error: specError } = await supabase
+        .from('product_specifications')
+        .insert({
+          ...specData,
+          product_id: product.id,
+        })
+        .select('id')
+        .single()
+
+      if (specError) {
+        console.error('Error inserting spec:', specError)
+        continue
+      }
+
+      // Insert translations
+      if (specTranslations && specTranslations.length > 0) {
+        const translationsToInsert = specTranslations.map((t) => ({
+          ...t,
+          specification_id: insertedSpec.id,
+        }))
+
+        await supabase
+          .from('product_specification_translations')
+          .insert(translationsToInsert)
+      }
+    }
   }
 
   // Features

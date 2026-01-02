@@ -30,7 +30,7 @@ export async function getProductBySlug(
       `
       *,
       product_translations(*),
-      product_specifications(*),
+      product_specifications(*, product_specification_translations(*)),
       product_images(*),
       product_to_features(feature_id, product_features(id, slug, icon, product_feature_translations(*))),
       product_feature_points(
@@ -184,6 +184,7 @@ function transformProductData(dbProduct: any, locale: Locale): FullProductData {
 
 /**
  * Transform specifications grouped by category
+ * Updated to use translations pattern (label in product_specification_translations)
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function transformSpecifications(dbSpecs: any[], locale: Locale): SpecificationCategory[] {
@@ -226,9 +227,7 @@ function transformSpecifications(dbSpecs: any[], locale: Locale): SpecificationC
             spec_key: string
             value: string
             unit?: string
-            label_cs?: string
-            label_en?: string
-            label_de?: string
+            product_specification_translations?: { locale: string; label: string }[]
           }) => ({
             key: spec.spec_key,
             label: getLocalizedLabel(spec, locale),
@@ -361,25 +360,32 @@ function transformFeatures(dbFeatures: any[], _locale: Locale): string[] {
 }
 
 /**
- * Get localized label from spec
+ * Get localized label from spec using translations pattern
+ * Fallback chain: requested locale -> cs -> spec_key
  */
 function getLocalizedLabel(
   spec: {
-    label_cs?: string
-    label_en?: string
-    label_de?: string
     spec_key: string
+    product_specification_translations?: { locale: string; label: string }[]
   },
   locale: Locale
 ): string {
-  switch (locale) {
-    case 'en':
-      return spec.label_en || spec.label_cs || spec.spec_key
-    case 'de':
-      return spec.label_de || spec.label_cs || spec.spec_key
-    default:
-      return spec.label_cs || spec.spec_key
+  const translations = spec.product_specification_translations || []
+
+  // Try requested locale first
+  const translation = translations.find((t) => t.locale === locale)
+  if (translation?.label) {
+    return translation.label
   }
+
+  // Fallback to Czech
+  const csTranslation = translations.find((t) => t.locale === 'cs')
+  if (csTranslation?.label) {
+    return csTranslation.label
+  }
+
+  // Fallback to spec_key
+  return spec.spec_key
 }
 
 /**

@@ -86,9 +86,11 @@ const productFormSchema = z.object({
     unit: z.string().optional().nullable(),
     group_name: z.string().optional().nullable(),
     sort_order: z.number().int(),
-    label_cs: z.string().optional().nullable(),
-    label_en: z.string().optional().nullable(),
-    label_de: z.string().optional().nullable(),
+    translations: z.object({
+      cs: z.string().optional(),
+      en: z.string().optional(),
+      de: z.string().optional(),
+    }),
   })).optional(),
 
   // Extension fields
@@ -173,9 +175,10 @@ interface Product {
     unit: string | null
     group_name: string | null
     sort_order: number | null
-    label_cs: string | null
-    label_en: string | null
-    label_de: string | null
+    product_specification_translations: {
+      locale: string
+      label: string
+    }[]
   }[]
   product_images?: {
     url: string
@@ -362,10 +365,23 @@ export function ProductForm({
       country_of_origin: product.country_of_origin || 'CZ',
       product_category: product.product_category || '',
       translations,
-      specifications: (product.specifications || []).map(spec => ({
-        ...spec,
-        sort_order: spec.sort_order ?? 0,
-      })),
+      specifications: (product.specifications || []).map(spec => {
+        // Transform from product_specification_translations array to form object
+        const translationsObj: { cs?: string; en?: string; de?: string } = {}
+        spec.product_specification_translations?.forEach(t => {
+          if (t.locale === 'cs' || t.locale === 'en' || t.locale === 'de') {
+            translationsObj[t.locale] = t.label
+          }
+        })
+        return {
+          spec_key: spec.spec_key,
+          value: spec.value,
+          unit: spec.unit,
+          group_name: spec.group_name,
+          sort_order: spec.sort_order ?? 0,
+          translations: translationsObj,
+        }
+      }),
       images,
       feature_points,
       color_variants,
@@ -427,9 +443,11 @@ export function ProductForm({
       unit: '',
       group_name: '',
       sort_order: specFields.length,
-      label_cs: '',
-      label_en: '',
-      label_de: '',
+      translations: {
+        cs: '',
+        en: '',
+        de: '',
+      },
     })
   }
 
@@ -443,9 +461,25 @@ export function ProductForm({
         ...t,
       }))
 
+    // Transform specifications translations from object to array format for API
+    const specificationsForApi = data.specifications?.map(spec => ({
+      spec_key: spec.spec_key,
+      value: spec.value,
+      unit: spec.unit,
+      group_name: spec.group_name,
+      sort_order: spec.sort_order,
+      translations: Object.entries(spec.translations || {})
+        .filter(([, label]) => label) // Only include translations with values
+        .map(([locale, label]) => ({
+          locale,
+          label,
+        })),
+    })) || []
+
     const apiData = {
       ...data,
       translations: translationsArray,
+      specifications: specificationsForApi,
     }
 
     await onSubmit(apiData as unknown as ProductFormData)
@@ -688,17 +722,17 @@ export function ProductForm({
                           size="sm"
                         />
                         <Input
-                          {...register(`specifications.${index}.label_cs`)}
+                          {...register(`specifications.${index}.translations.cs`)}
                           placeholder="Label CS"
                           size="sm"
                         />
                         <Input
-                          {...register(`specifications.${index}.label_en`)}
+                          {...register(`specifications.${index}.translations.en`)}
                           placeholder="Label EN"
                           size="sm"
                         />
                         <Input
-                          {...register(`specifications.${index}.label_de`)}
+                          {...register(`specifications.${index}.translations.de`)}
                           placeholder="Label DE"
                           size="sm"
                         />

@@ -1339,9 +1339,6 @@ export type Database = {
         Row: {
           group_name: string | null
           id: string
-          label_cs: string | null
-          label_de: string | null
-          label_en: string | null
           product_id: string
           sort_order: number | null
           spec_key: string
@@ -1351,9 +1348,6 @@ export type Database = {
         Insert: {
           group_name?: string | null
           id?: string
-          label_cs?: string | null
-          label_de?: string | null
-          label_en?: string | null
           product_id: string
           sort_order?: number | null
           spec_key: string
@@ -1363,9 +1357,6 @@ export type Database = {
         Update: {
           group_name?: string | null
           id?: string
-          label_cs?: string | null
-          label_de?: string | null
-          label_en?: string | null
           product_id?: string
           sort_order?: number | null
           spec_key?: string

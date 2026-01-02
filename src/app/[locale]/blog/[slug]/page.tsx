@@ -2,6 +2,8 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
+import { getArticleBySlug } from '@/lib/queries/article'
+import type { Locale } from '@/config/locales'
 import {
   ArticleHero,
   ArticleSidebar,
@@ -44,29 +46,19 @@ function estimateReadingTime(content: string): number {
 
 export async function generateMetadata({ params }: ArticlePageProps): Promise<Metadata> {
   const { locale, slug } = await params
-  const supabase = await createClient()
   const baseUrl = 'https://mybox.eco'
 
-  const { data: article } = await supabase
-    .from('articles')
-    .select(`
-      slug,
-      featured_image_url,
-      published_at,
-      updated_at,
-      article_translations(locale, title, excerpt, seo_title, seo_description)
-    `)
-    .eq('slug', slug)
-    .eq('status', 'published')
-    .single()
+  // Use cached query - deduplicated with main page function
+  const article = await getArticleBySlug(slug, locale as Locale)
 
-  if (!article) {
+  if (!article || article.status !== 'published') {
     return { title: 'Článek nenalezen' }
   }
 
-  const translation = article.article_translations?.find(
-    (t: { locale: string }) => t.locale === locale
-  ) || article.article_translations?.[0]
+  // Get translation from the cached article data
+  const translation = Array.isArray(article.article_translations)
+    ? article.article_translations.find((t) => t.locale === locale) || article.article_translations[0]
+    : article.article_translations
 
   const title = translation?.seo_title || translation?.title || 'Článek'
   const description = translation?.seo_description || translation?.excerpt || ''
@@ -118,49 +110,34 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   const t = await getTranslations('blog')
   const supabase = await createClient()
 
-  // Fetch article with all relations
-  const { data: article } = await supabase
-    .from('articles')
-    .select(`
-      id,
-      slug,
-      featured_image_url,
-      published_at,
-      updated_at,
-      category_id,
-      article_translations(locale, title, excerpt, content, seo_description),
-      categories(slug, category_translations(locale, name)),
-      profiles(full_name, email),
-      article_tags(tags(id, name, slug))
-    `)
-    .eq('slug', slug)
-    .eq('status', 'published')
-    .single()
+  // Use cached query - deduplicated with generateMetadata
+  const article = await getArticleBySlug(slug, locale as Locale)
 
-  if (!article) {
+  if (!article || article.status !== 'published') {
     notFound()
   }
 
-  // Get translation for current locale
-  const translation = article.article_translations?.find(
-    (t: { locale: string }) => t.locale === locale
-  ) || article.article_translations?.[0]
+  // Get translation from the cached article data (already filtered by locale in query)
+  const translation = Array.isArray(article.article_translations)
+    ? article.article_translations.find((t) => t.locale === locale) || article.article_translations[0]
+    : article.article_translations
 
   if (!translation) {
     notFound()
   }
 
-  // Get category info
-  const categoryTranslation = article.categories?.category_translations?.find(
-    (t: { locale: string }) => t.locale === locale
-  ) || article.categories?.category_translations?.[0]
+  // Get category info from cached data
+  const categoryTranslations = article.categories?.category_translations
+  const categoryTranslation = Array.isArray(categoryTranslations)
+    ? categoryTranslations.find((t) => t.locale === locale) || categoryTranslations[0]
+    : categoryTranslations
 
   const category = article.categories && categoryTranslation
     ? { slug: article.categories.slug, name: categoryTranslation.name }
     : null
 
-  // Get tags
-  const tags = article.article_tags?.map((at: { tags: { id: string; name: string; slug: string } | null }) => at.tags).filter(Boolean) || []
+  // Get tags from cached data
+  const tags = article.article_tags?.map((at) => at.tags).filter(Boolean) || []
 
   // Calculate reading time - content is stored as JSON, stringify if needed
   const contentString = typeof translation.content === 'string'
@@ -178,7 +155,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     categories: { slug: string; category_translations: { locale: string; name: string }[] } | null
   }[] = []
 
-  if (article.category_id) {
+  // Use category id from cached query for related articles
+  const categoryId = article.categories?.id
+  if (categoryId) {
     const { data: related } = await supabase
       .from('articles')
       .select(`
@@ -190,7 +169,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         categories(slug, category_translations(locale, name))
       `)
       .eq('status', 'published')
-      .eq('category_id', article.category_id)
+      .eq('category_id', categoryId)
       .neq('id', article.id)
       .order('published_at', { ascending: false })
       .limit(3)

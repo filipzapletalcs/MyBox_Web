@@ -13,15 +13,18 @@ export const productTranslationSchema = z.object({
   seo_description: z.string().max(160).optional().nullable(),
 })
 
+export const specificationTranslationSchema = z.object({
+  locale: z.enum(['cs', 'en', 'de']),
+  label: z.string().min(1, 'Label je povinný'),
+})
+
 export const productSpecificationSchema = z.object({
   spec_key: z.string().min(1),
   value: z.string().min(1),
   unit: z.string().optional().nullable(),
   group_name: z.string().optional().nullable(),
   sort_order: z.number().int().default(0),
-  label_cs: z.string().optional().nullable(),
-  label_en: z.string().optional().nullable(),
-  label_de: z.string().optional().nullable(),
+  translations: z.array(specificationTranslationSchema).min(1, 'Alespoň jeden překlad je povinný'),
 })
 
 // ============================================
