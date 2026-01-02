@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { HeroVideo, ClientLogos, SolutionsGrid } from '@/components/sections'
 import { getVideoUrl } from '@/lib/supabase/storage'
-import { OrganizationJsonLd } from '@/components/seo'
+import { OrganizationJsonLd, WebSiteJsonLd } from '@/components/seo'
 
 interface HomePageProps {
   params: Promise<{ locale: string }>
@@ -73,6 +73,17 @@ export async function generateMetadata({ params }: HomePageProps): Promise<Metad
       description,
       images: [`${baseUrl}/images/og/home-og.jpg`],
     },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+        'max-video-preview': -1,
+      },
+    },
     other: {
       'news_keywords': keywords,
     },
@@ -85,8 +96,9 @@ export default async function HomePage({ params }: HomePageProps) {
 
   return (
     <>
-      {/* Organization JSON-LD for homepage */}
+      {/* Structured Data for homepage */}
       <OrganizationJsonLd />
+      <WebSiteJsonLd locale={locale} />
 
       {/* Hero with video background */}
       <HeroVideo videoSrc={getVideoUrl('videos/hero-landing.mp4')} />

@@ -320,6 +320,13 @@ export const routing = defineRouting({
       de: '/dokumente',
     },
 
+    // === PODPORA ===
+    '/podpora': {
+      cs: '/podpora',
+      en: '/support',
+      de: '/support',
+    },
+
     // === PRÁVNÍ STRÁNKY ===
     '/ochrana-osobnich-udaju': {
       cs: '/ochrana-osobnich-udaju',
