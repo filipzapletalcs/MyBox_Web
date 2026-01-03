@@ -2,6 +2,7 @@ import { type Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
+import { cache } from 'react'
 
 import { halisR } from '@/lib/fonts'
 import { routing } from '@/i18n/routing'
@@ -10,6 +11,16 @@ import { Header, Footer } from '@/components/layout'
 import { TooltipProvider, CookieConsentBanner } from '@/components/ui'
 import { createClient } from '@/lib/supabase/server'
 import '../globals.css'
+
+// Cache company details for request deduplication
+const getCompanyDetails = cache(async () => {
+  const supabase = await createClient()
+  const { data } = await supabase
+    .from('company_details')
+    .select('*')
+    .single()
+  return data
+})
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
@@ -105,12 +116,8 @@ export default async function LocaleLayout({
   // Get messages for the locale
   const messages = await getMessages()
 
-  // Fetch company details for footer
-  const supabase = await createClient()
-  const { data: companyDetails } = await supabase
-    .from('company_details')
-    .select('*')
-    .single()
+  // Fetch company details for footer (cached for request deduplication)
+  const companyDetails = await getCompanyDetails()
 
   return (
     <html lang={locale} suppressHydrationWarning data-scroll-behavior="smooth">

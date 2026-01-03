@@ -21,7 +21,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
   const { error } = await supabase.from('tags').delete().eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Tag delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete tag' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

@@ -28,7 +28,8 @@ export async function GET(request: NextRequest) {
   const { data, error } = await query
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Corporate sections fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch corporate sections' }, { status: 500 })
   }
 
   // Transform data
@@ -92,7 +93,8 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (sectionError) {
-    return NextResponse.json({ error: sectionError.message }, { status: 500 })
+    console.error('Corporate section create error:', sectionError)
+    return NextResponse.json({ error: 'Failed to create corporate section' }, { status: 500 })
   }
 
   // Create translations if provided
@@ -107,10 +109,11 @@ export async function POST(request: NextRequest) {
       .insert(translationsToInsert)
 
     if (translationsError) {
+      console.error('Corporate section translations error:', translationsError)
       // Rollback
       await supabase.from('corporate_sections').delete().eq('id', section.id)
       return NextResponse.json(
-        { error: translationsError.message },
+        { error: 'Failed to create corporate section translations' },
         { status: 500 }
       )
     }

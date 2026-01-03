@@ -28,7 +28,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (error.code === 'PGRST116') {
       return NextResponse.json({ error: 'Document not found' }, { status: 404 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Document fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch document' }, { status: 500 })
   }
 
   return NextResponse.json({ data })
@@ -57,7 +58,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     .eq('id', id)
 
   if (documentError) {
-    return NextResponse.json({ error: documentError.message }, { status: 500 })
+    console.error('Document update error:', documentError)
+    return NextResponse.json({ error: 'Failed to update document' }, { status: 500 })
   }
 
   // Update translations (upsert) including file_path and file_size
@@ -80,8 +82,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         )
 
       if (translationError) {
+        console.error('Document translation error:', translationError)
         return NextResponse.json(
-          { error: translationError.message },
+          { error: 'Failed to update document translation' },
           { status: 500 }
         )
       }
@@ -96,7 +99,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     .single()
 
   if (fetchError) {
-    return NextResponse.json({ error: fetchError.message }, { status: 500 })
+    console.error('Document fetch error:', fetchError)
+    return NextResponse.json({ error: 'Failed to fetch document' }, { status: 500 })
   }
 
   return NextResponse.json({ data: completeDocument })
@@ -136,7 +140,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
   const { error } = await supabase.from('documents').delete().eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Document delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete document' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

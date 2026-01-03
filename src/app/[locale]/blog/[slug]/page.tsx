@@ -85,6 +85,12 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   const title = translation?.seo_title || translation?.title || 'Článek'
   const description = translation?.seo_description || translation?.excerpt || ''
 
+  // Extract keywords from article tags
+  const keywords = article.article_tags
+    ?.map((at) => at.tags?.name)
+    .filter((name): name is string => !!name)
+    .join(', ')
+
   // Build canonical URL
   const canonicalUrl = locale === 'cs'
     ? `${baseUrl}/blog/${slug}`
@@ -93,6 +99,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
   return {
     title,
     description,
+    ...(keywords && { keywords }),
     alternates: {
       canonical: canonicalUrl,
       languages: {

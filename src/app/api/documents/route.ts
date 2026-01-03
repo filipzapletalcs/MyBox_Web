@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { checkUserRole } from '@/lib/auth/checkRole'
 
 // GET /api/documents - Seznam dokumentů
 export async function GET(request: NextRequest) {
@@ -34,7 +35,8 @@ export async function GET(request: NextRequest) {
   const { data, error } = await query
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Documents fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch documents' }, { status: 500 })
   }
 
   // If locale is specified, filter translations
@@ -71,6 +73,12 @@ export async function POST(request: NextRequest) {
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // RBAC check - only admin/editor can manage documents
+  const { hasRole } = await checkUserRole(supabase, user.id)
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
   }
 
   const body = await request.json()
@@ -110,7 +118,8 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (documentError) {
-    return NextResponse.json({ error: documentError.message }, { status: 500 })
+    console.error('Document create error:', documentError)
+    return NextResponse.json({ error: 'Failed to create document' }, { status: 500 })
   }
 
   // Insert translations with file_path and file_size
@@ -130,10 +139,11 @@ export async function POST(request: NextRequest) {
     .insert(translationsToInsert)
 
   if (translationsError) {
+    console.error('Document translations error:', translationsError)
     // Rollback document creation
     await supabase.from('documents').delete().eq('id', document.id)
     return NextResponse.json(
-      { error: translationsError.message },
+      { error: 'Failed to create document translations' },
       { status: 500 }
     )
   }

@@ -45,7 +45,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (error.code === 'PGRST116') {
       return NextResponse.json({ error: 'Accessory not found' }, { status: 404 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Accessory fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch accessory' }, { status: 500 })
   }
 
   // Transform image_url to full storage URL
@@ -90,7 +91,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       .eq('id', id)
 
     if (updateError) {
-      return NextResponse.json({ error: updateError.message }, { status: 500 })
+      console.error('Accessory update error:', updateError)
+      return NextResponse.json({ error: 'Failed to update accessory' }, { status: 500 })
     }
   }
 
@@ -105,8 +107,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         )
 
       if (translationError) {
+        console.error('Accessory translation error:', translationError)
         return NextResponse.json(
-          { error: translationError.message },
+          { error: 'Failed to update accessory translation' },
           { status: 500 }
         )
       }
@@ -131,7 +134,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         .insert(productAccessoriesToInsert)
 
       if (linkError) {
-        return NextResponse.json({ error: linkError.message }, { status: 500 })
+        console.error('Accessory product link error:', linkError)
+        return NextResponse.json({ error: 'Failed to update accessory product links' }, { status: 500 })
       }
     }
   }
@@ -180,7 +184,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
   const { error } = await supabase.from('accessories').delete().eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Accessory delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete accessory' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

@@ -37,7 +37,8 @@ export async function GET(request: NextRequest) {
   const { data, error } = await query
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Accessories fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch accessories' }, { status: 500 })
   }
 
   // Transform image_url to full storage URL for each accessory
@@ -84,7 +85,8 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (accessoryError) {
-    return NextResponse.json({ error: accessoryError.message }, { status: 500 })
+    console.error('Accessory create error:', accessoryError)
+    return NextResponse.json({ error: 'Failed to create accessory' }, { status: 500 })
   }
 
   // Insert translations
@@ -98,9 +100,10 @@ export async function POST(request: NextRequest) {
     .insert(translationsToInsert)
 
   if (translationsError) {
+    console.error('Accessory translations error:', translationsError)
     await supabase.from('accessories').delete().eq('id', accessory.id)
     return NextResponse.json(
-      { error: translationsError.message },
+      { error: 'Failed to create accessory translations' },
       { status: 500 }
     )
   }

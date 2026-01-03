@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createTeamMemberSchema } from '@/lib/validations/team-member'
+import { checkUserRole } from '@/lib/auth/checkRole'
+import { createCachedResponse, CACHE_TTL } from '@/lib/utils/cache-response'
 
 // GET /api/team-members
 export async function GET(request: NextRequest) {
@@ -27,7 +29,8 @@ export async function GET(request: NextRequest) {
   const { data, error } = await query
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Team members fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch team members' }, { status: 500 })
   }
 
   // Pokud je specifikován locale, filtrujeme překlady
@@ -36,10 +39,12 @@ export async function GET(request: NextRequest) {
       ...member,
       translations: member.translations.filter((t: { locale: string }) => t.locale === locale),
     }))
-    return NextResponse.json({ data: filteredData })
+    // Team members rarely change - use static cache (1 day browser, 7 days CDN)
+    return createCachedResponse(filteredData, CACHE_TTL.STATIC)
   }
 
-  return NextResponse.json({ data })
+  // Team members rarely change - use static cache (1 day browser, 7 days CDN)
+  return createCachedResponse(data, CACHE_TTL.STATIC)
 }
 
 // POST /api/team-members
@@ -52,6 +57,12 @@ export async function POST(request: NextRequest) {
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // RBAC check - only admin/editor can manage team members
+  const { hasRole } = await checkUserRole(supabase, user.id)
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
   }
 
   const body = await request.json()
@@ -81,7 +92,8 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (memberError) {
-    return NextResponse.json({ error: memberError.message }, { status: 500 })
+    console.error('Team member create error:', memberError)
+    return NextResponse.json({ error: 'Failed to create team member' }, { status: 500 })
   }
 
   // Překlady - jméno se kopíruje z CS do ostatních jazyků
@@ -115,10 +127,11 @@ export async function POST(request: NextRequest) {
     .insert(translationsToInsert)
 
   if (translationsError) {
+    console.error('Team member translations error:', translationsError)
     // Rollback - smazat člena
     await supabase.from('team_members').delete().eq('id', member.id)
     return NextResponse.json(
-      { error: translationsError.message },
+      { error: 'Failed to create team member translations' },
       { status: 500 }
     )
   }

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createProductSchema } from '@/lib/validations/product'
+import { checkUserRole } from '@/lib/auth/checkRole'
+import { CACHE_TTL } from '@/lib/utils/cache-response'
 
 // GET /api/products
 // Supports pagination: ?page=1&limit=20
@@ -47,10 +49,11 @@ export async function GET(request: NextRequest) {
   const { data, error, count } = await query
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Products fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 })
   }
 
-  return NextResponse.json({
+  const response = NextResponse.json({
     data,
     pagination: {
       page,
@@ -59,6 +62,14 @@ export async function GET(request: NextRequest) {
       totalPages: count ? Math.ceil(count / limit) : 0,
     },
   })
+
+  // Products change occasionally - use standard cache (1 hour browser, 1 day CDN)
+  response.headers.set(
+    'Cache-Control',
+    `public, max-age=${CACHE_TTL.STANDARD.maxAge}, s-maxage=${CACHE_TTL.STANDARD.sMaxAge}, stale-while-revalidate=86400`
+  )
+
+  return response
 }
 
 // POST /api/products
@@ -71,6 +82,12 @@ export async function POST(request: NextRequest) {
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // RBAC check - only admin/editor can manage products
+  const { hasRole } = await checkUserRole(supabase, user.id)
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
   }
 
   const body = await request.json()
@@ -94,7 +111,8 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (productError) {
-    return NextResponse.json({ error: productError.message }, { status: 500 })
+    console.error('Product create error:', productError)
+    return NextResponse.json({ error: 'Failed to create product' }, { status: 500 })
   }
 
   // Překlady
@@ -108,9 +126,10 @@ export async function POST(request: NextRequest) {
     .insert(translationsToInsert)
 
   if (translationsError) {
+    console.error('Product translations error:', translationsError)
     await supabase.from('products').delete().eq('id', product.id)
     return NextResponse.json(
-      { error: translationsError.message },
+      { error: 'Failed to create product translations' },
       { status: 500 }
     )
   }

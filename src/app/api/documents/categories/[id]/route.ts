@@ -20,7 +20,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (error.code === 'PGRST116') {
       return NextResponse.json({ error: 'Category not found' }, { status: 404 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Document category fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch document category' }, { status: 500 })
   }
 
   return NextResponse.json({ data })
@@ -49,7 +50,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     .eq('id', id)
 
   if (categoryError) {
-    return NextResponse.json({ error: categoryError.message }, { status: 500 })
+    console.error('Document category update error:', categoryError)
+    return NextResponse.json({ error: 'Failed to update document category' }, { status: 500 })
   }
 
   // Update translations (upsert)
@@ -70,8 +72,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         )
 
       if (translationError) {
+        console.error('Document category translation error:', translationError)
         return NextResponse.json(
-          { error: translationError.message },
+          { error: 'Failed to update document category translation' },
           { status: 500 }
         )
       }
@@ -86,7 +89,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     .single()
 
   if (fetchError) {
-    return NextResponse.json({ error: fetchError.message }, { status: 500 })
+    console.error('Document category fetch error:', fetchError)
+    return NextResponse.json({ error: 'Failed to fetch document category' }, { status: 500 })
   }
 
   return NextResponse.json({ data: completeCategory })
@@ -125,7 +129,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     .eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Document category delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete document category' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

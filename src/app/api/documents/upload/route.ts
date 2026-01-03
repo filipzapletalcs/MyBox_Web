@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { sanitizePath, isValidPath } from '@/lib/utils/validation'
+import { LOCALES } from '@/config/locales'
 
 const ALLOWED_MIME_TYPES = [
   'application/pdf',
@@ -66,10 +68,27 @@ export async function POST(request: NextRequest) {
 
   const filename = `${sanitizedName}-${timestamp}-${randomStr}.${ext}`
 
+  // Validate and sanitize folder path
+  const sanitizedFolder = sanitizePath(folder)
+  if (folder && !sanitizedFolder) {
+    return NextResponse.json(
+      { error: 'Invalid folder path' },
+      { status: 400 }
+    )
+  }
+
+  // Validate locale (only allow known locales)
+  if (locale && !LOCALES.includes(locale as typeof LOCALES[number])) {
+    return NextResponse.json(
+      { error: 'Invalid locale' },
+      { status: 400 }
+    )
+  }
+
   // Build path
   let filePath = filename
-  if (folder) {
-    filePath = `${folder}/${filename}`
+  if (sanitizedFolder) {
+    filePath = `${sanitizedFolder}/${filename}`
   }
   if (locale) {
     filePath = `${locale}/${filePath}`
@@ -87,7 +106,8 @@ export async function POST(request: NextRequest) {
     })
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Document upload error:', error)
+    return NextResponse.json({ error: 'Failed to upload document' }, { status: 500 })
   }
 
   // Get public URL
@@ -129,10 +149,16 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: 'Path is required' }, { status: 400 })
   }
 
+  // Validate path to prevent path traversal
+  if (!isValidPath(path)) {
+    return NextResponse.json({ error: 'Invalid path' }, { status: 400 })
+  }
+
   const { error } = await supabase.storage.from('documents').remove([path])
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Document delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete document' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

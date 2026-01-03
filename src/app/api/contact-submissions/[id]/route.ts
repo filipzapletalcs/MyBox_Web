@@ -29,7 +29,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (error.code === 'PGRST116') {
       return NextResponse.json({ error: 'Submission not found' }, { status: 404 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Contact submission fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch contact submission' }, { status: 500 })
   }
 
   return NextResponse.json({ data })
@@ -66,7 +67,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     .single()
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Contact submission update error:', error)
+    return NextResponse.json({ error: 'Failed to update contact submission' }, { status: 500 })
   }
 
   return NextResponse.json({ data })
@@ -91,7 +93,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     .eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Contact submission delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete contact submission' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

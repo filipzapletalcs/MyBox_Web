@@ -41,7 +41,8 @@ export async function GET(request: NextRequest) {
   const { data, error } = await query
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Contact submissions fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch contact submissions' }, { status: 500 })
   }
 
   return NextResponse.json({ data })
@@ -78,8 +79,8 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (error) {
-    console.error('Error creating submission:', error)
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Contact submission create error:', error)
+    return NextResponse.json({ error: 'Failed to submit contact form' }, { status: 500 })
   }
 
   return NextResponse.json({ data: submission }, { status: 201 })

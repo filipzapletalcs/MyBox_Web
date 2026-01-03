@@ -30,7 +30,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (error.code === 'PGRST116') {
       return NextResponse.json({ error: 'Page not found' }, { status: 404 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Corporate page fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch corporate page' }, { status: 500 })
   }
 
   // Transform sections to include translations
@@ -83,7 +84,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       .eq('id', id)
 
     if (pageError) {
-      return NextResponse.json({ error: pageError.message }, { status: 500 })
+      console.error('Corporate page update error:', pageError)
+      return NextResponse.json({ error: 'Failed to update corporate page' }, { status: 500 })
     }
   }
 
@@ -104,8 +106,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         )
 
       if (translationError) {
+        console.error('Corporate page translation error:', translationError)
         return NextResponse.json(
-          { error: translationError.message },
+          { error: 'Failed to update corporate page translation' },
           { status: 500 }
         )
       }
@@ -120,7 +123,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     .single()
 
   if (fetchError) {
-    return NextResponse.json({ error: fetchError.message }, { status: 500 })
+    console.error('Corporate page fetch error:', fetchError)
+    return NextResponse.json({ error: 'Failed to fetch corporate page' }, { status: 500 })
   }
 
   return NextResponse.json({ data: updatedPage })
@@ -147,7 +151,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     .eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Corporate page delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete corporate page' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

@@ -35,6 +35,34 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          // Prevent clickjacking - page cannot be embedded in iframe
+          { key: 'X-Frame-Options', value: 'DENY' },
+          // Prevent MIME type sniffing
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          // Control referrer information
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          // XSS protection (legacy browsers)
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+          // Force HTTPS for 1 year
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains',
+          },
+          // Restrict browser features
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
+        ],
+      },
+    ]
+  },
 }
 
 export default withNextIntl(nextConfig)

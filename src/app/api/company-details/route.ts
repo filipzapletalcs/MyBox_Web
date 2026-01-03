@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { createCachedResponse, CACHE_TTL } from '@/lib/utils/cache-response'
 
 // GET /api/company-details (public)
 export async function GET() {
@@ -11,10 +13,12 @@ export async function GET() {
     .single()
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Company details fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch company details' }, { status: 500 })
   }
 
-  return NextResponse.json({ data })
+  // Company details rarely change - use static cache (1 day browser, 7 days CDN)
+  return createCachedResponse(data, CACHE_TTL.STATIC)
 }
 
 // PUT /api/company-details (admin only)
@@ -69,8 +73,12 @@ export async function PUT(request: NextRequest) {
     .single()
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Company details update error:', error)
+    return NextResponse.json({ error: 'Failed to update company details' }, { status: 500 })
   }
+
+  // Invalidate cache for all pages (layout contains company info in footer)
+  revalidatePath('/', 'layout')
 
   return NextResponse.json({ data })
 }

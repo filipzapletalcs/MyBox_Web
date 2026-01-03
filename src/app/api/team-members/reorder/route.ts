@@ -34,7 +34,8 @@ export async function POST(request: NextRequest) {
       .eq('id', member.id)
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 })
+      console.error('Team member reorder error:', error)
+      return NextResponse.json({ error: 'Failed to reorder team members' }, { status: 500 })
     }
   }
 

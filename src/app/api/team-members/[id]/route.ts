@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { updateTeamMemberSchema } from '@/lib/validations/team-member'
+import { checkUserRole } from '@/lib/auth/checkRole'
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -26,7 +27,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (error.code === 'PGRST116') {
       return NextResponse.json({ error: 'Team member not found' }, { status: 404 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Team member fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch team member' }, { status: 500 })
   }
 
   return NextResponse.json({ data })
@@ -43,6 +45,12 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // RBAC check - only admin/editor can manage team members
+  const { hasRole } = await checkUserRole(supabase, user.id)
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
   }
 
   const body = await request.json()
@@ -74,7 +82,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         .eq('id', id)
 
       if (updateError) {
-        return NextResponse.json({ error: updateError.message }, { status: 500 })
+        console.error('Team member update error:', updateError)
+        return NextResponse.json({ error: 'Failed to update team member' }, { status: 500 })
       }
     }
   }
@@ -99,7 +108,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         )
 
       if (csError) {
-        return NextResponse.json({ error: csError.message }, { status: 500 })
+        console.error('Team member translation error (cs):', csError)
+        return NextResponse.json({ error: 'Failed to update team member translation' }, { status: 500 })
       }
     }
 
@@ -119,7 +129,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         )
 
       if (enError) {
-        return NextResponse.json({ error: enError.message }, { status: 500 })
+        console.error('Team member translation error (en):', enError)
+        return NextResponse.json({ error: 'Failed to update team member translation' }, { status: 500 })
       }
     }
 
@@ -139,7 +150,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         )
 
       if (deError) {
-        return NextResponse.json({ error: deError.message }, { status: 500 })
+        console.error('Team member translation error (de):', deError)
+        return NextResponse.json({ error: 'Failed to update team member translation' }, { status: 500 })
       }
     }
   }
@@ -152,7 +164,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     .single()
 
   if (fetchError) {
-    return NextResponse.json({ error: fetchError.message }, { status: 500 })
+    console.error('Team member fetch error:', fetchError)
+    return NextResponse.json({ error: 'Failed to fetch team member' }, { status: 500 })
   }
 
   return NextResponse.json({ data: completeMember })
@@ -171,13 +184,20 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // RBAC check - only admin/editor can manage team members
+  const { hasRole } = await checkUserRole(supabase, user.id)
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
+  }
+
   const { error } = await supabase
     .from('team_members')
     .delete()
     .eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Team member delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete team member' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

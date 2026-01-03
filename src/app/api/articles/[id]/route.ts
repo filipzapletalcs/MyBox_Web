@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { updateArticleSchema } from '@/lib/validations/article'
-
-const LOCALES = ['cs', 'en', 'de']
+import { checkUserRole } from '@/lib/auth/checkRole'
+import { LOCALES } from '@/config/locales'
 
 /**
  * Revalidate article pages after update
@@ -53,7 +53,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (error.code === 'PGRST116') {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Article fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch article' }, { status: 500 })
   }
 
   return NextResponse.json({ data })
@@ -71,6 +72,25 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // RBAC check - admin/editor can edit any, author can only edit own articles
+  const { hasRole, role } = await checkUserRole(supabase, user.id, ['admin', 'editor', 'author'])
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
+  }
+
+  // If author, check if they own the article
+  if (role === 'author') {
+    const { data: article } = await supabase
+      .from('articles')
+      .select('author_id')
+      .eq('id', id)
+      .single()
+
+    if (article?.author_id !== user.id) {
+      return NextResponse.json({ error: 'Forbidden - can only edit own articles' }, { status: 403 })
+    }
   }
 
   // Validace dat
@@ -94,7 +114,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       .eq('id', id)
 
     if (updateError) {
-      return NextResponse.json({ error: updateError.message }, { status: 500 })
+      console.error('Article update error:', updateError)
+      return NextResponse.json({ error: 'Failed to update article' }, { status: 500 })
     }
   }
 
@@ -114,8 +135,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         )
 
       if (translationError) {
+        console.error('Article translation update error:', translationError)
         return NextResponse.json(
-          { error: translationError.message },
+          { error: 'Failed to update article translations' },
           { status: 500 }
         )
       }
@@ -167,17 +189,29 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  // Get article slug before deletion for revalidation
+  // RBAC check - admin/editor can delete any, author can only delete own articles
+  const { hasRole, role } = await checkUserRole(supabase, user.id, ['admin', 'editor', 'author'])
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
+  }
+
+  // Get article info before deletion for revalidation and ownership check
   const { data: article } = await supabase
     .from('articles')
-    .select('slug')
+    .select('slug, author_id')
     .eq('id', id)
     .single()
+
+  // If author, check if they own the article
+  if (role === 'author' && article?.author_id !== user.id) {
+    return NextResponse.json({ error: 'Forbidden - can only delete own articles' }, { status: 403 })
+  }
 
   const { error } = await supabase.from('articles').delete().eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Article delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete article' }, { status: 500 })
   }
 
   // Revalidate after deletion

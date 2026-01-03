@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createFaqSchema } from '@/lib/validations/faq'
+import { checkUserRole } from '@/lib/auth/checkRole'
 
 // GET /api/faqs - Seznam FAQs
 export async function GET(request: NextRequest) {
@@ -26,7 +27,8 @@ export async function GET(request: NextRequest) {
   const { data, error } = await query
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('FAQs fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch FAQs' }, { status: 500 })
   }
 
   return NextResponse.json({ data })
@@ -42,6 +44,12 @@ export async function POST(request: NextRequest) {
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // RBAC check - only admin/editor can manage FAQs
+  const { hasRole } = await checkUserRole(supabase, user.id)
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
   }
 
   const body = await request.json()
@@ -64,7 +72,8 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (faqError) {
-    return NextResponse.json({ error: faqError.message }, { status: 500 })
+    console.error('FAQ create error:', faqError)
+    return NextResponse.json({ error: 'Failed to create FAQ' }, { status: 500 })
   }
 
   // Překlady
@@ -78,9 +87,10 @@ export async function POST(request: NextRequest) {
     .insert(translationsToInsert)
 
   if (translationsError) {
+    console.error('FAQ translations error:', translationsError)
     await supabase.from('faqs').delete().eq('id', faq.id)
     return NextResponse.json(
-      { error: translationsError.message },
+      { error: 'Failed to create FAQ translations' },
       { status: 500 }
     )
   }

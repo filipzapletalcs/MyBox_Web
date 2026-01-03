@@ -23,7 +23,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (error.code === 'PGRST116') {
       return NextResponse.json({ error: 'Section not found' }, { status: 404 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Corporate section fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch corporate section' }, { status: 500 })
   }
 
   return NextResponse.json({
@@ -75,7 +76,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       .eq('id', id)
 
     if (sectionError) {
-      return NextResponse.json({ error: sectionError.message }, { status: 500 })
+      console.error('Corporate section update error:', sectionError)
+      return NextResponse.json({ error: 'Failed to update corporate section' }, { status: 500 })
     }
   }
 
@@ -95,8 +97,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         )
 
       if (translationError) {
+        console.error('Corporate section translation error:', translationError)
         return NextResponse.json(
-          { error: translationError.message },
+          { error: 'Failed to update corporate section translation' },
           { status: 500 }
         )
       }
@@ -111,7 +114,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
     .single()
 
   if (fetchError) {
-    return NextResponse.json({ error: fetchError.message }, { status: 500 })
+    console.error('Corporate section fetch error:', fetchError)
+    return NextResponse.json({ error: 'Failed to fetch corporate section' }, { status: 500 })
   }
 
   return NextResponse.json({
@@ -143,7 +147,8 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     .eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Corporate section delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete corporate section' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

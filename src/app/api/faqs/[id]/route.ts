@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { updateFaqSchema } from '@/lib/validations/faq'
+import { checkUserRole } from '@/lib/auth/checkRole'
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -21,7 +22,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (error.code === 'PGRST116') {
       return NextResponse.json({ error: 'FAQ not found' }, { status: 404 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('FAQ fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch FAQ' }, { status: 500 })
   }
 
   return NextResponse.json({ data })
@@ -38,6 +40,12 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // RBAC check - only admin/editor can manage FAQs
+  const { hasRole } = await checkUserRole(supabase, user.id)
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
   }
 
   const body = await request.json()
@@ -60,7 +68,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       .eq('id', id)
 
     if (updateError) {
-      return NextResponse.json({ error: updateError.message }, { status: 500 })
+      console.error('FAQ update error:', updateError)
+      return NextResponse.json({ error: 'Failed to update FAQ' }, { status: 500 })
     }
   }
 
@@ -75,8 +84,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         )
 
       if (translationError) {
+        console.error('FAQ translation error:', translationError)
         return NextResponse.json(
-          { error: translationError.message },
+          { error: 'Failed to update FAQ translation' },
           { status: 500 }
         )
       }
@@ -106,10 +116,17 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // RBAC check - only admin/editor can manage FAQs
+  const { hasRole } = await checkUserRole(supabase, user.id)
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
+  }
+
   const { error } = await supabase.from('faqs').delete().eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('FAQ delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete FAQ' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

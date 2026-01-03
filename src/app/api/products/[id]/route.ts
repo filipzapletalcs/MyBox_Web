@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { updateProductSchema } from '@/lib/validations/product'
+import { checkUserRole } from '@/lib/auth/checkRole'
 
 interface RouteParams {
   params: Promise<{ id: string }>
@@ -67,7 +68,8 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     if (error.code === 'PGRST116') {
       return NextResponse.json({ error: 'Product not found' }, { status: 404 })
     }
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Product fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch product' }, { status: 500 })
   }
 
   return NextResponse.json({ data })
@@ -84,6 +86,12 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // RBAC check - only admin/editor can manage products
+  const { hasRole } = await checkUserRole(supabase, user.id)
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
   }
 
   const body = await request.json()
@@ -118,7 +126,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
       .eq('id', id)
 
     if (updateError) {
-      return NextResponse.json({ error: updateError.message }, { status: 500 })
+      console.error('Product update error:', updateError)
+      return NextResponse.json({ error: 'Failed to update product' }, { status: 500 })
     }
   }
 
@@ -135,8 +144,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         )
 
       if (translationError) {
+        console.error('Product translation update error:', translationError)
         return NextResponse.json(
-          { error: translationError.message },
+          { error: 'Failed to update product translation' },
           { status: 500 }
         )
       }
@@ -165,7 +175,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
           .single()
 
         if (specError) {
-          return NextResponse.json({ error: specError.message }, { status: 500 })
+          console.error('Product specification error:', specError)
+          return NextResponse.json({ error: 'Failed to update specification' }, { status: 500 })
         }
 
         // Insert translations
@@ -180,7 +191,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
             .insert(translationsToInsert)
 
           if (transError) {
-            return NextResponse.json({ error: transError.message }, { status: 500 })
+            console.error('Specification translation error:', transError)
+            return NextResponse.json({ error: 'Failed to update specification translation' }, { status: 500 })
           }
         }
       }
@@ -204,7 +216,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         .insert(featuresToInsert)
 
       if (featureError) {
-        return NextResponse.json({ error: featureError.message }, { status: 500 })
+        console.error('Product feature error:', featureError)
+        return NextResponse.json({ error: 'Failed to update product features' }, { status: 500 })
       }
     }
   }
@@ -226,7 +239,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         .insert(imagesToInsert)
 
       if (imageError) {
-        return NextResponse.json({ error: imageError.message }, { status: 500 })
+        console.error('Product image error:', imageError)
+        return NextResponse.json({ error: 'Failed to update product images' }, { status: 500 })
       }
     }
   }
@@ -253,7 +267,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
           .single()
 
         if (pointError) {
-          return NextResponse.json({ error: pointError.message }, { status: 500 })
+          console.error('Feature point error:', pointError)
+          return NextResponse.json({ error: 'Failed to update feature point' }, { status: 500 })
         }
 
         // Insert translations
@@ -268,7 +283,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
             .insert(translationsToInsert)
 
           if (transError) {
-            return NextResponse.json({ error: transError.message }, { status: 500 })
+            console.error('Feature point translation error:', transError)
+            return NextResponse.json({ error: 'Failed to update feature point translation' }, { status: 500 })
           }
         }
       }
@@ -297,7 +313,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
           .single()
 
         if (variantError) {
-          return NextResponse.json({ error: variantError.message }, { status: 500 })
+          console.error('Color variant error:', variantError)
+          return NextResponse.json({ error: 'Failed to update color variant' }, { status: 500 })
         }
 
         // Insert translations
@@ -312,7 +329,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
             .insert(translationsToInsert)
 
           if (transError) {
-            return NextResponse.json({ error: transError.message }, { status: 500 })
+            console.error('Color variant translation error:', transError)
+            return NextResponse.json({ error: 'Failed to update color variant translation' }, { status: 500 })
           }
         }
       }
@@ -341,7 +359,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
           .single()
 
         if (sectionError) {
-          return NextResponse.json({ error: sectionError.message }, { status: 500 })
+          console.error('Content section error:', sectionError)
+          return NextResponse.json({ error: 'Failed to update content section' }, { status: 500 })
         }
 
         // Insert translations
@@ -356,7 +375,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
             .insert(translationsToInsert)
 
           if (transError) {
-            return NextResponse.json({ error: transError.message }, { status: 500 })
+            console.error('Content section translation error:', transError)
+            return NextResponse.json({ error: 'Failed to update content section translation' }, { status: 500 })
           }
         }
       }
@@ -381,7 +401,8 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         .insert(docsToInsert)
 
       if (docError) {
-        return NextResponse.json({ error: docError.message }, { status: 500 })
+        console.error('Product documents error:', docError)
+        return NextResponse.json({ error: 'Failed to update product documents' }, { status: 500 })
       }
     }
   }
@@ -449,10 +470,17 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
+  // RBAC check - only admin/editor can manage products
+  const { hasRole } = await checkUserRole(supabase, user.id)
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
+  }
+
   const { error } = await supabase.from('products').delete().eq('id', id)
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Product delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete product' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

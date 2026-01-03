@@ -32,7 +32,8 @@ export async function GET(request: NextRequest) {
   const { data, error, count } = await query
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Corporate pages fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch corporate pages' }, { status: 500 })
   }
 
   // Transform data to include translations as object keyed by locale
@@ -81,7 +82,8 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (pageError) {
-    return NextResponse.json({ error: pageError.message }, { status: 500 })
+    console.error('Corporate page create error:', pageError)
+    return NextResponse.json({ error: 'Failed to create corporate page' }, { status: 500 })
   }
 
   // Create translations
@@ -95,10 +97,11 @@ export async function POST(request: NextRequest) {
     .insert(translationsToInsert)
 
   if (translationsError) {
+    console.error('Corporate page translations error:', translationsError)
     // Rollback - delete the page
     await supabase.from('corporate_pages').delete().eq('id', page.id)
     return NextResponse.json(
-      { error: translationsError.message },
+      { error: 'Failed to create corporate page translations' },
       { status: 500 }
     )
   }

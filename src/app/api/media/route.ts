@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
+import { sanitizePath, isValidPath } from '@/lib/utils/validation'
 
 type BucketName = 'article-images' | 'product-images' | 'media'
 
@@ -46,7 +47,8 @@ export async function GET(request: NextRequest) {
   const { data, error } = await query
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Media list error:', error)
+    return NextResponse.json({ error: 'Failed to list media' }, { status: 500 })
   }
 
   // Transform to expected format with public URLs
@@ -124,6 +126,15 @@ export async function POST(request: NextRequest) {
     )
   }
 
+  // Validate and sanitize folder path
+  const sanitizedFolder = sanitizePath(folder)
+  if (folder && !sanitizedFolder) {
+    return NextResponse.json(
+      { error: 'Invalid folder path' },
+      { status: 400 }
+    )
+  }
+
   // Generate unique filename
   const ext = file.name.split('.').pop()
   const timestamp = Date.now()
@@ -131,7 +142,7 @@ export async function POST(request: NextRequest) {
   const filename = `${timestamp}-${randomStr}.${ext}`
 
   // Build path with user folder for ownership
-  const basePath = folder ? `${user.id}/${folder}` : user.id
+  const basePath = sanitizedFolder ? `${user.id}/${sanitizedFolder}` : user.id
   const filePath = `${basePath}/${filename}`
 
   // Convert File to ArrayBuffer
@@ -146,7 +157,8 @@ export async function POST(request: NextRequest) {
     })
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Media upload error:', error)
+    return NextResponse.json({ error: 'Failed to upload media' }, { status: 500 })
   }
 
   // Get public URL
@@ -189,6 +201,11 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json({ error: 'Path is required' }, { status: 400 })
   }
 
+  // Validate path to prevent path traversal
+  if (!isValidPath(path)) {
+    return NextResponse.json({ error: 'Invalid path' }, { status: 400 })
+  }
+
   if (!Object.keys(BUCKET_LIMITS).includes(bucket)) {
     return NextResponse.json({ error: 'Invalid bucket' }, { status: 400 })
   }
@@ -196,7 +213,8 @@ export async function DELETE(request: NextRequest) {
   const { error } = await supabase.storage.from(bucket).remove([path])
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Media delete error:', error)
+    return NextResponse.json({ error: 'Failed to delete media' }, { status: 500 })
   }
 
   return NextResponse.json({ success: true })

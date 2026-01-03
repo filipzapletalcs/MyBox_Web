@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { createArticleSchema } from '@/lib/validations/article'
+import { checkUserRole } from '@/lib/auth/checkRole'
+import { CACHE_TTL } from '@/lib/utils/cache-response'
 
 // GET /api/articles - Seznam článků
 // Supports pagination: ?page=1&limit=20
@@ -43,10 +45,11 @@ export async function GET(request: NextRequest) {
   const { data, error, count } = await query
 
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
+    console.error('Articles fetch error:', error)
+    return NextResponse.json({ error: 'Failed to fetch articles' }, { status: 500 })
   }
 
-  return NextResponse.json({
+  const response = NextResponse.json({
     data,
     pagination: {
       page,
@@ -55,6 +58,14 @@ export async function GET(request: NextRequest) {
       totalPages: Math.ceil((count || 0) / limit),
     },
   })
+
+  // Articles change more frequently - use dynamic cache (30 min browser, 1 hour CDN)
+  response.headers.set(
+    'Cache-Control',
+    `public, max-age=${CACHE_TTL.DYNAMIC.maxAge}, s-maxage=${CACHE_TTL.DYNAMIC.sMaxAge}, stale-while-revalidate=86400`
+  )
+
+  return response
 }
 
 // POST /api/articles - Vytvoření článku
@@ -68,6 +79,12 @@ export async function POST(request: NextRequest) {
 
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  // RBAC check - admin, editor, and author can create articles
+  const { hasRole } = await checkUserRole(supabase, user.id, ['admin', 'editor', 'author'])
+  if (!hasRole) {
+    return NextResponse.json({ error: 'Forbidden - insufficient permissions' }, { status: 403 })
   }
 
   // Validace dat
@@ -94,7 +111,8 @@ export async function POST(request: NextRequest) {
     .single()
 
   if (articleError) {
-    return NextResponse.json({ error: articleError.message }, { status: 500 })
+    console.error('Article create error:', articleError)
+    return NextResponse.json({ error: 'Failed to create article' }, { status: 500 })
   }
 
   // Vytvoření překladů
@@ -108,10 +126,11 @@ export async function POST(request: NextRequest) {
     .insert(translationsToInsert)
 
   if (translationsError) {
+    console.error('Article translations error:', translationsError)
     // Rollback - smazat článek
     await supabase.from('articles').delete().eq('id', article.id)
     return NextResponse.json(
-      { error: translationsError.message },
+      { error: 'Failed to create article translations' },
       { status: 500 }
     )
   }
