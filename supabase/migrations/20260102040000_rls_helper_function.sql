@@ -9,10 +9,11 @@ RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
 STABLE
+SET search_path = ''
 AS $$
 BEGIN
   RETURN EXISTS (
-    SELECT 1 FROM profiles
+    SELECT 1 FROM public.profiles
     WHERE id = (SELECT auth.uid())
     AND role IN ('admin', 'editor')
   );
@@ -28,10 +29,11 @@ RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
 STABLE
+SET search_path = ''
 AS $$
 BEGIN
   RETURN EXISTS (
-    SELECT 1 FROM profiles
+    SELECT 1 FROM public.profiles
     WHERE id = (SELECT auth.uid())
     AND role = 'admin'
   );

@@ -54,7 +54,7 @@ CREATE POLICY "Admins can view newsletter subscribers"
     ON public.newsletter_subscribers FOR SELECT
     TO authenticated
     USING (
-        EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin')
+        EXISTS (SELECT 1 FROM public.profiles WHERE id = (SELECT auth.uid()) AND role = 'admin')
     );
 
 -- Admins can update subscribers
@@ -62,7 +62,7 @@ CREATE POLICY "Admins can update newsletter subscribers"
     ON public.newsletter_subscribers FOR UPDATE
     TO authenticated
     USING (
-        EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin')
+        EXISTS (SELECT 1 FROM public.profiles WHERE id = (SELECT auth.uid()) AND role = 'admin')
     );
 
 -- Admins can delete subscribers
@@ -70,5 +70,5 @@ CREATE POLICY "Admins can delete newsletter subscribers"
     ON public.newsletter_subscribers FOR DELETE
     TO authenticated
     USING (
-        EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin')
+        EXISTS (SELECT 1 FROM public.profiles WHERE id = (SELECT auth.uid()) AND role = 'admin')
     );
