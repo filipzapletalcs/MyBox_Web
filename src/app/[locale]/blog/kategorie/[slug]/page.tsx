@@ -2,8 +2,27 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
+import { createServerClient } from '@supabase/ssr'
 import { ArticleGrid, CategoryFilter } from '@/components/blog'
 import { CTASection } from '@/components/sections'
+
+// ISR: Statická regenerace každou hodinu
+export const revalidate = 3600
+
+// Pre-render všechny kategorie při buildu
+export async function generateStaticParams() {
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => [], setAll: () => {} } }
+  )
+
+  const { data: categories } = await supabase
+    .from('categories')
+    .select('slug')
+
+  return categories?.map(cat => ({ slug: cat.slug })) ?? []
+}
 
 interface CategoryPageProps {
   params: Promise<{ locale: string; slug: string }>

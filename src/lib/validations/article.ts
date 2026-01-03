@@ -1,7 +1,8 @@
 import { z } from 'zod'
+import { localeSchema } from './locale'
 
 export const articleTranslationSchema = z.object({
-  locale: z.enum(['cs', 'en', 'de']),
+  locale: localeSchema,
   title: z.string().min(1, 'Titulek je povinný').max(200),
   excerpt: z.string().max(500).optional().nullable(),
   content: z.any(), // TipTap JSON

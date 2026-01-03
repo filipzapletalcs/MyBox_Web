@@ -1,7 +1,8 @@
 import { z } from 'zod'
+import { localeSchema } from './locale'
 
 export const faqTranslationSchema = z.object({
-  locale: z.enum(['cs', 'en', 'de']),
+  locale: localeSchema,
   question: z.string().min(1, 'Otázka je povinná').max(500),
   answer: z.string().min(1, 'Odpověď je povinná').max(5000),
 })

@@ -6,6 +6,9 @@ import { ArticleGrid, CategoryFilter } from '@/components/blog'
 import { CTASection } from '@/components/sections'
 import { CollectionPageJsonLd } from '@/components/seo'
 
+// ISR: Statická regenerace každou hodinu, on-demand revalidation funguje také
+export const revalidate = 3600
+
 interface BlogPageProps {
   params: Promise<{ locale: string }>
 }

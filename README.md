@@ -54,7 +54,7 @@ Web běží na [http://localhost:3000](http://localhost:3000)
 │   │   │   ├── ac/mybox-profi/  # Produktová stránka (z DB)
 │   │   │   └── dc/              # DC stanice
 │   │   ├── kontakt/             # Kontakt
-│   │   └── blog/                # Blog (TODO)
+│   │   └── blog/                # Blog (ISR + generateStaticParams)
 │   ├── admin/                   # CMS administrace (bez i18n)
 │   │   ├── login/               # Login stránka
 │   │   └── (dashboard)/         # Chráněné admin routes
@@ -385,6 +385,70 @@ Soubor `/public/llms.txt` pro AI agenty (ChatGPT, Perplexity, Claude) s přehled
 ### robots.txt
 
 Explicitně povoluje AI crawlery (GPTBot, ClaudeBot, PerplexityBot).
+
+---
+
+## Databázová Architektura (aktualizováno leden 2026)
+
+### Přehled Optimalizací
+
+Projekt prošel kompletní refaktorizací databázového schématu pro lepší konzistenci, výkon a údržbu.
+
+#### Klíčové Změny
+
+| Oblast | Před | Po |
+|--------|------|-----|
+| **Locale validace** | CHECK constraints | FK na `supported_locales` tabulku |
+| **Documents** | Hardcoded `file_cs/en/de` sloupce | Unified `document_translations` pattern |
+| **Product specs** | Hardcoded `label_cs/en/de` | `product_specification_translations` tabulka |
+| **RLS Policies** | 95+ inline policies | 35 konsolidovaných s `is_editor_or_admin()` |
+| **Blog ISR** | Žádné caching | `revalidate = 3600` + `generateStaticParams()` |
+
+#### Flexibilní Správa Jazyků
+
+```sql
+-- Přidání nového jazyka (např. polština):
+INSERT INTO supported_locales (code, name_native, name_en, sort_order)
+VALUES ('pl', 'Polski', 'Polish', 4);
+
+-- Žádná databázová migrace potřeba!
+```
+
+Pak stačí upravit `src/config/locales.ts` a přidat překlady.
+
+#### Migrace (chronologicky)
+
+```
+supabase/migrations/
+├── 20241223000000_initial_schema.sql           # Základní schéma
+├── 20241223090000_add_category_parent.sql      # Hierarchie kategorií
+├── 20241223100000_product_extensions.sql       # Rozšíření produktů
+├── ...
+├── 20260102000000_supported_locales.sql        # Locale lookup tabulka
+├── 20260102010000_product_specification_translations.sql  # Spec překlady
+├── 20260102020000_unify_documents.sql          # Unifikace dokumentů
+├── 20260102030000_corporate_constraints.sql    # Data integrity
+├── 20260102040000_rls_helper_function.sql      # Helper funkce
+├── 20260103000000_drop_document_file_columns.sql  # Cleanup
+├── 20260103010000_drop_spec_label_columns.sql     # Cleanup
+├── 20260103020000_locale_fk_constraints.sql       # FK místo CHECK
+├── 20260103030000_jsonb_schema_validation.sql     # TipTap validace
+└── 20260103040000_refactor_rls_policies.sql       # RLS konsolidace
+```
+
+#### RLS Helper Funkce
+
+```sql
+-- Centralizovaná autorizace
+SELECT is_editor_or_admin();  -- true/false
+SELECT is_admin();            -- true/false
+
+-- Použití v policies
+CREATE POLICY "Editors can manage" ON products
+  FOR ALL TO authenticated
+  USING (is_editor_or_admin())
+  WITH CHECK (is_editor_or_admin());
+```
 
 ---
 

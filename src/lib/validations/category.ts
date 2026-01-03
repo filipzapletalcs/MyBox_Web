@@ -1,7 +1,8 @@
 import { z } from 'zod'
+import { localeSchema } from './locale'
 
 export const categoryTranslationSchema = z.object({
-  locale: z.enum(['cs', 'en', 'de']),
+  locale: localeSchema,
   name: z.string().min(1, 'Název je povinný').max(100),
   description: z.string().max(500).optional().nullable(),
 })

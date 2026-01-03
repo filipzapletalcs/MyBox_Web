@@ -2,8 +2,9 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
+import { createServerClient } from '@supabase/ssr'
 import { getArticleBySlug } from '@/lib/queries/article'
-import type { Locale } from '@/config/locales'
+import type { Locale, LOCALES } from '@/config/locales'
 import {
   ArticleHero,
   ArticleSidebar,
@@ -12,6 +13,27 @@ import {
 } from '@/components/blog'
 import { CTASection } from '@/components/sections'
 import { ArticleJsonLd } from '@/components/seo'
+
+// ISR: Statická regenerace každou hodinu, on-demand revalidation funguje také
+export const revalidate = 3600
+
+// Pre-render všechny publikované články při buildu
+export async function generateStaticParams() {
+  // Použijeme service role client pro build-time fetching
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => [], setAll: () => {} } }
+  )
+
+  const { data: articles } = await supabase
+    .from('articles')
+    .select('slug')
+    .eq('status', 'published')
+
+  // Vrátit pouze slug - locale se vezme z parent layoutu
+  return articles?.map(article => ({ slug: article.slug })) ?? []
+}
 
 interface ArticlePageProps {
   params: Promise<{ locale: string; slug: string }>

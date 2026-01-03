@@ -1,11 +1,12 @@
 import { z } from 'zod'
+import { localeSchema } from './locale'
 
 // ============================================
 // Base Translations
 // ============================================
 
 export const productTranslationSchema = z.object({
-  locale: z.enum(['cs', 'en', 'de']),
+  locale: localeSchema,
   name: z.string().min(1, 'Název je povinný').max(100),
   tagline: z.string().max(200).optional().nullable(),
   description: z.string().optional().nullable(),
@@ -14,7 +15,7 @@ export const productTranslationSchema = z.object({
 })
 
 export const specificationTranslationSchema = z.object({
-  locale: z.enum(['cs', 'en', 'de']),
+  locale: localeSchema,
   label: z.string().min(1, 'Label je povinný'),
 })
 
@@ -43,7 +44,7 @@ export const productImageSchema = z.object({
 // ============================================
 
 export const featurePointTranslationSchema = z.object({
-  locale: z.enum(['cs', 'en', 'de']),
+  locale: localeSchema,
   label: z.string().min(1, 'Label je povinný'),
   value: z.string().min(1, 'Value je povinná'),
 })
@@ -60,7 +61,7 @@ export const productFeaturePointSchema = z.object({
 // ============================================
 
 export const colorVariantTranslationSchema = z.object({
-  locale: z.enum(['cs', 'en', 'de']),
+  locale: localeSchema,
   label: z.string().min(1, 'Label je povinný'),
 })
 
@@ -76,7 +77,7 @@ export const productColorVariantSchema = z.object({
 // ============================================
 
 export const contentSectionTranslationSchema = z.object({
-  locale: z.enum(['cs', 'en', 'de']),
+  locale: localeSchema,
   title: z.string().min(1, 'Titulek je povinný'),
   subtitle: z.string().optional().nullable(),
   content: z.string().min(1, 'Obsah je povinný'),

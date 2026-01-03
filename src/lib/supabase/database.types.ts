@@ -97,6 +97,13 @@ export type Database = {
             referencedRelation: "accessories"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_accessory_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
         ]
       }
       article_tags: {
@@ -167,6 +174,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "articles"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_article_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
           },
         ]
       }
@@ -291,6 +305,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "categories"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_category_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
           },
         ]
       }
@@ -447,6 +468,13 @@ export type Database = {
             referencedRelation: "corporate_benefits"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_corporate_benefit_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
         ]
       }
       corporate_benefits: {
@@ -542,6 +570,13 @@ export type Database = {
             referencedRelation: "corporate_pages"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_corporate_page_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
         ]
       }
       corporate_pages: {
@@ -612,6 +647,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "corporate_sections"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_corporate_section_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
           },
         ]
       }
@@ -716,6 +758,13 @@ export type Database = {
             referencedRelation: "document_categories"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_document_category_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
         ]
       }
       document_translations: {
@@ -756,6 +805,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "documents"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_document_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
           },
         ]
       }
@@ -798,6 +854,13 @@ export type Database = {
             referencedRelation: "document_categories"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "fk_documents_fallback_locale"
+            columns: ["fallback_locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
         ]
       }
       faq_translations: {
@@ -829,6 +892,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "faqs"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_faq_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
           },
         ]
       }
@@ -940,7 +1010,15 @@ export type Database = {
           unsubscribed_at?: string | null
           updated_at?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "fk_newsletter_subscribers_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
+        ]
       }
       product_accessories: {
         Row: {
@@ -998,6 +1076,13 @@ export type Database = {
           variant_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_product_color_variant_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "product_color_variant_translations_variant_id_fkey"
             columns: ["variant_id"]
@@ -1068,6 +1153,13 @@ export type Database = {
           title?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_product_content_section_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "product_content_section_translations_section_id_fkey"
             columns: ["section_id"]
@@ -1172,6 +1264,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_product_feature_point_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
+          {
             foreignKeyName: "product_feature_point_translations_feature_point_id_fkey"
             columns: ["feature_point_id"]
             isOneToOne: false
@@ -1238,6 +1337,13 @@ export type Database = {
           name?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_product_feature_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "product_feature_translations_feature_id_fkey"
             columns: ["feature_id"]
@@ -1326,6 +1432,13 @@ export type Database = {
           specification_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_product_specification_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "product_specification_translations_specification_id_fkey"
             columns: ["specification_id"]
@@ -1435,6 +1548,13 @@ export type Database = {
           tagline?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_product_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "product_translations_product_id_fkey"
             columns: ["product_id"]
@@ -1638,6 +1758,13 @@ export type Database = {
           team_member_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_team_member_translations_locale"
+            columns: ["locale"]
+            isOneToOne: false
+            referencedRelation: "supported_locales"
+            referencedColumns: ["code"]
+          },
           {
             foreignKeyName: "team_member_translations_team_member_id_fkey"
             columns: ["team_member_id"]
