@@ -1,6 +1,7 @@
 // Blog components
-export { TipTapRenderer } from './TipTapRenderer'
-export type { TipTapRendererProps } from './TipTapRenderer'
+// Using lightweight renderer instead of TipTap for ~200KB bundle savings
+export { LightweightRenderer as TipTapRenderer } from './LightweightRenderer'
+export type { LightweightRendererProps as TipTapRendererProps } from './LightweightRenderer'
 
 export { ArticleCard } from './ArticleCard'
 export type { ArticleCardProps } from './ArticleCard'

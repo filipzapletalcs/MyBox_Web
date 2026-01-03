@@ -72,7 +72,7 @@ export async function generateMetadata({ params }: ChargingStationsPageProps): P
       locale: locale === 'cs' ? 'cs_CZ' : locale === 'de' ? 'de_DE' : 'en_US',
       images: [
         {
-          url: `${baseUrl}/images/og/products-og.png`,
+          url: `${baseUrl}/images/og/products-og.jpg`,
           width: 1200,
           height: 630,
           alt: title,
@@ -83,7 +83,7 @@ export async function generateMetadata({ params }: ChargingStationsPageProps): P
       card: 'summary_large_image',
       title: `${title} | MyBox.eco`,
       description,
-      images: [`${baseUrl}/images/og/products-og.png`],
+      images: [`${baseUrl}/images/og/products-og.jpg`],
     },
     other: {
       'news_keywords': keywords,

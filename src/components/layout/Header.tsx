@@ -1,15 +1,23 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import dynamic from 'next/dynamic'
 import { useTranslations } from 'next-intl'
 import { Link, usePathname } from '@/i18n/navigation'
 import { useTheme } from 'next-themes'
 import { cn } from '@/lib/utils'
 import { Logo } from './Logo'
-import { MegaMenu } from './MegaMenu'
-import { MobileMenu } from './MobileMenu'
 import { Button } from '@/components/ui'
 import { navigationConfig, getMenuType } from '@/data/navigation'
+
+// Lazy load heavy menu components (contains framer-motion)
+const MegaMenu = dynamic(() => import('./MegaMenu').then(mod => ({ default: mod.MegaMenu })), {
+  ssr: false,
+})
+
+const MobileMenu = dynamic(() => import('./MobileMenu').then(mod => ({ default: mod.MobileMenu })), {
+  ssr: false,
+})
 
 // Icons
 const MenuIcon = ({ className }: { className?: string }) => (

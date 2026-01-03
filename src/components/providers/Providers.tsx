@@ -3,6 +3,7 @@
 import { type ReactNode } from 'react'
 import { ThemeProvider } from './ThemeProvider'
 import { LenisProvider } from './LenisProvider'
+import { MotionProvider } from './MotionProvider'
 
 interface ProvidersProps {
   children: ReactNode
@@ -11,7 +12,9 @@ interface ProvidersProps {
 export function Providers({ children }: ProvidersProps) {
   return (
     <ThemeProvider>
-      <LenisProvider>{children}</LenisProvider>
+      <MotionProvider>
+        <LenisProvider>{children}</LenisProvider>
+      </MotionProvider>
     </ThemeProvider>
   )
 }

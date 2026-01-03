@@ -1,3 +1,20 @@
+const BASE_URL = 'https://mybox.eco'
+
+const DESCRIPTIONS: Record<string, string> = {
+  cs: 'Český výrobce nabíjecích stanic pro elektromobily',
+  en: 'Czech manufacturer of EV charging stations',
+  de: 'Tschechischer Hersteller von Ladestationen für Elektrofahrzeuge',
+}
+
+/**
+ * Build locale-aware URL path
+ * CS is the default locale (no prefix), others get /{locale} prefix
+ */
+function buildLocalePath(locale: string, path: string): string {
+  const prefix = locale === 'cs' ? '' : `/${locale}`
+  return `${BASE_URL}${prefix}${path}`
+}
+
 /**
  * Generates WebSite JSON-LD with SearchAction (for homepage)
  */
@@ -7,29 +24,19 @@ export function WebSiteJsonLd({ locale = 'cs' }: { locale?: string }) {
     '@type': 'WebSite',
     name: 'MyBox',
     alternateName: 'MyBox Charging Stations',
-    url: 'https://mybox.eco',
-    description:
-      locale === 'cs'
-        ? 'Český výrobce nabíjecích stanic pro elektromobily'
-        : locale === 'de'
-          ? 'Tschechischer Hersteller von Ladestationen für Elektrofahrzeuge'
-          : 'Czech manufacturer of EV charging stations',
+    url: buildLocalePath(locale, ''),
+    description: DESCRIPTIONS[locale] || DESCRIPTIONS.en,
     inLanguage: locale,
     publisher: {
       '@type': 'Organization',
       name: 'ELEXIM, a.s.',
-      url: 'https://mybox.eco',
+      url: BASE_URL,
     },
     potentialAction: {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate:
-          locale === 'cs'
-            ? 'https://mybox.eco/blog?q={search_term_string}'
-            : locale === 'de'
-              ? 'https://mybox.eco/de/blog?q={search_term_string}'
-              : 'https://mybox.eco/en/blog?q={search_term_string}',
+        urlTemplate: `${buildLocalePath(locale, '/blog')}?q={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },
