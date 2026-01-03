@@ -76,6 +76,19 @@ export function ProductJsonLd({ product, url }: ProductJsonLdProps) {
         url: baseUrl,
       },
     },
+
+    // Video (if product has hero video)
+    ...(product.heroVideo && {
+      video: {
+        '@type': 'VideoObject',
+        name: `${product.name} - Video`,
+        description: product.tagline || product.description,
+        contentUrl: product.heroVideo.startsWith('http')
+          ? product.heroVideo
+          : `${baseUrl}${product.heroVideo}`,
+        thumbnailUrl: `${baseUrl}${product.heroImage}`,
+      },
+    }),
   }
 
   return (

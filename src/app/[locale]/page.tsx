@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { HeroVideo, ClientLogos, SolutionsGrid } from '@/components/sections'
 import { getVideoUrl } from '@/lib/supabase/storage'
-import { OrganizationJsonLd, WebSiteJsonLd } from '@/components/seo'
+import { OrganizationJsonLd, WebSiteJsonLd, VideoObjectJsonLd } from '@/components/seo'
 
 interface HomePageProps {
   params: Promise<{ locale: string }>
@@ -99,6 +99,13 @@ export default async function HomePage({ params }: HomePageProps) {
       {/* Structured Data for homepage */}
       <OrganizationJsonLd />
       <WebSiteJsonLd locale={locale} />
+      <VideoObjectJsonLd
+        name={seoTitles[locale] || 'MyBox - Nabíjecí stanice pro elektromobily'}
+        description={seoDescriptions[locale]}
+        contentUrl={getVideoUrl('videos/hero-landing.mp4')}
+        thumbnailUrl="/images/og/home-og.jpg"
+        locale={locale}
+      />
 
       {/* Hero with video background */}
       <HeroVideo videoSrc={getVideoUrl('videos/hero-landing.mp4')} />

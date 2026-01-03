@@ -6,6 +6,7 @@ import {
   getCorporateBenefits,
 } from '@/lib/data/corporate'
 import { SectionRenderer } from '@/components/corporate'
+import { VideoObjectJsonLd } from '@/components/seo'
 
 // Valid subpage slugs
 const VALID_SLUGS = [
@@ -100,8 +101,23 @@ export default async function CorporateSubpage({
   // Filter active sections
   const activeSections = page.sections.filter((s) => s.is_active)
 
+  // Get translation for current locale
+  const translation =
+    page.translations.find((t) => t.locale === locale) || page.translations[0]
+
   return (
     <>
+      {/* Video JSON-LD if page has hero video */}
+      {page.hero_video_url && translation && (
+        <VideoObjectJsonLd
+          name={translation.title}
+          description={translation.seo_description || translation.subtitle || translation.title}
+          contentUrl={page.hero_video_url}
+          thumbnailUrl={page.hero_image_url}
+          locale={locale}
+        />
+      )}
+
       {activeSections.map((section) => (
         <SectionRenderer
           key={section.id}

@@ -1,4 +1,4 @@
-import { type Metadata } from 'next'
+import { type Metadata, type Viewport } from 'next'
 import { notFound } from 'next/navigation'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
@@ -21,6 +21,17 @@ const getCompanyDetails = cache(async () => {
     .single()
   return data
 })
+
+// Viewport configuration for mobile optimization
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+  ],
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))

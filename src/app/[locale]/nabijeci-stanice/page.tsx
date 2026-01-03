@@ -6,7 +6,8 @@ import { ProductShowcase } from './ProductShowcase'
 import { USPSection } from './USPSection'
 import { FAQSection } from './FAQSection'
 import { CTASection } from '@/components/sections'
-import { FAQJsonLd } from '@/components/seo'
+import { FAQJsonLd, VideoObjectJsonLd } from '@/components/seo'
+import { getVideoUrl } from '@/lib/supabase/storage'
 
 interface ChargingStationsPageProps {
   params: Promise<{ locale: string }>
@@ -111,6 +112,13 @@ export default async function ChargingStationsPage({ params }: ChargingStationsP
     <>
       {/* FAQ JSON-LD for rich snippets */}
       <FAQJsonLd items={faqItems} />
+      <VideoObjectJsonLd
+        name={seoTitles[locale] || 'Nabíjecí stanice pro elektromobily'}
+        description={seoDescriptions[locale]}
+        contentUrl={getVideoUrl('videos/hero-stations.mp4')}
+        thumbnailUrl="/images/og/products-og.jpg"
+        locale={locale}
+      />
 
       {/* Hero section */}
       <ChargingStationsHero />
